@@ -33,7 +33,7 @@ module.exports = (app, winston) => {
             data.socketId = socket.id;
             for (var i = 0; i < userList.length; i++) {
                 var user = userList[i];
-                console.log('user.customerName: ', user.customerName);
+                console.log('user.customerName:  ', user.customerName);
                 if (user.customerName == data.customerName) {
                     io.to(user.id).send(data);
                     break;
