@@ -629,3 +629,20 @@ Error: ENOENT: no such file or directory, scandir 'C:\git\jesusdream\back\mapper
 
 2021-10-05T15:27:30.403Z [winston-test] info: ::ffff:192.168.35.201 - - [05/Oct/2021:15:27:30 +0000] "POST /getOrderDate HTTP/1.1" 200 95 "http://localhost:8000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"
 
+2021-10-05T15:28:02.191Z [winston-test] info: start http://localhost:3000
+2021-10-05T15:28:02.244Z [winston-test] info: mongoose connected!
+2021-10-05T15:28:02.995Z [winston-test] info: socket.io connected
+2021-10-05T15:28:03.815Z [winston-test] info: @ socket disconnect @@@@
+2021-10-05T15:28:05.008Z [winston-test] info: ::ffff:192.168.35.201 - - [05/Oct/2021:15:28:05 +0000] "OPTIONS /loadOrderList HTTP/1.1" 204 0 "http://localhost:8000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"
+
+2021-10-05T15:28:05.013Z [winston-test] info: ::ffff:192.168.35.201 - - [05/Oct/2021:15:28:05 +0000] "OPTIONS /getOrderDate HTTP/1.1" 204 0 "http://localhost:8000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"
+
+2021-10-05T15:28:05.090Z [winston-test] info: ::ffff:192.168.35.201 - - [05/Oct/2021:15:28:05 +0000] "POST /loadOrderList HTTP/1.1" 200 299 "http://localhost:8000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"
+
+2021-10-05T15:28:05.099Z [winston-test] info: ::ffff:192.168.35.201 - - [05/Oct/2021:15:28:05 +0000] "POST /getOrderDate HTTP/1.1" 200 95 "http://localhost:8000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"
+
+2021-10-05T15:28:05.263Z [winston-test] info: socket.io connected
+2021-10-05T15:28:06.220Z [winston-test] info: ::ffff:192.168.35.201 - - [05/Oct/2021:15:28:06 +0000] "OPTIONS /historyList HTTP/1.1" 204 0 "http://localhost:8000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"
+
+2021-10-05T15:28:06.256Z [winston-test] info: ::ffff:192.168.35.201 - - [05/Oct/2021:15:28:06 +0000] "POST /historyList HTTP/1.1" 200 299 "http://localhost:8000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"
+

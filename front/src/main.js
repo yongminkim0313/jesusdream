@@ -12,13 +12,13 @@ import VueMoment from "vue-moment";
 
 Vue.config.productionTip = false
 
-const socket = io('http://192.168.35.201:4000', {
+const socket = io(process.env.VUE_APP_SOCKET_URL, {
     path: "/msg/",
 });
 
 Vue.prototype.$socket = socket;
 
-Axios.defaults.baseURL = 'http://192.168.35.201:3000';
+Axios.defaults.baseURL = process.env.VUE_APP_API_URL;
 Axios.defaults.timeout = 2000;
 Axios.defaults.withCredentials = true;
 
