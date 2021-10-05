@@ -646,3 +646,5 @@ Error: ENOENT: no such file or directory, scandir 'C:\git\jesusdream\back\mapper
 
 2021-10-05T15:28:06.256Z [winston-test] info: ::ffff:192.168.35.201 - - [05/Oct/2021:15:28:06 +0000] "POST /historyList HTTP/1.1" 200 299 "http://localhost:8000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"
 
+2021-10-05T15:41:08.869Z [winston-test] info: @ socket disconnect @@@@
+2021-10-05T15:41:10.378Z [winston-test] info: socket.io connected

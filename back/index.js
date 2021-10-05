@@ -1,13 +1,13 @@
 require("dotenv").config();
 const express = require('express')
 const session = require('express-session')
-const MongoStore = require('connect-mongo')
+    // const MongoStore = require('connect-mongo')
 
 const winston = require('./modules/winstonConfig');
 const moment = require('moment');
 const morgan = require('morgan');
-const mongoose = require('mongoose');
-const autoIncrement = require('mongoose-auto-increment');
+// const mongoose = require('mongoose');
+// const autoIncrement = require('mongoose-auto-increment');
 const app = express();
 
 app.use(morgan('combined', { stream: winston.stream }));
@@ -21,58 +21,58 @@ console.log();
 const io = require('./modules/socketConfig')(app, winston);
 const db = require('./modules/dbConnect');
 
-mongoose.connect('mongodb://localhost:27017/testdb', {
-        useNewUrlParser: true
-    }).then(() => {
-        winston.info('mongoose connected!')
-    })
-    .catch((err) => {
-        if (err) {
-            console.log(err);
-        }
-    });
+// mongoose.connect('mongodb://localhost:27017/testdb', {
+//         useNewUrlParser: true
+//     }).then(() => {
+//         winston.info('mongoose connected!')
+//     })
+//     .catch((err) => {
+//         if (err) {
+//             console.log(err);
+//         }
+//     });
 
-app.use(session({
-    secret: 'foo',
-    resave: false,
-    saveUninitialized: true,
-    store: MongoStore.create({
-        mongoUrl: 'mongodb://localhost:27017/testdb',
-        dbName: "testdb",
-        stringify: false,
-    }),
-    cookie: {
-        maxAge: 1000 * 60 * 1,
-        httpOnly: false,
-    }
-}));
+// app.use(session({
+//     secret: 'foo',
+//     resave: false,
+//     saveUninitialized: true,
+//     store: MongoStore.create({
+//         mongoUrl: 'mongodb://localhost:27017/testdb',
+//         dbName: "testdb",
+//         stringify: false,
+//     }),
+//     cookie: {
+//         maxAge: 1000 * 60 * 1,
+//         httpOnly: false,
+//     }
+// }));
 
-autoIncrement.initialize(mongoose);
+// autoIncrement.initialize(mongoose);
 require('moment-timezone');
 moment.tz.setDefault('Asia/Seoul');
 
-const orderSchema = new mongoose.Schema({
-    seq: Number,
-    no: Number,
-    orderSummary: Array,
-    amt: Number,
-    progress: String,
-    socketId: String,
-    orderDate: String,
-    saved: {
-        type: Boolean,
-        default: true
-    }
-});
+// const orderSchema = new mongoose.Schema({
+//     seq: Number,
+//     no: Number,
+//     orderSummary: Array,
+//     amt: Number,
+//     progress: String,
+//     socketId: String,
+//     orderDate: String,
+//     saved: {
+//         type: Boolean,
+//         default: true
+//     }
+// });
 
-orderSchema.plugin(autoIncrement.plugin, {
-    model: 'Order',
-    field: 'seq',
-    startAt: 1, //시작 
-    increment: 1 // 증가 
-});
+// orderSchema.plugin(autoIncrement.plugin, {
+//     model: 'Order',
+//     field: 'seq',
+//     startAt: 1, //시작 
+//     increment: 1 // 증가 
+// });
 
-const Order = mongoose.model("Order", orderSchema);
+// const Order = mongoose.model("Order", orderSchema);
 
 app.post('/saveOrderList', (req, res) => {
     console.log(req.body);
