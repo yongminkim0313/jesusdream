@@ -648,3 +648,5 @@ Error: ENOENT: no such file or directory, scandir 'C:\git\jesusdream\back\mapper
 
 2021-10-05T15:41:08.869Z [winston-test] info: @ socket disconnect @@@@
 2021-10-05T15:41:10.378Z [winston-test] info: socket.io connected
+2021-10-05T15:45:24.519Z [winston-test] info: start http://localhost:3000
+2021-10-05T15:45:24.836Z [winston-test] info: socket.io connected

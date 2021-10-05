@@ -9,7 +9,7 @@ const winston = require('./winstonConfig');
 var files = fs.readdirSync(mapperPath);
 
 files.forEach(file => {
-    winston.debug("createMapper: " + file);
+    winston.info("createMapper: " + file);
     mapper.createMapper([path.join(mapperPath, file)]);
 })
 
