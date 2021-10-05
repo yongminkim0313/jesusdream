@@ -1,0 +1,2 @@
+2021-10-05T12:27:30.739Z [winston-test] info: start http://localhost:3000
+2021-10-05T12:27:30.789Z [winston-test] info: mongoose connected!
