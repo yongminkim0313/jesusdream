@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="test">  
+  <select id="loadOrderList">
+    SELECT seq
+      , `no`
+      , order_summary as "orderSummary"
+      , amt
+      , progress
+      , socket_id as "socketId"
+      , order_date as "orderDate"
+      , saved 
+    FROM cafe_order
+    where order_date = #{orderDate}
+    order by seq desc
+  </select>
+
+<select id = 'historyList'>
+    SELECT seq
+      , `no`
+      , order_summary as "orderSummary"
+      , amt
+      , progress
+      , socket_id as "socketId"
+      , order_date as "orderDate"
+      , saved 
+    FROM cafe_order
+    where order_date = #{orderDate}
+    order by seq desc
+</select>
+<select id="getOrderDate">
+  select 
+    order_date as "_id"
+    , count(*) as "count"
+    , sum(amt) as "totalAmt" 
+  FROM cafe_order
+  group by order_date
+  order by order_date desc
+</select>
+
+<delete id="delOrderList">
+  delete from cafe_order where seq = #{seq}
+</delete>
+  
+<insert id='insertOrderList'>
+INSERT INTO cafe_order (
+  `no`
+  , order_summary
+  , amt
+  , socket_id
+  , order_date
+  , saved
+)VALUES(
+  #{no}
+  , #{orderSummary}
+  , #{amt}
+  , 0
+  , #{orderDate}
+  , true
+)
+</insert>
+<update id='updateOrderList'>
+UPDATE cafe_order set
+  order_summary = #{orderSummary}
+  , amt = #{amt}
+where seq = #{seq}
+</update>
+
+<select id='countOrder'>
+select count(*) as cnt from cafe_order where seq = #{seq} 
+</select>
+</mapper>

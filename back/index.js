@@ -19,6 +19,7 @@ app.listen(process.env.SERVER_PORT, () => {
 console.log();
 
 const io = require('./modules/socketConfig')(app, winston);
+const db = require('./modules/dbConnect');
 
 mongoose.connect('mongodb://localhost:27017/testdb', {
         useNewUrlParser: true
@@ -76,50 +77,78 @@ const Order = mongoose.model("Order", orderSchema);
 app.post('/saveOrderList', (req, res) => {
     console.log(req.body);
     for (var item of req.body) {
-        var order = new Order({
-            no: item.no,
-            orderSummary: item.orderSummary,
-            orderDate: moment().format('YYYY-MM-DD'),
-            amt: item.amt
-        });
-        Order.findOne({ orderDate: item.orderDate, seq: item.seq, no: item.no }).exec(function(err, orderOne) {
-            if (orderOne) {
-                Order.updateOne({ orderDate: item.orderDate, seq: item.seq, no: item.no }, {
-                        $set: {
-                            orderSummary: item.orderSummary,
-                            amt: item.amt
-                        }
-                    })
-                    .then(() => {
-                        console.log(item);
-                    })
-                    .catch((err) => {
-                        console.log("Error : " + err);
-                    })
-                    .then(() => {
-                        res.json({ result: 'success' });
-                    });
-            } else {
-                order.save()
-                    .then(() => {
-                        console.log(order);
-                    })
-                    .catch((err) => {
-                        console.log("Error : " + err);
-                    })
-                    .then(() => {
-                        res.json({ result: 'success' });
-                    });
-            }
-        })
+        if (!item.seq) item.seq = 0;
+
+        item.orderDate = moment().format('YYYY-MM-DD');
+        item.socketId = 0;
+
+        db.getData('test', 'countOrder', item)
+            .then(data => {
+                console.log('saveOrderList cnt', data);
+                if (data.cnt) {
+                    db.setData('test', 'updateOrderList', item)
+                } else {
+                    db.setData('test', 'insertOrderList', item)
+                }
+            })
+            .catch()
+            .then(() => {
+                res.json({ result: 'success' });
+            })
+            //     var order = new Order({
+            //         no: item.no,
+            //         orderSummary: item.orderSummary,
+            //         orderDate: moment().format('YYYY-MM-DD'),
+            //         amt: item.amt
+            //     });
+            //     Order.findOne({ orderDate: item.orderDate, seq: item.seq, no: item.no }).exec(function(err, orderOne) {
+            //         if (orderOne) {
+            //             Order.updateOne({ orderDate: item.orderDate, seq: item.seq, no: item.no }, {
+            //                     $set: {
+            //                         orderSummary: item.orderSummary,
+            //                         amt: item.amt
+            //                     }
+            //                 })
+            //                 .then(() => {
+            //                     console.log(item);
+            //                 })
+            //                 .catch((err) => {
+            //                     console.log("Error : " + err);
+            //                 })
+            //                 .then(() => {
+            //                     res.json({ result: 'success' });
+            //                 });
+            //         } else {
+            //             order.save()
+            //                 .then(() => {
+            //                     console.log(order);
+            //                 })
+            //                 .catch((err) => {
+            //                     console.log("Error : " + err);
+            //                 })
+            //                 .then(() => {
+            //                     res.json({ result: 'success' });
+            //                 });
+            //         }
+            //     })
     }
 });
 app.post('/loadOrderList', (req, res) => {
-    console.log('loadOrderList')
-    Order.find({ orderDate: moment().format('YYYY-MM-DD') }).sort({ seq: 'desc' }).exec(function(err, orderList) {
-        if (err) res.json({ result: -1 })
-        res.json(orderList);
-    })
+    console.log('loadOrderList');
+    db.getList('test', 'loadOrderList', { orderDate: moment().format('YYYY-MM-DD') })
+        .then(data => {
+            for (var item of data) {
+                item.orderSummary = JSON.parse(item.orderSummary);
+            }
+            res.json(data);
+        })
+        .catch(err => {
+            res.json({ result: -1 })
+        })
+        // Order.find({ orderDate: moment().format('YYYY-MM-DD') }).sort({ seq: 'desc' }).exec(function(err, orderList) {
+        //     if (err) res.json({ result: -1 })
+        //     res.json(orderList);
+        // })
 });
 
 app.post('/historyList', (req, res) => {
@@ -130,22 +159,35 @@ app.post('/historyList', (req, res) => {
         searchDate = item._id;
         console.log(item);
     }
-    Order.find({ orderDate: searchDate }).sort({ seq: 'desc' }).exec(function(err, orderList) {
 
-        if (err) res.json({ result: -1 })
-
-        res.json(orderList);
-    })
+    db.getList('test', 'historyList', { orderDate: searchDate })
+        .then(data => {
+            console.log('orderSummary', data);
+            for (var item of data) {
+                item.orderSummary = JSON.parse(item.orderSummary);
+            }
+            res.json(data);
+        })
+        .catch(err => {
+            res.json({ result: -1 })
+        })
+        // Order.find({ orderDate: searchDate }).sort({ seq: 'desc' }).exec(function(err, orderList) {
+        //     if (err) res.json({ result: -1 })
+        //     res.json(orderList);
+        // })
 });
 
 app.post('/delOrderList', (req, res) => {
     console.log('delOrderList')
     var order = req.body
-    console.log(order);
-    Order.remove(order)
-        .then(() => {
-            res.json.sendStatus(200);
+    db.delData('test', 'delOrderList', order)
+        .then(data => {
+            console.log(data);
         })
+        // Order.remove(order)
+        //     .then(() => {
+        //         res.json.sendStatus(200);
+        //     })
 });
 
 app.post('/getUserInfo', (req, res) => {
@@ -194,15 +236,24 @@ app.post('/cancleOrder', (req, res) => {
 });
 
 app.post('/getOrderDate', (req, res) => {
-    result = Order.aggregate([{
-            '$group': {
-                '_id': '$orderDate',
-                'count': { '$sum': 1 },
-                'totalAmt': { '$sum': '$amt' }
-            }
-        }],
-        (error, result) => {
-            if (result) res.json(result);
-        }
-    );
+    db.getList('test', 'getOrderDate', {})
+        .then(data => {
+            res.json(data);
+        })
+
+    // result = Order.aggregate([{
+    //         '$group': {
+    //             '_id': '$orderDate',
+    //             'count': { '$sum': 1 },
+    //             'totalAmt': { '$sum': '$amt' }
+    //         },
+    //     }, {
+    //         '$sort': {
+    //             '_id': -1
+    //         }
+    //     }],
+    //     (error, result) => {
+    //         if (result) res.json(result);
+    //     }
+    // );
 });
