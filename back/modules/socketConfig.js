@@ -39,6 +39,7 @@ module.exports = (app, winston) => {
             }
         });
         socket.on('tossInit', (data) => {
+            console.log('tossInit')
             socket.broadcast.emit('receiveInit', data);
         })
         winston.info(`socket.io connected`);
