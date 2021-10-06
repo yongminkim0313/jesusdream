@@ -78,7 +78,7 @@
             </v-card>
             <v-card class="mt-2" height="300px">
                 <v-list>
-                    <v-subheader>history</v-subheader>
+                    <v-subheader>지난내역</v-subheader>
                     <v-list-item-group
                         v-model="selectedDate"
                         color="primary"
