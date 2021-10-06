@@ -181,7 +181,7 @@ app.post('/delOrderList', (req, res) => {
     console.log('delOrderList', req.body);
     var order = req.body
     if (!order.seq) order.seq = 0;
-
+    console.log('order.seq', order.seq);
     db.delData('test', 'delOrderList', order)
         .then(data => {
             console.log(data);

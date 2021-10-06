@@ -381,11 +381,8 @@ export default {
         //     var order = _this.orderList.splice(idx,1);
         //     _this.delOrderList(order[0]);
         // }
-        var idx = _this.orderList.findIndex(data=>{
-            return data.no == _this.selectedItem.no    
-        });
-        var order = _this.orderList.splice(idx,1);
-        _this.delOrderList(order[0]);
+        
+        _this.delOrderList(_this.selectedItem);
         
     },
     saveOrderList(){
@@ -414,6 +411,7 @@ export default {
         .catch(()=>{})
         .then(() =>{
             this.initMenu();
+            this.loadOrderList();
         });
     },
     loadOrderList(){
