@@ -1,7 +1,6 @@
 module.exports = (app, winston) => {
     const options = {
         maxHttpBufferSize: 1e8,
-        path: '/msg/',
         cors: {
             origin: '*',
         },
@@ -9,7 +8,6 @@ module.exports = (app, winston) => {
     }; //1e6: 1MB
     const server = require('http').createServer(app);
     const io = require('socket.io')(server, options);
-    const cookie = require('cookie');
     server.listen(4000);
 
     var userList = [];
@@ -40,7 +38,9 @@ module.exports = (app, winston) => {
                 }
             }
         });
-
+        socket.on('tossInit', (data) => {
+            socket.broadcast.emit('receiveInit', data);
+        })
         winston.info(`socket.io connected`);
     });
     return io;

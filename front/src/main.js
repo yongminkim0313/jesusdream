@@ -12,9 +12,7 @@ import VueMoment from "vue-moment";
 
 Vue.config.productionTip = false
 
-const socket = io(process.env.VUE_APP_SOCKET_URL, {
-    path: "/msg/",
-});
+const socket = io(process.env.VUE_APP_SOCKET_URL);
 
 Vue.prototype.$socket = socket;
 

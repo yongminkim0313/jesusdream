@@ -301,6 +301,11 @@ export default {
   created() {
       this.loadOrderList();
       this.getOrderDate();
+      this.$socket.on('receiveInit',(data)=>{
+          console.log(data)
+          this.loadOrderList();
+            this.getOrderDate();
+      });
   },
   computed:{
       summaryMenu(){
@@ -331,8 +336,6 @@ export default {
                 saved: false,
                 amt:this.calcurateAmt(summary)
             });
-            
-            this.initMenu();
             this.no++;
             this.saveOrderList();
         }
@@ -343,6 +346,7 @@ export default {
         }
         this.selectedItem={};
         this.getOrderDate();
+        this.$socket.emit('tossInit',{});
     },
     plusItemCnt(item){
         item.cnt++;
