@@ -77,25 +77,35 @@
                 
             </v-card>
             <v-card class="mt-2" height="300px">
-                <v-list>
-                    <v-subheader>지난내역</v-subheader>
-                    <v-list-item-group
-                        v-model="selectedDate"
-                        color="primary"
-                    >
-                        <v-list-item
-                        v-for="(item, index) in orderDateList"
-                        :key="index"
-                        @click="historyList(item)"
+                <v-card> 
+                    <v-list>
+                        <v-subheader>지난내역</v-subheader>
+                        <v-list-item-group
+                            v-model="selectedDate"
+                            color="primary"
                         >
-                            <v-list-item-content class="flex-nowrap">
-                                <v-list-item-title>{{ item._id }}</v-list-item-title>
-                                <v-list-item-subtitle>{{ item.count }}개</v-list-item-subtitle>
-                                <v-list-item-subtitle> {{ item.totalAmt | makeComma }}</v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list-item-group>
-                </v-list>
+                            <v-list-item
+                            v-for="(item, index) in orderDateList"
+                            :key="index"
+                            @click="historyList(item)"
+                            >
+                                <v-list-item-content class="flex-nowrap">
+                                    <v-list-item-title>{{ item._id }}</v-list-item-title>
+                                    <v-list-item-subtitle>{{ item.count }}개</v-list-item-subtitle>
+                                    <v-list-item-subtitle> {{ item.totalAmt | makeComma }}</v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list-item-group>
+                    </v-list>
+                </v-card>
+                <v-btn
+                    class="ma-2"
+                    text
+                    icon
+                    color="red lighten-2"
+                >
+                    <v-icon>{{ icon.mdiCog }}</v-icon>
+                </v-btn>
             </v-card>
         </v-col>
 
@@ -226,11 +236,15 @@
 
 </template>
 <script>
+import {
+    mdiCog,
+  } from '@mdi/js'
 
 export default {
   components: {
   },
   data: () => ({
+        icon:{mdiCog:mdiCog},
         no: 1,
         orderList:[],
         selected:[],
@@ -240,38 +254,7 @@ export default {
         dialog: false,
         historyOrderList: [],
         historyMain: {},
-        menuList:[
-            { title: '아메리카노'
-                , src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', cnt: 0 
-                , color:'teal--text text--darken-4'
-                , chipColor: 'teal'
-                , amt: 2000
-            },
-            { title: '초코라떼'
-                , src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', cnt: 0 
-                , color:'light-blue--text text--darken-4'
-                , chipColor: 'blue'
-                , amt: 3000
-            },
-            { title: '주꿈라떼'
-                , src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', cnt: 0 
-                , color:'red--text text--darken-4'
-                , chipColor: 'red'
-                , amt: 3000
-            },
-            { title: '선교비500'
-                , src: 'http://image.kmib.co.kr/online_image/2018/0807/201808070000_23110923989914_1.jpg', cnt: 0 
-                , color:'red--text text--darken-4'
-                , chipColor: 'red'
-                , amt: 500
-            },
-            { title: '선교비1000'
-                , src: 'http://image.kmib.co.kr/online_image/2018/0807/201808070000_23110923989914_1.jpg', cnt: 0 
-                , color:'red--text text--darken-4'
-                , chipColor: 'red'
-                , amt: 1000
-            },
-        ],
+        menuList:[],
         headers: [
           {
             text: 'no',
@@ -299,6 +282,7 @@ export default {
         color: ['red','green','blue','yellow','purple','orange']
     }),
   created() {
+      this.loadMenuList();
       this.loadOrderList();
       this.getOrderDate();
       this.$socket.on('receiveInit',(data)=>{
@@ -460,6 +444,12 @@ export default {
             sumAmt += item.amt*item.cnt;
         }
         return sumAmt;
+    },
+    loadMenuList(){
+        this.axios.post('/loadMenuList',{})
+        .then( result =>{
+            this.menuList = result.data;
+        })
     }
   }
  };

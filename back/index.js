@@ -260,3 +260,14 @@ app.post('/getOrderDate', (req, res) => {
     //     }
     // );
 });
+
+app.post('/loadMenuList', (req, res) => {
+    db.getList('test', 'loadMenuList', {})
+        .then(data => {
+            for (var item of data) {
+                item.chipColor = item.chip_color;
+                item.cnt = 0;
+            }
+            res.json(data);
+        })
+})

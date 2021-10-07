@@ -68,4 +68,7 @@ where seq = #{seq}
 <select id='countOrder'>
 select count(*) as cnt from cafe_order where seq = #{seq} 
 </select>
+<select id="loadMenuList">
+SELECT menu_no, title, src, color, chip_color, amt FROM menu_list
+</select>
 </mapper>
