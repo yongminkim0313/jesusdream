@@ -250,7 +250,7 @@
           :key="item.menu_no"
           link
         >
-          <v-list-item-avatar>
+          <v-list-item-avatar size=130>
             <v-img :src="item.src"></v-img>
           </v-list-item-avatar>
 
