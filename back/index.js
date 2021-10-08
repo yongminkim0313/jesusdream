@@ -271,3 +271,25 @@ app.post('/loadMenuList', (req, res) => {
             res.json(data);
         })
 })
+app.post('/saveMenuList', (req, res) => {
+    var reqMenuList = req.body;
+    db.getList('test', 'loadMenuList', {})
+        .then(data => {
+            for (var item of data) {
+                var s = reqMenuList.find(data => {
+                    return data.menu_no == item.menu_no
+                });
+                if (s.src != item.src || s.amt != item.amt || s.title != item.title) {
+                    console.log('deferent::::', s, item);
+                    db.setData('test', 'saveMenuList', s)
+                        .then(data => {
+                            console.log(data);
+                        })
+                }
+            }
+        })
+        .catch()
+        .then(() => {
+            res.json({ result: 'success' })
+        })
+})

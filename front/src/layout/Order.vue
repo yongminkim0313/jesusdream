@@ -103,6 +103,7 @@
                     text
                     icon
                     color="red lighten-2"
+                    @click="openDrawer()"
                 >
                     <v-icon>{{ icon.mdiCog }}</v-icon>
                 </v-btn>
@@ -123,7 +124,7 @@
                 <v-row dense>
                     <v-col
                         v-for="item in menuList"
-                        :key="item.title"
+                        :key="item.menu_no"
                         lg=4
                         xl=4
                         md=4
@@ -232,6 +233,66 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+
+
+    <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      bottom
+      width="700px"
+    >
+      <v-list three-line>
+        <v-btn color="gray" class="ma-2" @click="drawer= false">닫기</v-btn>
+        <v-btn color="success" class="ma-2" @click="saveMenuList()">저장</v-btn>
+      <template v-for="item in menuList">
+        <v-list-item
+          :key="item.menu_no"
+          link
+        >
+          <v-list-item-avatar>
+            <v-img :src="item.src"></v-img>
+          </v-list-item-avatar>
+
+          <v-list-item-content>
+              <v-container>
+                <v-row>
+                    <v-col col=12>
+                        <v-list-item-title>
+                            <v-text-field
+                                v-model="item.title"
+                                label="title"
+                                required
+                            ></v-text-field>
+                        </v-list-item-title>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col col=6>
+                    <v-list-item-subtitle>
+                        <v-text-field
+                            v-model="item.src"
+                            label="src"
+                            required
+                        ></v-text-field>
+                    </v-list-item-subtitle>
+                    </v-col>
+                    <v-col col=6>
+                    <v-list-item-subtitle>
+                        <v-text-field
+                            v-model="item.amt"
+                            label="가격"
+                            required
+                        ></v-text-field>
+                    </v-list-item-subtitle>
+                    </v-col>
+                </v-row>
+              </v-container>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
+    </v-list>
+    </v-navigation-drawer>
 </v-container>
 
 </template>
@@ -244,6 +305,7 @@ export default {
   components: {
   },
   data: () => ({
+        drawer: false,
         icon:{mdiCog:mdiCog},
         no: 1,
         orderList:[],
@@ -279,7 +341,8 @@ export default {
           { text: '주문내역', value: 'orderSummary' },
           { text: '금액', value: 'amt' , align: 'right'},
         ],   
-        color: ['red','green','blue','yellow','purple','orange']
+        color: ['red','green','blue','yellow','purple','orange'],
+        
     }),
   created() {
       this.loadMenuList();
@@ -449,6 +512,19 @@ export default {
         this.axios.post('/loadMenuList',{})
         .then( result =>{
             this.menuList = result.data;
+        })
+    },
+    openDrawer(){
+        this.drawer= true;
+    },
+    saveMenuList(){
+        var _this = this;
+        this.axios.post('/saveMenuList',this.menuList)
+        .then(data=>{
+            console.log(data)
+            if(data.data.result=='success')_this.$awn.info('저장되었습니다.');
+
+            _this.drawer= false;
         })
     }
   }
