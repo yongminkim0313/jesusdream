@@ -42,7 +42,7 @@
             item-key="name"
             class="elevation-7 pa-2"
         >
-        <template v-slot:item.seq="{ item }">
+        <template v-slot:[`item.seq`]="{ item }">
         <v-btn
           elevation="2"
           @click="cancleOrder(item);"
@@ -50,21 +50,21 @@
           삭제
         </v-btn>
         </template>
-        <template v-slot:item.orderDate="{ item }">
+        <template v-slot:[`item.orderDate`]="{ item }">
         <v-btn
           elevation="2"
         >
           {{diffTime(item.orderDate)}}
         </v-btn>
         </template>
-        <template v-slot:item.totalPrice="{ item }">
+        <template v-slot:[`item.totalPrice`]="{ item }">
         <v-btn
           elevation="2"
         >
           {{item.totalPrice | makeComma }}
         </v-btn>
         </template>
-        <template v-slot:item.progress="{ item }">
+        <template v-slot:[`item.progress`]="{ item }">
         <v-btn
           elevation="2"
           @click="sendMsgUser(item);"
@@ -72,7 +72,7 @@
           메세지
         </v-btn>
         </template>
-        <template v-slot:item.orderContents="{ item }">
+        <template v-slot:[`item.orderContents`]="{ item }">
         <v-chip 
           v-for="contents in parseContents(item.orderContents)"
           :key="contents.cntc"
