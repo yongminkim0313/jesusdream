@@ -237,8 +237,8 @@
 
 
     <v-navigation-drawer
+      app
       v-model="drawer"
-      absolute
       bottom
       width="700px"
     >
