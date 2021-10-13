@@ -293,18 +293,27 @@
       </template>
     </v-list>
     </v-navigation-drawer>
+
+    <line-chart
+      v-if="loaded"
+      :chartdata="datacollection"
+      :options="options"/>
+    <button @click="fillData()">Randomize</button>
 </v-container>
 
 </template>
 <script>
+import LineChart from '../components/Chart.vue'
+
 import {
     mdiCog,
   } from '@mdi/js'
 
 export default {
-  components: {
-  },
+  components: {LineChart  },
   data: () => ({
+        loaded: false,
+        datacollection: null,
         drawer: false,
         icon:{mdiCog:mdiCog},
         no: 1,
@@ -354,6 +363,9 @@ export default {
             this.getOrderDate();
       });
   },
+  mounted () {
+      this.fillData()
+    },
   computed:{
       summaryMenu(){
           return this.menuList.filter(menu => menu.cnt > 0);
@@ -363,6 +375,26 @@ export default {
       }
   },
   methods:{
+    fillData () {
+        this.datacollection = {
+          labels: [this.getRandomInt(), this.getRandomInt()],
+          datasets: [
+            {
+              label: 'Data One',
+              backgroundColor: '#f87979',
+              data: [this.getRandomInt(), this.getRandomInt()]
+            }, {
+              label: 'Data One',
+              backgroundColor: '#f87979',
+              data: [this.getRandomInt(), this.getRandomInt()]
+            }
+          ]
+        }
+        console.log(this.datacollection);
+    },
+    getRandomInt () {
+        return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+    },
     rowClick(data){
         var _this = this;
         _this.initMenu();
