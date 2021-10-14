@@ -189,6 +189,7 @@
         </v-card-title>
 
         <v-card-text class="mt-2">
+        
             <v-data-table
                     dense
                     light
@@ -217,10 +218,14 @@
                         {{item.amt | makeComma}}
                     </template>
                 </v-data-table>
+
+                <div class="small">
+                    <doughnut-chart :chart-data="datacollection"></doughnut-chart>
+                </div>
         </v-card-text>
         <v-card-subtitle class="d-flex justify-end">total:  {{historyMain.totalAmt | makeComma}}</v-card-subtitle>
+        
         <v-divider></v-divider>
-
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -293,26 +298,21 @@
       </template>
     </v-list>
     </v-navigation-drawer>
-
-    <line-chart
-      v-if="loaded"
-      :chartdata="datacollection"
-      :options="options"/>
-    <button @click="fillData()">Randomize</button>
+    
 </v-container>
 
 </template>
 <script>
-import LineChart from '../components/Chart.vue'
+
+import DoughnutChart from '../assets/Chart';
 
 import {
     mdiCog,
   } from '@mdi/js'
 
 export default {
-  components: {LineChart  },
+  components: {DoughnutChart  },
   data: () => ({
-        loaded: false,
         datacollection: null,
         drawer: false,
         icon:{mdiCog:mdiCog},
@@ -353,6 +353,9 @@ export default {
         color: ['red','green','blue','yellow','purple','orange'],
         
     }),
+    mounted () {
+      this.fillData()
+    },
   created() {
       this.loadMenuList();
       this.loadOrderList();
@@ -363,9 +366,6 @@ export default {
             this.getOrderDate();
       });
   },
-  mounted () {
-      this.fillData()
-    },
   computed:{
       summaryMenu(){
           return this.menuList.filter(menu => menu.cnt > 0);
@@ -376,24 +376,7 @@ export default {
   },
   methods:{
     fillData () {
-        this.datacollection = {
-          labels: [this.getRandomInt(), this.getRandomInt()],
-          datasets: [
-            {
-              label: 'Data One',
-              backgroundColor: '#f87979',
-              data: [this.getRandomInt(), this.getRandomInt()]
-            }, {
-              label: 'Data One',
-              backgroundColor: '#f87979',
-              data: [this.getRandomInt(), this.getRandomInt()]
-            }
-          ]
-        }
-        console.log(this.datacollection);
-    },
-    getRandomInt () {
-        return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+        this.datacollection = this.makeChartData()
     },
     rowClick(data){
         var _this = this;
@@ -531,6 +514,7 @@ export default {
         .catch(()=>{})
         .then(() =>{
             this.dialog = true;
+            this.fillData();
         });
     },
     calcurateAmt(itemList){
@@ -558,8 +542,26 @@ export default {
 
             _this.drawer= false;
         })
+    },
+    makeChartData(){
+        var result = {};
+        var tempData = {labels:[],datasets:[{data:[], backgroundColor:[]}]};
+        for(var list of this.historyOrderList){
+            for(var order of list.orderSummary){
+            var obj = result[order.title]
+            if(!obj) {result[order.title] = {cnt: order.cnt, color : order.chip_color}}
+            else{result[order.title].cnt += order.cnt }
+            }
+        }
+        
+        for(var title in result){
+            tempData['labels'].push(title);
+            tempData['datasets'][0]['backgroundColor'].push(result[title].color);
+            tempData['datasets'][0]['data'].push(result[title].cnt);
+        }
+        console.log(tempData);
+        return tempData;
     }
   }
  };
 </script>
-
