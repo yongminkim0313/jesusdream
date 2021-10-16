@@ -460,6 +460,7 @@ export default {
             .catch(()=>{})
             .then(() =>{
                 this.initMenu();
+                this.loadOrderList();
             });
         }else{
             this.initMenu();
