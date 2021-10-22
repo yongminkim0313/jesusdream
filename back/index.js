@@ -271,6 +271,23 @@ app.post('/loadMenuList', (req, res) => {
             res.json(data);
         })
 })
+
+app.post('/loadMenuListType', (req, res) => {
+    db.getList('test', 'loadMenuList', {})
+        .then(data => {
+            var type = {};
+            for (var item of data) {
+                if (type[item.menu_type]) {
+                    type[item.menu_type].push(item);
+                } else {
+                    type[item.menu_type] = [item];
+                }
+                item.cnt = 0;
+            }
+            res.json(type);
+        })
+})
+
 app.post('/saveMenuList', (req, res) => {
     var reqMenuList = req.body;
     db.getList('test', 'loadMenuList', {})

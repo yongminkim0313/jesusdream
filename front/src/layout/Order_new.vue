@@ -4,7 +4,7 @@
         no-gutters
     >
         <v-col
-            sm=6
+            sm=4
             md=4
             lg=4
             xl=4
@@ -105,75 +105,103 @@
                 >
                     <v-icon>{{ icon.mdiCog }}</v-icon>
                 </v-btn>
-                <router-link to="/new">Go to New</router-link>
+                <router-link to="/">Go to Original</router-link>
             </v-card>
         </v-col>
 
-
-
-
         <v-col
-            sm=6
+            sm=8
             md=8
             lg=8
             xl=8
         >
-            <v-container fluid>
-                <v-fade-transition mode="out-in">
+            
+                <v-card
+                    class="ma-3"
+                >
+                <v-container fluid>
                 <v-row dense>
                     <v-col
-                        v-for="item in menuList"
-                        :key="item.menu_no"
-                        lg=4
-                        xl=4
-                        md=4
-                        sm=6
+                        cols="5"
                     >
-                        <v-card>
-                            <v-card-title class="light-green lighten-5 text-center pa-1 ma-0"
-                                @click="plusItemCnt(item)"
-                            >
-                                <strong :class="item.color+' text-truncate text-sm-overline text-md-h5'">{{item.title}}</strong>
-                            </v-card-title>
+                        <v-card 
+                            elevation="0"
+                        >
+                        <v-card-title
+                            class="light-green--text text--darken-1 text-md-h2 text-sm-h4"
+                        >
+                            <p class="mx-auto">주꿈카페</p>
+                        </v-card-title>
+                        <v-card-subtitle class="d-flex flex-column align-end py-10 ma-auto light-green--text text--light-1 text-md-h4 text-sm-body-1">
+                            <p class="mx-auto mt-2">주꿈카페의 </p>
+                            <p class="mx-auto mt-2">모든 수익금은 </p>
+                            <p class="mx-auto mt-2">추후에 후원으로 </p>
+                            <p class="mx-auto mt-2">사용됩니다.</p>
+                        </v-card-subtitle>
+                        <v-card-text>
                             <v-img
-                                class="align-start rounded-lg"
-                                :src="item.src"
-                                aspect-ratio="1.7"
-                                @click="plusItemCnt(item)"
-                                elevation="2"
-                            >
-                                <v-card-text class="text-h4">
-                                    <v-scroll-x-transition>
-                                    <strong :class="item.color">{{item.amt | makeComma}}</strong>
-                                    </v-scroll-x-transition>
-                                </v-card-text>
-                            </v-img>
-                            <v-card class="d-flex justify-center"> 
-                            <v-btn
-                                class="ma-1"
-                                color="black lighten-2"
-                                icon
-                                large
-                                @click="plusItemCnt(item)"
-                            >
-                                <v-icon>mdi-plus</v-icon>
-                            </v-btn>
-                            <strong class="ma-3">{{item.cnt}}</strong>
-                            <v-btn
-                                class="ma-1"
-                                color="black lighten-2"
-                                icon
-                                large
-                                @click="minusItemCnt(item)"
-                            >
-                                <v-icon>mdi-minus</v-icon>
-                            </v-btn>
-                            </v-card>
+                                width="200"
+                                 class="mx-auto"
+                                src="@/assets/menu_footer.jpg"
+                            ></v-img>
+                        </v-card-text>
                         </v-card>
                     </v-col>
+
+                    <v-col
+                        cols="7"
+                    >
+                        <template v-for="(items,menuName) in menuList">
+                            <v-card elevation="0" width="100%" :key="menuName">
+                                <v-card-title class="light-green--text text--darken-1 line pa-2 ma-0">
+                                    <h3 class="mx-auto ">{{menuName}}</h3>
+                                </v-card-title>
+                                <v-card-text class="pa-0">
+                                    <v-container class="py-1">
+                                        <template v-for="item in items">
+                                        <v-row :key="item.menu_no" class="d-flex" dense>
+                                            <v-col sm=2 md=2>
+                                                <v-btn icon  
+                                                    fab
+                                                    elevation="4"
+                                                    v-if="item.cnt!=0"
+                                                    @click="minusItemCnt(item);"
+                                                    x-small
+                                                >
+                                                    <v-icon dark>
+                                                        mdi-minus
+                                                    </v-icon>
+                                                </v-btn>
+                                            </v-col>
+                                            <v-col sm=10 md=10 class="pa-0">
+                                                <v-btn 
+                                                    class="bg pa-0 d-flex"
+                                                    depressed
+                                                    block
+                                                    @click="plusItemCnt(item);"
+                                                >
+                                                <v-badge
+                                                    left
+                                                    color="green"
+                                                    :content="item.cnt"
+                                                    v-if="item.cnt!=0"
+                                                >
+                                                </v-badge>
+                                                <h3 class="hr-sect text-md-h6 text-sm-body-1 my-0">{{item.title}}</h3>
+                                                <h3 class="text-md-h6 text-sm-body-1 my-0">{{item.amt | makeComma}}</h3>
+                                                </v-btn>
+                                            </v-col>
+                                        </v-row>
+                                        </template>
+                                    </v-container>
+                                </v-card-text>
+                            </v-card>
+                        </template>
+                    </v-col>
                 </v-row>
-                </v-fade-transition>
-            </v-container>
+                </v-container>
+            </v-card>
+            
         </v-col>
     </v-row>
 
@@ -237,66 +265,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-
-
-    <v-navigation-drawer
-      app
-      v-model="drawer"
-      bottom
-      width="700px"
-    >
-      <v-list three-line>
-        <v-btn color="gray" class="ma-2" @click="drawer= false">닫기</v-btn>
-        <v-btn color="success" class="ma-2" @click="saveMenuList()">저장</v-btn>
-      <template v-for="item in menuList">
-        <v-list-item
-          :key="item.menu_no"
-          link
-        >
-          <v-list-item-avatar size=130>
-            <v-img :src="item.src"></v-img>
-          </v-list-item-avatar>
-
-          <v-list-item-content>
-              <v-container>
-                <v-row>
-                    <v-col col=12>
-                        <v-list-item-title>
-                            <v-text-field
-                                v-model="item.title"
-                                label="title"
-                                required
-                            ></v-text-field>
-                        </v-list-item-title>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col col=6>
-                    <v-list-item-subtitle>
-                        <v-text-field
-                            v-model="item.src"
-                            label="src"
-                            required
-                        ></v-text-field>
-                    </v-list-item-subtitle>
-                    </v-col>
-                    <v-col col=6>
-                    <v-list-item-subtitle>
-                        <v-text-field
-                            v-model="item.amt"
-                            label="가격"
-                            required
-                        ></v-text-field>
-                    </v-list-item-subtitle>
-                    </v-col>
-                </v-row>
-              </v-container>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
-    </v-list>
-    </v-navigation-drawer>
     
 </v-container>
 
@@ -324,7 +292,7 @@ export default {
         dialog: false,
         historyOrderList: [],
         historyMain: {},
-        menuList:[],
+        menuList:{},
         headers: [
           {
             text: 'no',
@@ -367,7 +335,15 @@ export default {
   },
   computed:{
       summaryMenu(){
-          return this.menuList.filter(menu => menu.cnt > 0);
+          var summaryList=[];
+          
+          for(var menuName in this.menuList){
+              for(var menu of this.menuList[menuName]){
+                  if(menu.cnt > 0 ) summaryList.push(menu);
+              }
+          }
+          
+          return summaryList;
       },
       updateMode(){
           return this.selectedItem.no != null;
@@ -380,13 +356,17 @@ export default {
     rowClick(data){
         var _this = this;
         _this.initMenu();
+        
         for(var order of data.orderSummary){
-            var menu = this.menuList.find(data =>{
-                return data.title == order.title
-            });
-            menu.cnt = order.cnt;
-            _this.selectedItem = data;
+            for(var menuName in this.menuList){
+                for(var menu of this.menuList[menuName]){
+                    if(menu.title == order.title ){
+                        menu.cnt = order.cnt;
+                    }
+                }
+            }
         }
+        _this.selectedItem = data;
     },
     addCustom(){
         if(this.summaryMenu.length > 0){
@@ -398,12 +378,15 @@ export default {
                 amt:this.calcurateAmt(summary)
             });
             this.no++;
+            console.log(this.orderList);
             this.saveOrderList();
         }
     },
     initMenu(){
-        for(var menu of this.menuList){
-            menu.cnt = 0;
+        for(var menuName in this.menuList){
+            for(var menu of this.menuList[menuName]){
+                menu.cnt = 0;
+            }
         }
         this.selectedItem={};
         this.getOrderDate();
@@ -525,7 +508,7 @@ export default {
         return sumAmt;
     },
     loadMenuList(){
-        this.axios.post('/loadMenuList',{})
+        this.axios.post('/loadMenuListType',{})
         .then( result =>{
             this.menuList = result.data;
         })
@@ -565,3 +548,59 @@ export default {
   }
  };
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200&display=swap');
+*{
+    font-family: 'Noto Serif KR', serif !important;
+}
+
+h1{
+    font-size: 4em;
+}
+
+.bg{
+    background-color: #fdf2d2 !important;
+}
+
+.theme--light.v-sheet{
+    background-color: #fdf2d2 !important;
+}
+
+.line {
+	display:flex;
+	flex-basis:100%;
+	align-items:center;
+	color:#7cb342;
+	font-size:14px;
+	margin:8px 0px;
+}
+.line::before,
+.line::after {
+	content:"";
+	flex-grow:1;
+	margin:0px 16px;
+	background:#7cb342;
+	height:1px;
+	font-size:0px;
+	line-height: 0px;
+}
+.hr-sect {
+	display: flex;
+	flex-basis: 100%;
+	align-items: center;
+	color: rgba(0, 0, 0, 0.7);
+	font-size: 20px;
+	margin: 8px 0px;
+}
+.hr-sect::after {
+	content: "";
+	flex-grow: 1;
+	background: rgb(0, 0, 0,0);
+	height: 1px;
+	font-size: 0px;
+	line-height: 0px;
+	margin: 0px 16px;
+    border-style: dotted;
+}
+</style>

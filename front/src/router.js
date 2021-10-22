@@ -6,6 +6,7 @@
 
  import manageIndex from "./layout/manage/manageIndex.vue";
  import Order from "./layout/Order.vue";
+ import OrderNew from "./layout/Order_new.vue";
 
  Vue.use(VueRouter);
  const route = [{
@@ -29,6 +30,14 @@
          components: {
              header: null,
              default: Order,
+             footer: null
+         }
+     },
+     {
+         path: "/new",
+         components: {
+             header: null,
+             default: OrderNew,
              footer: null
          }
      },

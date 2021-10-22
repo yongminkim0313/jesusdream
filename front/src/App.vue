@@ -1,24 +1,27 @@
 <template>
   <v-app>
     <v-main>
-      <router-view name="header"></router-view>
-      <router-view/>
-      <!-- <router-view name="footer"></router-view> -->
+      <router-link to="/">Go to Original</router-link>
+      <router-link to="/new">Go to New</router-link>
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </v-main>
   </v-app>
 </template>
-<script>
 
-export default {
-  name: 'App',
-  components: {
-  },
-  data: () => ({
-      orderCnt:0
-  }),
-  created(){}
-};
-</script>
 <style>
-@import '~vue-awesome-notifications/dist/styles/style.css'
+/* @import '~vue-awesome-notifications/dist/styles/style.css' */
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>
