@@ -4,7 +4,6 @@
         no-gutters
     >
         <v-col
-            sm=4
             md=4
             lg=4
             xl=4
@@ -96,21 +95,10 @@
                             </v-list-item>
                         </v-list-item-group>
                     </v-list>
-                <v-btn
-                    class="ma-2"
-                    text
-                    icon
-                    color="red lighten-2"
-                    @click="openDrawer()"
-                >
-                    <v-icon>{{ icon.mdiCog }}</v-icon>
-                </v-btn>
-                <router-link to="/">Go to Original</router-link>
             </v-card>
         </v-col>
 
         <v-col
-            sm=8
             md=8
             lg=8
             xl=8
@@ -123,6 +111,7 @@
                 <v-row dense>
                     <v-col
                         cols="5"
+                        class="d-none d-sm-flex"
                     >
                         <v-card 
                             elevation="0"
@@ -173,7 +162,7 @@
                                                     </v-icon>
                                                 </v-btn>
                                             </v-col>
-                                            <v-col sm=10 md=10 class="pa-0">
+                                            <v-col sm=10 md=10 class="pa-0 ">
                                                 <v-btn 
                                                     class="bg pa-0 d-flex"
                                                     depressed
@@ -590,7 +579,6 @@ h1{
 	flex-basis: 100%;
 	align-items: center;
 	color: rgba(0, 0, 0, 0.7);
-	font-size: 20px;
 	margin: 8px 0px;
 }
 .hr-sect::after {

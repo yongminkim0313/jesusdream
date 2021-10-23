@@ -105,7 +105,6 @@
                 >
                     <v-icon>{{ icon.mdiCog }}</v-icon>
                 </v-btn>
-                <router-link to="/new">Go to New</router-link>
             </v-card>
         </v-col>
 
