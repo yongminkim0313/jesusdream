@@ -4,7 +4,7 @@
         no-gutters
     >
         <v-col
-            md=4
+            md=3
             lg=4
             xl=4
             class="pt-3 pl-2"
@@ -99,7 +99,7 @@
         </v-col>
 
         <v-col
-            md=8
+            md=9
             lg=8
             xl=8
         >
@@ -111,7 +111,7 @@
                 <v-row dense>
                     <v-col
                         cols="5"
-                        class="d-none d-sm-flex"
+                        class="d-none d-sm-none d-md-block"
                     >
                         <v-card 
                             elevation="0"
@@ -590,5 +590,8 @@ h1{
 	line-height: 0px;
 	margin: 0px 16px;
     border-style: dotted;
+}
+.v-application .text-sm-body-1 .text-md-h6{
+    font-family: 'Noto Serif KR', serif !important;
 }
 </style>
