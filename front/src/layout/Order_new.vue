@@ -1,5 +1,8 @@
 <template>  
 <v-container fluid :class="updateMode?'green lighten-1':'grey lighten-5'">
+    <v-row>
+        <router-link to="/"><v-btn small class="ml-6 mb-2">기존화면</v-btn></router-link>
+    </v-row>
     <v-row 
         no-gutters
     >
@@ -306,7 +309,7 @@ export default {
           { text: '주문내역', value: 'orderSummary' },
           { text: '금액', value: 'amt' , align: 'right'},
         ],   
-        color: ['red','green','blue','yellow','purple','orange'],
+        colorList: ['red','green','blue','yellow','purple','orange','lime','pink', 'salmon', 'silver', 'tan', 'sienna'],
         
     }),
     mounted () {
@@ -525,73 +528,26 @@ export default {
             else{result[order.title].cnt += order.cnt }
             }
         }
-        
-        for(var title in result){
-            tempData['labels'].push(title);
-            tempData['datasets'][0]['backgroundColor'].push(result[title].color);
-            tempData['datasets'][0]['data'].push(result[title].cnt);
+
+        var sortable = [];
+        for (var t in result) {
+            result[t].title = t;
+            sortable.push(result[t]);
         }
-        console.log(tempData);
+        sortable.sort(function(a, b) {
+        return b['cnt'] - a['cnt'];
+        });
+
+        var su = 0;
+        for(var menuObj of sortable){
+            tempData['labels'].push(menuObj.title);
+            tempData['datasets'][0]['backgroundColor'].push(this.colorList[su]);
+            tempData['datasets'][0]['data'].push(menuObj.cnt);
+            su++;
+        }
         return tempData;
     },
   }
  };
 </script>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200&display=swap');
-*{
-    font-family: 'Noto Serif KR', serif !important;
-}
-
-h1{
-    font-size: 4em;
-}
-
-.bg{
-    background-color: #fdf2d2 !important;
-}
-
-.theme--light.v-sheet{
-    background-color: #fdf2d2 !important;
-}
-
-.line {
-	display:flex;
-	flex-basis:100%;
-	align-items:center;
-	color:#7cb342;
-	font-size:14px;
-	margin:8px 0px;
-}
-.line::before,
-.line::after {
-	content:"";
-	flex-grow:1;
-	margin:0px 16px;
-	background:#7cb342;
-	height:1px;
-	font-size:0px;
-	line-height: 0px;
-}
-.hr-sect {
-	display: flex;
-	flex-basis: 100%;
-	align-items: center;
-	color: rgba(0, 0, 0, 0.7);
-	margin: 8px 0px;
-}
-.hr-sect::after {
-	content: "";
-	flex-grow: 1;
-	background: rgb(0, 0, 0,0);
-	height: 1px;
-	font-size: 0px;
-	line-height: 0px;
-	margin: 0px 16px;
-    border-style: dotted;
-}
-.v-application .text-sm-body-1 .text-md-h6{
-    font-family: 'Noto Serif KR', serif !important;
-}
-</style>

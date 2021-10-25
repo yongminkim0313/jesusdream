@@ -1,5 +1,8 @@
 <template>  
 <v-container fluid :class="updateMode?'green lighten-1':'grey lighten-5'">
+    <v-row>
+        <router-link to="/new"><v-btn small class="ml-6 mb-2">새로운화면</v-btn></router-link>
+    </v-row>
     <v-row 
         no-gutters
     >
@@ -348,7 +351,7 @@ export default {
           { text: '주문내역', value: 'orderSummary' },
           { text: '금액', value: 'amt' , align: 'right'},
         ],   
-        color: ['red','green','blue','yellow','purple','orange'],
+        colorList: ['red','green','blue','yellow','purple','orange','lime','pink', 'salmon', 'silver', 'tan', 'sienna'],
         
     }),
     mounted () {
@@ -552,13 +555,23 @@ export default {
             else{result[order.title].cnt += order.cnt }
             }
         }
-        
-        for(var title in result){
-            tempData['labels'].push(title);
-            tempData['datasets'][0]['backgroundColor'].push(result[title].color);
-            tempData['datasets'][0]['data'].push(result[title].cnt);
+
+        var sortable = [];
+        for (var t in result) {
+            result[t].title = t;
+            sortable.push(result[t]);
         }
-        console.log(tempData);
+        sortable.sort(function(a, b) {
+        return b['cnt'] - a['cnt'];
+        });
+
+        var su = 0;
+        for(var menuObj of sortable){
+            tempData['labels'].push(menuObj.title);
+            tempData['datasets'][0]['backgroundColor'].push(this.colorList[su]);
+            tempData['datasets'][0]['data'].push(menuObj.cnt);
+            su++;
+        }
         return tempData;
     },
   }
