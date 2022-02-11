@@ -69,7 +69,7 @@ where seq = #{seq}
 select count(*) as cnt from cafe_order where seq = #{seq} 
 </select>
 <select id="loadMenuList">
-SELECT menu_no, title, src, color, chip_color, amt, menu_type FROM menu_list
+SELECT menu_no, title, src, color, chip_color, amt, menu_type, list_order FROM menu_list
 </select>
 <update id='saveMenuList'>
 UPDATE menu_list set

@@ -105,6 +105,7 @@
                 >
                     <v-icon>{{ icon.mdiCog }}</v-icon>
                 </v-btn>
+                <router-link to="/new">새로운화면</router-link>
             </v-card>
         </v-col>
 

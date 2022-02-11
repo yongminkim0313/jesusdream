@@ -1,9 +1,6 @@
 <template>
   <v-app>
     <v-main>
-      <router-link to="/">기존화면</router-link>
-      <br/>
-      <router-link to="/new">새로운화면</router-link>
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component" />

@@ -4,6 +4,7 @@
         no-gutters
     >
         <v-col
+            sm=4
             md=4
             lg=4
             xl=4
@@ -95,10 +96,12 @@
                             </v-list-item>
                         </v-list-item-group>
                     </v-list>
+                    <router-link to="/">기존화면</router-link>
             </v-card>
         </v-col>
 
         <v-col
+            sm=8
             md=8
             lg=8
             xl=8
@@ -110,14 +113,14 @@
                 <v-container fluid>
                 <v-row dense>
                     <v-col
-                        cols="5"
+                        cols="4"
                         class="d-none d-sm-flex"
                     >
                         <v-card 
                             elevation="0"
                         >
                         <v-card-title
-                            class="light-green--text text--darken-1 text-md-h2 text-sm-h4"
+                            class="light-green--text text--darken-1 text-md-h2 text-sm-h5"
                         >
                             <p class="mx-auto">주꿈카페</p>
                         </v-card-title>
@@ -138,7 +141,7 @@
                     </v-col>
 
                     <v-col
-                        cols="7"
+                        cols="8"
                     >
                         <template v-for="(items,menuName) in menuList">
                             <v-card elevation="0" width="100%" :key="menuName">
