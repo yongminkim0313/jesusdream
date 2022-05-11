@@ -1,7 +1,54 @@
+<style>
+details[open]{
+    background-color: #cdedfd;
+    background-image : linear-gradient(
+        319deg,
+        #cdedfd 0%,
+        #ffec82 37%,
+        #ffcfd2 100%
+    )
+}
+details[open] > summary::-webkit-details-marker {
+    transform: rotate3d(0, 0, 1, 180deg);
+}
+</style>
 <template>  
 <v-container fluid :class="updateMode?'green lighten-1':'grey lighten-5'">
     <v-row>
         <router-link to="/"><v-btn small class="ml-6 mb-2">기존화면</v-btn></router-link>
+        <details>
+            <summary >공단에서 테스트 해봅니다.</summary>
+            <ul>
+                <li>1번 김용민</li>
+                <li>2번 이승준</li>
+                <li>3번 박승훈</li>
+                <li>4번 이승현</li>
+            </ul>
+
+        </details>
+
+        <v-btn
+            @click="menu('post');"
+        >POST</v-btn>
+        <v-btn
+            @click="menu('get');"
+        >GET</v-btn>
+        <v-btn
+            @click="menu('put');"
+        >PUT</v-btn>
+        <v-btn
+            @click="menu('delete');"
+        >DELETE</v-btn>
+        <input type="month">
+        <meter min="0" max="10" low="2" high="6" optimum="4" value="10"></meter>
+        <input type="text" list="movie-list"/>
+        <datalist id="movie-list">
+            <option value="김용민"/>
+            <option value="박승훈"/>
+            <option value="이승현"/>
+            <option value="윤선영"/>
+        </datalist>
+
     </v-row>
     <v-row 
         no-gutters
@@ -343,6 +390,21 @@ export default {
       }
   },
   methods:{
+      menu(method){
+        switch(method){
+            case 'post':  this.axios.post('/menu',{}); break;
+            case 'get':  this.axios.post('/menu',{}); break;
+            case 'put':  this.axios.post('/menu',{}); break;
+            case 'delete':  this.axios.post('/menu',{}); break;
+        }
+        
+        
+        .then((data)=>{
+            console.log(data);
+        })
+        .catch(()=>{})
+        .then(() =>{});
+      },
     fillData () {
         this.datacollection = this.makeChartData()
     },
@@ -425,7 +487,7 @@ export default {
     saveOrderList(){
         var saveList = this.orderList.filter(item=>{return !item.saved})
         if(saveList.length > 0 ){
-            this.axios.post('/saveOrderList',saveList)
+            this.axios.post('/orders',saveList)
             .then((data)=>{
                 console.log(data);
                 for(var item of saveList){
