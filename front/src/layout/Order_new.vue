@@ -28,17 +28,26 @@ details[open] > summary::-webkit-details-marker {
         </details>
 
         <v-btn
-            @click="menu('post');"
+            @click="menuCommand('post');"
         >POST</v-btn>
         <v-btn
-            @click="menu('get');"
+            @click="menuCommand('get');"
         >GET</v-btn>
         <v-btn
-            @click="menu('put');"
+            @click="menuCommand('put');"
         >PUT</v-btn>
         <v-btn
-            @click="menu('delete');"
+            @click="menuCommand('delete');"
         >DELETE</v-btn>
+        <v-btn
+            class="ma-2"
+            text
+            icon
+            color="red lighten-2"
+            @click="openDrawer()"
+        >
+            <v-icon>{{ icon.mdiCog }}</v-icon>
+        </v-btn>
         <input type="month">
         <meter min="0" max="10" low="2" high="6" optimum="4" value="10"></meter>
         <input type="text" list="movie-list"/>
@@ -305,6 +314,66 @@ details[open] > summary::-webkit-details-marker {
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-navigation-drawer
+      app
+      v-model="drawer"
+      bottom
+      width="700px"
+    >
+      <v-list three-line>
+        <v-btn color="gray" class="ma-2" @click="drawer= false">닫기</v-btn>
+        <v-btn color="success" class="ma-2" @click="saveMenuList()">저장</v-btn>
+        <v-btn color="primary" class="ma-2" @click="menuCommand('add')">추가</v-btn>
+        
+      <template v-for="item in menuList">
+        <v-list-item
+          :key="item.menu_no"
+          link
+        >
+          <v-list-item-avatar size=130>
+            <v-img :src="item.src"></v-img>
+          </v-list-item-avatar>
+
+          <v-list-item-content>
+              <v-container>
+                <v-row>
+                    <v-col col=12>
+                        <v-list-item-title>
+                            <v-text-field
+                                v-model="item.title"
+                                label="title"
+                                required
+                            ></v-text-field>
+                        </v-list-item-title>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col col=6>
+                    <v-list-item-subtitle>
+                        <v-text-field
+                            v-model="item.src"
+                            label="src"
+                            required
+                        ></v-text-field>
+                    </v-list-item-subtitle>
+                    </v-col>
+                    <v-col col=6>
+                    <v-list-item-subtitle>
+                        <v-text-field
+                            v-model="item.amt"
+                            label="가격"
+                            required
+                        ></v-text-field>
+                    </v-list-item-subtitle>
+                    </v-col>
+                </v-row>
+              </v-container>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
+    </v-list>
+    </v-navigation-drawer>
     
 </v-container>
 
@@ -319,6 +388,9 @@ import {
 
 export default {
   components: {DoughnutChart  },
+  props:{
+
+  },
   data: () => ({
         datacollection: null,
         drawer: false,
@@ -332,7 +404,18 @@ export default {
         dialog: false,
         historyOrderList: [],
         historyMain: {},
-        menuList:{},
+        menuList: [],
+        menu : {
+            menu_no: 999,
+            title: '',
+            src: '',
+            color: '',
+            chip_color: '',
+            amt: 0,
+            list_order: 0,
+            menu_type: '',
+            saved: true
+        },
         headers: [
           {
             text: 'no',
@@ -390,21 +473,16 @@ export default {
       }
   },
   methods:{
-      menu(method){
+      menuCommand(method){
         switch(method){
-            case 'post':  this.axios.post('/menu',{}); break;
-            case 'get':  this.axios.post('/menu',{}); break;
-            case 'put':  this.axios.post('/menu',{}); break;
-            case 'delete':  this.axios.post('/menu',{}); break;
+            case 'post':  this.axios.post('/menu',{}).then((data)=>{console.log(data.data);}).catch(()=>{}); break;
+            case 'get':  this.axios.get('/menu',{}).then((data)=>{console.log(data.data);}).catch(()=>{}); break;
+            case 'put':  this.axios.put('/menu',{}).then((data)=>{console.log(data.data);}).catch(()=>{}); break;
+            case 'delete':  this.axios.delete('/menu',{}).then((data)=>{console.log(data.data);}).catch(()=>{}); break;
+            case 'add':  this.menuList.push(this.menu);  break;
         }
-        
-        
-        .then((data)=>{
-            console.log(data);
-        })
-        .catch(()=>{})
-        .then(() =>{});
       },
+
     fillData () {
         this.datacollection = this.makeChartData()
     },

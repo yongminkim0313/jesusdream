@@ -57,17 +57,17 @@ module.exports = (app, mongoose, winston) => {
     });
 
     app.get('/menu', (req, res) => {
-        console.log('post) menu select!');
+        console.log('get) menu select!');
         res.json({ result: 'success' });
     });
 
     app.put('/menu', (req, res) => {
-        console.log('post) menu update!');
+        console.log('put) menu update!');
         res.json({ result: 'success' });
     });
 
     app.delete('/menu', (req, res) => {
-        console.log('post) menu delete!');
+        console.log('delete) menu delete!');
         res.json({ result: 'success' });
     });
 
@@ -216,17 +216,18 @@ module.exports = (app, mongoose, winston) => {
     });
 
     app.post('/loadMenuList', (req, res) => {
-        // db.getList('test', 'loadMenuList', {})
-        //     .then(data => {
-        //         for (var item of data) {
-        //             item.chipColor = item.chip_color;
-        //             item.cnt = 0;
-        //         }
-        //         res.json(data);
-        //     })
+        Menu.find().sort({ menu_no: 'desc' }).exec(function(err, menuList) {
+            if (err) res.json({ result: -1 })
+            res.json(menuList);
+        });
     })
 
     app.post('/loadMenuListType', (req, res) => {
+        Menu.find().sort({ menu_no: 'desc' }).exec(function(err, menuList) {
+            if (err) res.json({ result: -1 })
+            res.json(menuList);
+        });
+
         // db.getList('test', 'loadMenuList', {})
         //     .then(data => {
         //         var type = {};

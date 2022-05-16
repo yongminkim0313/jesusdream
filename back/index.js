@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 
 const app = express();
 
-app.use(morgan('combined', { stream: winston.stream }));
+//app.use(morgan('combined', { stream: winston.stream }));
 app.use(require('cors')({ origin: true, credentials: true }));
 app.use(express.json());
 app.listen(process.env.SERVER_PORT, () => {
@@ -21,7 +21,7 @@ const io = require('./modules/socketConfig')(app, winston);
 require('./modules/mgdbOrder')(app, mongoose, winston);
 //const db = require('./modules/dbConnect');
 
-mongoose.connect('mongodb://localhost:27017/testdb', {
+mongoose.connect('mongodb+srv://kimyongmin1:qwer1234@cluster0.xm939.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
         useNewUrlParser: true
     }).then(() => {
         winston.info('mongoose connected!')
@@ -37,8 +37,8 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
-        mongoUrl: 'mongodb://localhost:27017/testdb',
-        dbName: "testdb",
+        mongoUrl: 'mongodb+srv://kimyongmin1:qwer1234@cluster0.xm939.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+        //dbName: "testdb",
         stringify: false,
     }),
     cookie: {
