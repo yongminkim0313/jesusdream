@@ -1,11 +1,8 @@
 <template>
   <v-card>
-      <v-row no-gutters>
-          <v-col>
-        <v-card>
-            <v-navigation-drawer
+<v-navigation-drawer
+            app
             permanent
-            fixed
             expand-on-hover
             >
             <v-list-item class="px-2">
@@ -33,7 +30,7 @@
                 </v-list-item>
             </v-list>
             </v-navigation-drawer>
-        </v-card>
+
         <v-data-table
             fixed-header
             dense
@@ -81,8 +78,12 @@
         </v-chip>
         </template>
         </v-data-table>
-        </v-col>
-      </v-row>
+        <v-btn
+          elevation="2"
+          @click="findOrderList();"
+        >
+          메세지
+        </v-btn>
   </v-card>
 </template>
 <script>
@@ -97,7 +98,6 @@ export default {
           { title: '완료내역', icon: 'mdi-account-group-outline' },
         ],
          headers: [
-           { text: '주문입니다.', value: null },
            { text: 'No', value: 'seq' },
            {
              text: '주문시간',
@@ -116,7 +116,7 @@ export default {
       }
     },
   created() {
-      this.findOrderList();
+      // this.findOrderList();
       var _this = this;
       this.$socket.on('order', (data)=>{
         console.log(data);
