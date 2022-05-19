@@ -46,9 +46,11 @@ export default {
        //console.log('user_info',this.$cookies.get("user_info"));
        var user = this.$cookies.get("user_info");
        //console.log(user.kakao_account.profile);
-       this.userInfo.nick = user.kakao_account.profile.nickname;
-       this.userInfo.thumb = user.kakao_account.profile.thumbnail_image_url;
-       this.userInfo.img = user.kakao_account.profile.profile_image_url;
+       if(user){
+         this.userInfo.nick = user.kakao_account.profile.nickname;
+         this.userInfo.thumb = user.kakao_account.profile.thumbnail_image_url;
+         this.userInfo.img = user.kakao_account.profile.profile_image_url;
+       }
     },
     methods: {
         login: ()=>{
