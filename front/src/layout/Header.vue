@@ -54,10 +54,10 @@ export default {
     },
     methods: {
         login: ()=>{
-            location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=be0d818c768f8e2198c97470fc7577c5&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code&scope=profile_nickname, profile_image, account_email, gender';
+            location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=be0d818c768f8e2198c97470fc7577c5&redirect_uri=http://175.115.82.2:3000/auth/kakao/callback&response_type=code&scope=profile_nickname, profile_image, account_email, gender';
         },
         logout: ()=>{
-             location.href ='http://localhost:3000/auth/kakao/logout';
+             location.href ='http://175.115.82.2:3000/auth/kakao/logout';
         }
     },
 
