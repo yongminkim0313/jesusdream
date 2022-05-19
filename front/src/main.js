@@ -27,6 +27,8 @@ Vue.use(VueAxios, Axios);
 Vue.use(VueAWN, {});
 Vue.use(VueMoment);
 Vue.use(VueCookies);
+Vue.prototype ? Vue.prototype.$cookies = this : Vue.config.globalProperties.$cookies = this;
+Vue.cookie = this;
 
 var eventBus = new Vue();
 Vue.prototype.$eventBus = eventBus;
