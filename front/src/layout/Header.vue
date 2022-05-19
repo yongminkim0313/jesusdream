@@ -57,6 +57,9 @@ export default {
             location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=be0d818c768f8e2198c97470fc7577c5&redirect_uri=http://175.115.82.2:3000/auth/kakao/callback&response_type=code&scope=profile_nickname, profile_image, account_email, gender';
         },
         logout: ()=>{
+            this.$cookies.remove("user_info");
+             this.$cookies.remove("access_token");
+             this.userInfo = {};
              location.href ='http://175.115.82.2:3000/auth/kakao/logout';
         }
     },
