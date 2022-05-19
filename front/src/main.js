@@ -8,7 +8,8 @@ import VueAxios from "vue-axios";
 import VueAWN from "vue-awesome-notifications";
 import VueMoment from "vue-moment";
 import VueCookies from 'vue-cookies';
-import { refreshToken } from './services';
+import { refreshToken } from './tokenServices';
+
 
 //import VueMoment from "vue-moment";
 
@@ -25,6 +26,7 @@ Axios.defaults.withCredentials = true;
 Vue.use(VueAxios, Axios);
 Vue.use(VueAWN, {});
 Vue.use(VueMoment);
+Vue.use(VueCookies);
 
 var eventBus = new Vue();
 Vue.prototype.$eventBus = eventBus;
@@ -32,32 +34,32 @@ Vue.prototype.$eventBus = eventBus;
 Vue.filter("makeComma", val => {
     return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 })
+router.beforeEach(async(to, from, next) => {
+    //console.log("to.path::::::::::::::::", to.path);
+    if (VueCookies.get('access_token') === null && VueCookies.get('refresh_token') !== null) {
+        await refreshToken();
+    }
 
+    if (to.matched.some(record => record.meta.unauthorized) || VueCookies.get('access_token')) {
+        return next();
+    }
 
+    if (to.path.indexOf('callback') > -1) {
+        return next();
+    }
+    alert('로그인 해주세요');
+    return next('/');
+});
 const vue = new Vue({
     router,
     vuetify,
     render: h => h(App)
-}).$mount('#app')
-
-router.beforeEach(async(to, from, next) => {
-
-    if (VueCookies.get('token') === null && VueCookies.get('refresh_token') !== null) {
-        await refreshToken();
-    }
-
-    if (to.matched.some(record => record.meta.unauthorized) || VueCookies.get('token')) {
-        return next();
-    }
-    vue.$awn.alert('로그인 해주세요');
-    //alert('로그인 해주세요');
-    return next('/');
-});
+}).$mount('#app');
 
 // Add a request interceptor
 Axios.interceptors.request.use(async function(config) {
     // Do something before request is sent
-    config.headers.token = VueCookies.get('token');
+    config.headers.access_token = VueCookies.get('access_token');
     config.headers.refresh_token = VueCookies.get('refresh_token');
 
     console.log(config);
@@ -75,15 +77,16 @@ Axios.interceptors.response.use(function(response) {
 }, async function(error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    console.log('에러일 경우', error.response.data);
+    console.log('에러', error.response.data);
     vue.$awn.alert(error.response.data.msg)
     const errorAPI = error.config;
-
     if (error.response.data.status === 401 && errorAPI.retry === undefined) {
         errorAPI.retry = true;
         console.log('토큰이 이상한 오류일 경우');
         await refreshToken();
         return await Axios(errorAPI);
     }
-    return Promise.reject(error);
+    //return Promise.reject(error);
 });
+
+require("vue-awesome-notifications/dist/styles/style.css");

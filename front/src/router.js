@@ -8,6 +8,7 @@
  import menuListEdit from "./layout/MenuListEdit.vue";
  import Main from "./layout/Main.vue";
  import Header from "./layout/Header.vue";
+ import Callback from "./layout/Callback.vue";
 
  Vue.use(VueRouter);
  const route = [{
@@ -45,13 +46,14 @@
              header: Header,
              default: menuListEdit
          }
+     },
+     {
+         path: "/callback",
+         components: {
+             header: Header,
+             default: Callback
+         }
      }
  ];
  const router = new VueRouter({ mode: 'history', routes: route });
- router.beforeEach(async(to, from, next) => {
-     //  window.confirm('할렐루야 ');
-     //  Vue.axios.get('/findOrderList', {})
-     //  console.log(to.matched);
-     return next();
- });
  export default router;

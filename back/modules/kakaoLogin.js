@@ -28,16 +28,12 @@ module.exports = (app, winston) => {
                     property_keys: `${process.env.property_keys}`
                 },
             });
-
-            winston.info('data::' + response2.data);
             req.session.userInfo = response2.data;
             req.session.access_token = `${access_token}`;
             console.log('req.session', req.session);
             req.session.save(function() {
-                res.redirect('http://localhost:8000/manage');
+                res.redirect('http://localhost:8000/callback');
             });
-
-
 
         } catch (err) {
             winston.error("Error >>" + err);
@@ -59,15 +55,10 @@ module.exports = (app, winston) => {
             req.session.destroy(function(err) {
                 if (err) throw err;
                 console.log('세션 삭제');
-                res.redirect('http://localhost:8000');
+                res.redirect('http://localhost:8000/');
             });
         } catch (err) {
             winston.error("Error >>" + err);
         }
     });
-
-    app.get('/info', (req, res) => {
-        console.log(req.session.userInfo);
-        res.send(req.session.userInfo)
-    })
 }

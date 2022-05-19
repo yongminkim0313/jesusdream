@@ -3,6 +3,7 @@
 <v-navigation-drawer
             app
             permanent
+            mini-variant
             expand-on-hover
             >
             <v-list-item class="px-2">

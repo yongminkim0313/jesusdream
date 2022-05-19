@@ -14,8 +14,6 @@ export default {
   data(){return {
   }},
   created() {
-    this.$awn.alert('로그인 해주세요');
-
   },
   methods : {
     btnClick: function(){

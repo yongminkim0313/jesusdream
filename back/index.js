@@ -50,8 +50,9 @@ app.use(session({
 
 app.use(function(req, res, next) {
     //인터셉터 역할 부여 
-    winston.info('req.url::' + req.url);
-    console.log(req.session);
+    // winston.info('req.url::' + req.url);
+    // console.log(req.session);
+    // console.log(req.header('access_token'));
 
     if (req.url.indexOf('/auth/kakao/callback') > -1) {
         next();
@@ -65,6 +66,12 @@ app.use(function(req, res, next) {
             res.json({ code: 401, msg: '접근권한 없음!!' });
         }
     }
+});
+app.post('/getAccessToken', (req, res) => {
+    res.json({
+        access_token: req.session.access_token,
+        user_info: req.session.userInfo
+    });
 });
 require('./modules/socketConfig')(app, winston);
 require('./modules/mgdbOrder')(app, mongoose, winston);
