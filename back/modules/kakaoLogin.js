@@ -32,7 +32,7 @@ module.exports = (app, winston) => {
             req.session.access_token = `${access_token}`;
             console.log('req.session', req.session);
             req.session.save(function() {
-                res.redirect('/callback');
+                res.redirect('http://175.115.82.2:8000/callback');
             });
 
         } catch (err) {
@@ -55,7 +55,7 @@ module.exports = (app, winston) => {
             req.session.destroy(function(err) {
                 if (err) throw err;
                 console.log('세션 삭제');
-                res.redirect('http://localhost:8000/');
+                res.redirect('http://175.115.82.2:8000/');
             });
         } catch (err) {
             winston.error("Error >>" + err);
