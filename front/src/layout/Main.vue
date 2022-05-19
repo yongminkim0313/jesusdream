@@ -14,8 +14,6 @@ export default {
   data(){return {
   }},
   created() {
-    this.$cookies.remove("user_info");
-             this.$cookies.remove("access_token");
   },
   methods : {
     btnClick: function(){
