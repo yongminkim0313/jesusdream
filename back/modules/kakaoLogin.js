@@ -32,7 +32,7 @@ module.exports = (app, winston) => {
             req.session.access_token = `${access_token}`;
             console.log('req.session', req.session);
             req.session.save(function() {
-                res.redirect('http://localhost:8000/callback');
+                res.redirect('/callback');
             });
 
         } catch (err) {
