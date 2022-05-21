@@ -30,9 +30,17 @@ module.exports = (app, winston) => {
             });
             req.session.userInfo = response2.data;
             req.session.access_token = `${access_token}`;
+            if('kimyongmin1@kakao.com' == req.session.userInfo.kakao_account.email){
+                req.session.userInfo.auth = 'admin';
+            }else{
+                req.session.userInfo.auth = 'user';
+            }
             console.log('req.session', req.session);
             req.session.save(function() {
-                res.redirect('http://175.115.82.2:8000/callback');
+                //res.status(200);
+                //res.json({msg:'success'});
+                //res.redirect('http://175.115.82.2:8000/callback');
+                res.redirect('http://175.115.82.2:8000/');
             });
 
         } catch (err) {
@@ -40,7 +48,7 @@ module.exports = (app, winston) => {
         }
     });
 
-    app.get('/auth/kakao/logout', async(req, res) => {
+    app.post('/auth/kakao/logout', async(req, res) => {
         const access_token = req.session.access_token;
         try {
             const response2 = await axios({
@@ -55,10 +63,11 @@ module.exports = (app, winston) => {
             req.session.destroy(function(err) {
                 if (err) throw err;
                 console.log('세션 삭제');
-                res.redirect('http://175.115.82.2:8000/');
+                res.status(200).json({msg:'success'});
             });
         } catch (err) {
             winston.error("Error >>" + err);
+            res.status(401).json({msg:err});
         }
     });
 }

@@ -19,7 +19,7 @@ app.use(require('cors')({
 }));
 
 app.listen(process.env.SERVER_PORT, () => {
-    winston.info(`start http://localhost:${process.env.SERVER_PORT}`);
+    winston.info(`start http://175.115.82.2:${process.env.SERVER_PORT}`);
 })
 
 mongoose.connect('mongodb+srv://kimyongmin1:qwer1234@cluster0.xm939.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
@@ -50,29 +50,33 @@ app.use(session({
 
 app.use(function(req, res, next) {
     //인터셉터 역할 부여 
-    // winston.info('req.url::' + req.url);
+    winston.info('req.url::' + req.url);
     // console.log(req.session);
     // console.log(req.header('access_token'));
 
     if (req.url.indexOf('/auth/kakao/callback') > -1) {
-        next();
+        return next();
+    }else if (req.url.indexOf('/getAccessToken') > -1) {
+        return next();
     } else {
         if (req.session && req.session.userInfo) {
-            next();
+            return next();
         } else {
             // res.redirect('http://localhost:8000');
             // winston.info('메인 페이지 이동');
             res.status(401);
-            res.json({ code: 401, msg: '접근권한 없음!!' });
+            return next();
         }
     }
 });
 app.post('/getAccessToken', (req, res) => {
     res.json({
         access_token: req.session.access_token,
-        user_info: req.session.userInfo
+        user_info: req.session.userInfo,
     });
 });
 require('./modules/socketConfig')(app, winston);
-require('./modules/mgdbOrder')(app, mongoose, winston);
+//require('./modules/mgdbOrder')(app, mongoose, winston);
+require('./modules/aplyService')(app, mongoose, winston);
 require('./modules/kakaoLogin')(app, winston);
+require('./modules/userService')(app, winston);

@@ -1,173 +1,123 @@
 <template>
-  <v-card>
-<v-navigation-drawer
-            app
-            permanent
-            mini-variant
-            expand-on-hover
-            >
-            <v-list-item class="px-2">
-                <v-list-item-avatar>
-                <v-img :src="require('../../assets/jesusdream.png')"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-title>주꿈</v-list-item-title>
-            </v-list-item>
+  <form>
+    <v-text-field
+      v-model="name"
+      :error-messages="nameErrors"
+      :counter="10"
+      label="Name"
+      required
+      @input="$v.name.$touch()"
+      @blur="$v.name.$touch()"
+    ></v-text-field>
+    <v-text-field
+      v-model="email"
+      :error-messages="emailErrors"
+      label="E-mail"
+      required
+      @input="$v.email.$touch()"
+      @blur="$v.email.$touch()"
+    ></v-text-field>
+    <v-select
+      v-model="select"
+      :items="items"
+      :error-messages="selectErrors"
+      label="Item"
+      required
+      @change="$v.select.$touch()"
+      @blur="$v.select.$touch()"
+    ></v-select>
+    <v-checkbox
+      v-model="checkbox"
+      :error-messages="checkboxErrors"
+      label="Do you agree?"
+      required
+      @change="$v.checkbox.$touch()"
+      @blur="$v.checkbox.$touch()"
+    ></v-checkbox>
 
-            <v-divider></v-divider>
-
-            <v-list dense>
-                <v-list-item
-                v-for="item in items"
-                :key="item.title"
-                link
-                >
-                <v-list-item-icon>
-                    <v-icon>{{ item.icon }}</v-icon>
-                </v-list-item-icon>
-
-                <v-list-item-content>
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
-                </v-list-item>
-            </v-list>
-            </v-navigation-drawer>
-
-        <v-data-table
-            fixed-header
-            dense
-            :headers="headers"
-            :items="orderList"
-            item-key="name"
-            class="elevation-7 pa-2"
-        >
-        <template v-slot:[`item.seq`]="{ item }">
-        <v-btn
-          elevation="2"
-          @click="cancleOrder(item);"
-        >
-          삭제
-        </v-btn>
-        </template>
-        <template v-slot:[`item.orderDate`]="{ item }">
-        <v-btn
-          elevation="2"
-        >
-          {{diffTime(item.orderDate)}}
-        </v-btn>
-        </template>
-        <template v-slot:[`item.totalPrice`]="{ item }">
-        <v-btn
-          elevation="2"
-        >
-          {{item.totalPrice | makeComma }}
-        </v-btn>
-        </template>
-        <template v-slot:[`item.progress`]="{ item }">
-        <v-btn
-          elevation="2"
-          @click="sendMsgUser(item);"
-        >
-          메세지
-        </v-btn>
-        </template>
-        <template v-slot:[`item.orderContents`]="{ item }">
-        <v-chip 
-          v-for="contents in parseContents(item.orderContents)"
-          :key="contents.cntc"
-        >
-            {{contents.cntc +':'+contents.cnt}}
-        </v-chip>
-        </template>
-        </v-data-table>
-        <v-btn
-          elevation="2"
-          @click="findOrderList();"
-        >
-          메세지
-        </v-btn>
-  </v-card>
+    <v-btn
+      class="mr-4"
+      @click="submit"
+    >
+      submit
+    </v-btn>
+    <v-btn @click="clear">
+      clear
+    </v-btn>
+  </form>
 </template>
 <script>
-export default {
-  components: {
-  },
-  data(){
-      return {
-        orderList: [],
-        items: [
-          { title: '주문접수내역', icon: 'mdi-home-city' },
-          { title: '완료내역', icon: 'mdi-account-group-outline' },
-        ],
-         headers: [
-           { text: 'No', value: 'seq' },
-           {
-             text: '주문시간',
-          align: 'center',
-          sortable: false,
-          value: 'orderDate',
+  import { validationMixin } from 'vuelidate'
+  import { required, maxLength, email } from 'vuelidate/lib/validators'
+
+  export default {
+    mixins: [validationMixin],
+
+    validations: {
+      name: { required, maxLength: maxLength(10) },
+      email: { required, email },
+      select: { required },
+      checkbox: {
+        checked (val) {
+          return val
         },
-        { text: '주문자', value: 'customerName' },
-        { text: '주문내용', value: 'orderContents' },
-        { text: '총금액', value: 'totalPrice' },
-        { text: '진행상황', value: 'progress' },
-        { text: '매니져', value: 'managerName' },
-        { text: 'socketId', value: 'socketId' },
+      },
+    },
+
+    data: () => ({
+      name: '',
+      email: '',
+      select: null,
+      items: [
+        'Item 1',
+        'Item 2',
+        'Item 3',
+        'Item 4',
       ],
-      desserts:[]
-      }
+      checkbox: false,
+    }),
+
+    computed: {
+      checkboxErrors () {
+        const errors = []
+        if (!this.$v.checkbox.$dirty) return errors
+        !this.$v.checkbox.checked && errors.push('You must agree to continue!')
+        return errors
+      },
+      selectErrors () {
+        const errors = []
+        if (!this.$v.select.$dirty) return errors
+        !this.$v.select.required && errors.push('Item is required')
+        return errors
+      },
+      nameErrors () {
+        const errors = []
+        if (!this.$v.name.$dirty) return errors
+        !this.$v.name.maxLength && errors.push('Name must be at most 10 characters long')
+        !this.$v.name.required && errors.push('Name is required.')
+        return errors
+      },
+      emailErrors () {
+        const errors = []
+        if (!this.$v.email.$dirty) return errors
+        !this.$v.email.email && errors.push('Must be valid e-mail')
+        !this.$v.email.required && errors.push('E-mail is required')
+        return errors
+      },
     },
-  created() {
-      // this.findOrderList();
-      var _this = this;
-      this.$socket.on('order', (data)=>{
-        console.log(data);
-        _this.findOrderList();
-      });
-  },
-  computed:{
-  },
-  methods : {
-    findOrderList(){
-      var _this = this;
-      this.axios.get('/findOrderList',{})
-      .then((data)=>{
-        _this.orderList = data.data;
-       })
-      .catch(()=>{
-      })
-      .then(() =>{
-      });
+
+    methods: {
+      submit () {
+        this.$v.$touch()
+      },
+      clear () {
+        this.$v.$reset()
+        this.name = ''
+        this.email = ''
+        this.select = null
+        this.checkbox = false
+      },
     },
-    cancleOrder(item){
-      console.log(item);
-      var _this = this;
-      this.axios.post('/cancleOrder',item)
-      .then((data)=>{
-        console.log(data);
-        var idx = _this.orderList.findIndex((data)=>{
-          return data.seq === item.seq;
-        });
-        if(idx > -1)_this.orderList.splice(idx,1);
-       })
-      .catch(()=>{
-      })
-      .then(() =>{
-      });
-    },
-    diffTime (time) { 
-      console.log(time);
-      const moment = require('moment') 
-      const today = moment()
-      return moment.duration(today.diff(time)).minutes()+'분'+moment.duration(today.diff(time)).seconds()+'초 전'; 
-    },
-    parseContents(contents){
-      return eval(contents);
-    },
-    sendMsgUser(order){
-      console.log(order);
-      this.$socket.emit('sendMsgUser', { customerName: order.customerName, msg:'주문접수되었습니다.'})
-    }
   }
- };
 </script>
 

@@ -177,7 +177,7 @@ module.exports = (app, mongoose, winston) => {
                 });
         });
     });
-    app.get('/findOrderList', (req, res) => {
+    app.post('/findOrderList', (req, res) => {
         console.log('findOrderList')
         Order.find({ progress: '접수' }).sort({ seq: 1 }).exec(function(err, orderList) {
 

@@ -28,7 +28,7 @@ export default {
       })
       .catch(e=>{console.log(e)})
       .then(()=>{
-          location.href='/manage';
+          location.href='/user';
       });
     },
     btnClick: function(){

@@ -21,6 +21,8 @@
         "vue-cookies": "^1.8.1",
         "vue-moment": "^4.1.0",
         "vue-router": "^3.5.2",
+        "vue-session": "^1.0.0",
+        "vuelidate": "^0.7.7",
         "vuetify": "^2.4.0"
     },
     "devDependencies": {
@@ -38,9 +40,9 @@
         "vuetify-loader": "^1.7.0"
     },
     "eslintConfig": {
-        "root": true,
+        "root": false,
         "env": {
-            "node": true
+            "node": false
         },
         "extends": [
             "plugin:vue/essential",
@@ -49,7 +51,10 @@
         "parserOptions": {
             "parser": "babel-eslint"
         },
-        "rules": {}
+        "rules": {
+            "no-extra-semi": "off",
+            "no-undef": "off"
+        }
     },
     "optionalDependencies": {
         "fsevents": "*"

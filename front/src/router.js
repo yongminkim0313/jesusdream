@@ -9,6 +9,12 @@
  import Main from "./layout/Main.vue";
  import Header from "./layout/Header.vue";
  import Callback from "./layout/Callback.vue";
+ import About from "./layout/About.vue";
+
+ import Admin from "./layout/youthvision/Admin.vue";
+
+ import User from "./layout/youthvision/User.vue";
+
 
  Vue.use(VueRouter);
  const route = [{
@@ -53,6 +59,28 @@
              header: Header,
              default: Callback
          }
+     },
+     {
+         path: "/About",
+         components: {
+             header: Header,
+             default: About
+         }
+     },
+     {
+         path: "/user",
+         components: {
+             header: Header,
+             default: User
+         }
+     },
+     {
+         path: "/admin",
+         components: {
+             header: Header,
+             default: Admin
+         },
+         meta:{auth:'admin'}
      }
  ];
  const router = new VueRouter({ mode: 'history', routes: route });
