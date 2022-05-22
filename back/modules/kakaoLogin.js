@@ -39,8 +39,8 @@ module.exports = (app, winston) => {
             req.session.save(function() {
                 //res.status(200);
                 //res.json({msg:'success'});
-                //res.redirect('http://175.115.82.2:8000/callback');
-                res.redirect('http://175.115.82.2:8000/');
+                //res.redirect('http://localhost:8000/callback');
+                res.redirect('http://localhost:8000/');
             });
 
         } catch (err) {

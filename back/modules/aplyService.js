@@ -24,7 +24,7 @@ module.exports = (app, mongoose, winston) => {
         }
     });
 
-    const campInfoSchema = new mongoose.Schema({
+    const campSchema = new mongoose.Schema({
         campNo: Number,//캠프번호
         campTtlNm: String,//캠프명
         campPhotoFileList: Array,//캠프사진리스트
@@ -32,50 +32,77 @@ module.exports = (app, mongoose, winston) => {
         actno: String, //계좌번호
         amt: Number,
         list_order: Number,
-        menu_type: String,
+        camp_type: String,
         saved: {
             type: Boolean,
             default: true
         }
     });
 
-    orderSchema.plugin(autoIncrement.plugin, {
-        model: 'order',
+    aplySchema.plugin(autoIncrement.plugin, {
+        model: 'Aply',
         field: 'seq',
         startAt: 1, //시작 
         increment: 1 // 증가 
     });
 
-    menuSchema.plugin(autoIncrement.plugin, {
-        model: 'Menu',
-        field: 'menu_no',
+    campSchema.plugin(autoIncrement.plugin, {
+        model: 'Camp',
+        field: 'campNo',
         startAt: 1, //시작 
         increment: 1 // 증가 
     });
 
-    const Order = mongoose.model("Order", orderSchema);
-    const Menu = mongoose.model("Menu", menuSchema);
+    const Aply = mongoose.model("Aply", aplySchema);
+    const Camp = mongoose.model("Camp", campSchema);
 
-    app.post('/menu', (req, res) => {
-        console.log('post) menu insert!');
+    app.post('/camp', (req, res) => {
+        console.log('post) camp insert!');
         res.json({ result: 'success' });
     });
 
-    app.get('/menu', (req, res) => {
-        console.log('get) menu select!');
+    app.get('/camp', (req, res) => {
+        console.log('get) camp select!');
         res.json({ result: 'success' });
     });
 
-    app.put('/menu', (req, res) => {
-        console.log('put) menu update!');
+    app.put('/camp', (req, res) => {
+        console.log('put) camp update!');
         res.json({ result: 'success' });
     });
 
-    app.delete('/menu', (req, res) => {
-        console.log('delete) menu delete!');
+    app.delete('/camp', (req, res) => {
+        console.log('delete) camp delete!');
         res.json({ result: 'success' });
     });
 
+
+
+
+
+    app.post('/aply', (req, res) => {
+        console.log('post) aply insert!');
+        res.json({ result: 'success' });
+    });
+
+    app.get('/aply', (req, res) => {
+        console.log('get) aply select!');
+        res.json({ result: 'success' });
+    });
+
+    app.put('/aply', (req, res) => {
+        console.log('put) aply update!');
+        res.json({ result: 'success' });
+    });
+
+    app.delete('/aply', (req, res) => {
+        console.log('delete) aply delete!');
+        res.json({ result: 'success' });
+    });
+
+
+
+/*
     app.post('/orders', (req, res) => {
         console.log(req.body);
         for (var item of req.body) {
@@ -220,27 +247,27 @@ module.exports = (app, mongoose, winston) => {
         );
     });
 
-    app.post('/loadMenuList', (req, res) => {
-        Menu.find().sort({ menu_no: 'desc' }).exec(function(err, menuList) {
+    app.post('/loadcampList', (req, res) => {
+        camp.find().sort({ camp_no: 'desc' }).exec(function(err, campList) {
             if (err) res.json({ result: -1 })
-            res.json(menuList);
+            res.json(campList);
         });
     })
 
-    app.post('/loadMenuListType', (req, res) => {
-        Menu.find().sort({ menu_no: 'desc' }).exec(function(err, menuList) {
+    app.post('/loadcampListType', (req, res) => {
+        camp.find().sort({ camp_no: 'desc' }).exec(function(err, campList) {
             if (err) res.json({ result: -1 })
-            res.json(menuList);
+            res.json(campList);
         });
 
-        // db.getList('test', 'loadMenuList', {})
+        // db.getList('test', 'loadcampList', {})
         //     .then(data => {
         //         var type = {};
         //         for (var item of data) {
-        //             if (type[item.menu_type]) {
-        //                 type[item.menu_type].push(item);
+        //             if (type[item.camp_type]) {
+        //                 type[item.camp_type].push(item);
         //             } else {
-        //                 type[item.menu_type] = [item];
+        //                 type[item.camp_type] = [item];
         //             }
         //             item.cnt = 0;
         //         }
@@ -248,17 +275,17 @@ module.exports = (app, mongoose, winston) => {
         //     })
     })
 
-    app.post('/saveMenuList', (req, res) => {
-        var reqMenuList = req.body;
-        // db.getList('test', 'loadMenuList', {})
+    app.post('/savecampList', (req, res) => {
+        var reqcampList = req.body;
+        // db.getList('test', 'loadcampList', {})
         //     .then(data => {
         //         for (var item of data) {
-        //             var s = reqMenuList.find(data => {
-        //                 return data.menu_no == item.menu_no
+        //             var s = reqcampList.find(data => {
+        //                 return data.camp_no == item.camp_no
         //             });
         //             if (s.src != item.src || s.amt != item.amt || s.title != item.title) {
         //                 console.log('deferent::::', s, item);
-        //                 db.setData('test', 'saveMenuList', s)
+        //                 db.setData('test', 'savecampList', s)
         //                     .then(data => {
         //                         console.log(data);
         //                     })
@@ -271,4 +298,5 @@ module.exports = (app, mongoose, winston) => {
         //     })
 
     });
+    */
 }

@@ -8,24 +8,14 @@
         flat
         outlined
         fade-img-on-scroll
-        class="d-flex justify-center mb-6"
+        class="d-flex justify-end mb-6"
         >
         <v-card></v-card>
-        <router-link to="/user">신청</router-link>
+        <router-link to="/user" v-if="isLogin">신청</router-link>
         <router-link to="/admin" v-if="userInfo.auth == 'admin'">관리자</router-link>
-
-           <v-btn
-              color="warning"
-              fab
-              dark
-              small
-              @click="login();"
-              v-if="!isLogin"
-            >
-            <v-img contain height="40" :src="require('../assets/kakaoLogin.png')"
-            >
+        <v-spacer></v-spacer>
+            <v-img @click="login();" v-if="!isLogin" contain height="40" :src="require('/src/assets/kakaoLogin.png')">
             </v-img>
-            </v-btn>
             <v-avatar size="40" v-if="isLogin">
             <v-img :src="userInfo.thumb"></v-img>
             </v-avatar>
@@ -66,7 +56,7 @@ export default {
     },
     methods: {
         login: function() {
-            location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=be0d818c768f8e2198c97470fc7577c5&redirect_uri=http://175.115.82.2:3000/auth/kakao/callback&response_type=code&scope=profile_nickname, profile_image, account_email, gender';
+            location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=be0d818c768f8e2198c97470fc7577c5&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code&scope=profile_nickname, profile_image, account_email, gender';
         },
         logout: function (){
              this.axios.post('/auth/kakao/logout')
@@ -76,7 +66,7 @@ export default {
                 this.isLogin = false; 
                 this.userInfo = {};
                 //console.log('user_info',this.$cookies.get("access_token"));
-                //console.log('https://kauth.kakao.com/oauth/logout?client_id=be0d818c768f8e2198c97470fc7577c5&logout_redirect_uri=https://175.115.82.2:8000/logout');
+                //console.log('https://kauth.kakao.com/oauth/logout?client_id=be0d818c768f8e2198c97470fc7577c5&logout_redirect_uri=https://localhost:8000/logout');
              })
              .catch((e)=>{console.log(e);})
              .then(()=>{

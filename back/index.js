@@ -19,7 +19,7 @@ app.use(require('cors')({
 }));
 
 app.listen(process.env.SERVER_PORT, () => {
-    winston.info(`start http://175.115.82.2:${process.env.SERVER_PORT}`);
+    winston.info(`start http://localhost:${process.env.SERVER_PORT}`);
 })
 
 mongoose.connect('mongodb+srv://kimyongmin1:qwer1234@cluster0.xm939.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
@@ -70,6 +70,8 @@ app.use(function(req, res, next) {
     }
 });
 app.post('/getAccessToken', (req, res) => {
+    console.log('/getAccessToken');
+    console.log(req.session.userInfo);
     res.json({
         access_token: req.session.access_token,
         user_info: req.session.userInfo,
