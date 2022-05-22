@@ -56,7 +56,11 @@ export default {
     },
     methods: {
         login: function() {
-            location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=be0d818c768f8e2198c97470fc7577c5&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code&scope=profile_nickname, profile_image, account_email, gender';
+            location.href = 'https://kauth.kakao.com/oauth/authorize?'
+                +'client_id=be0d818c768f8e2198c97470fc7577c5&'
+                +'redirect_uri='+this.APP_URL+'/auth/kakao/callback&'
+                +'response_type=code&'
+                +'scope=profile_nickname, profile_image, account_email, gender';
         },
         logout: function (){
              this.axios.post('/auth/kakao/logout')
@@ -65,9 +69,7 @@ export default {
                 this.$cookies.remove("access_token");
                 this.isLogin = false; 
                 this.userInfo = {};
-                //console.log('user_info',this.$cookies.get("access_token"));
-                //console.log('https://kauth.kakao.com/oauth/logout?client_id=be0d818c768f8e2198c97470fc7577c5&logout_redirect_uri=https://localhost:8000/logout');
-             })
+            })
              .catch((e)=>{console.log(e);})
              .then(()=>{
                 this.$router.push('/');

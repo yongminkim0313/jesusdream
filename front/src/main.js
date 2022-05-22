@@ -30,6 +30,7 @@ Vue.use(VueCookies);
 
 var eventBus = new Vue();
 Vue.prototype.$eventBus = eventBus;
+Vue.prototype.APP_URL = process.env.VUE_APP_API_URL;
 
 Vue.filter("makeComma", val => {
     return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");

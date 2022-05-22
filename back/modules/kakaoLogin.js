@@ -37,10 +37,7 @@ module.exports = (app, winston) => {
             }
             console.log('req.session', req.session);
             req.session.save(function() {
-                //res.status(200);
-                //res.json({msg:'success'});
-                //res.redirect('http://localhost:8000/callback');
-                res.redirect('http://localhost:8000/');
+                res.redirect(`${process.env.MAIN_URL}`);
             });
 
         } catch (err) {

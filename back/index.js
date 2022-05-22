@@ -62,8 +62,6 @@ app.use(function(req, res, next) {
         if (req.session && req.session.userInfo) {
             return next();
         } else {
-            // res.redirect('http://localhost:8000');
-            // winston.info('메인 페이지 이동');
             res.status(401);
             return next();
         }
