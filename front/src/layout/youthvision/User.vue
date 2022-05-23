@@ -1,7 +1,7 @@
 <template>
  <v-card
     :loading="loading"
-    class="mx-auto my-5 pa-10"
+    class="mx-auto my-5 pa-5"
     max-width="800"
   >
   <template slot="progress">
@@ -17,151 +17,338 @@
       :src="require('../../assets/jd1.jpeg')"
     ></v-img>
   <v-card-title>YOUTH VISION CAMP</v-card-title>
+  <v-card-text>
+    2022 여름 유스비전캠프 (since 2006)
+    "회복을 넘어 부흥의 새역사를 쓰자!"
+
+    ●강사: 장용성목사(유스비전대표) 김선배총장(한국침례신학대학교) 강은도목사(더푸른교회) 박윤호목사(강화하늘중앙교회) 민호기목사(찬미워십) 손경민목사(은혜, 행복) 
+    김정희사모 듀나미스워십 외
+
+    ●날짜: 8월 4일(목)~6일(토)
+    ●장소: 한국침례신학대학교 대강당 (대전)
+    ●대상: 초중고대청장년 선착순500명 조기마감
+
+    ●회비: 78,000원 선등록 할인
+    (5.31까지 73,000원 6.30까지 74,000원 7.30까지 75,000원 8월부터 78,000원)
+    ●1박 2일 참여시 60,000원 무박 2일 참여시 50,000원
+
+    ●등록: 1인 1만원 선입금시 정식등록  070-7796-1009
+    youthvision.co.kr 
+    ●계좌 : 국민 172601-04-185856 (유스비전)
+
+    ●주최: 유스비전미니스트리
+
+    ※유스비전캠프는 노는 캠프가 아닙니다. 살아계신 하나님을 만나는 캠프입니다.
+  </v-card-text>
   <form>
-    <v-text-field
-      v-model="name"
-      :error-messages="nameErrors"
-      :counter="10"
-      label="신청자 이름"
-      required
-      @input="$v.name.$touch()"
-      @blur="$v.name.$touch()"
-    ></v-text-field>
-    <v-select
-      v-model="select"
-      :items="items"
-      :error-messages="selectErrors"
-      label="직분"
-      required
-      @change="$v.select.$touch()"
-      @blur="$v.select.$touch()"
-    ></v-select>
-    <v-text-field
-      v-model="church"
-      :error-messages="churchErrors"
-      label="교회이름"
-      required
-      @input="$v.church.$touch()"
-      @blur="$v.church.$touch()"
-    ></v-text-field>
-    <v-text-field
-      v-model="phone"
-      :error-messages="phoneErrors"
-      label="연락처 (신청자, 인솔자 핸드폰 번호)"
-      required
-      @input="$v.phone.$touch()"
-      @blur="$v.phone.$touch()"
-    ></v-text-field>
-    <v-text-field
-      v-model="email"
-      :error-messages="emailErrors"
-      label="E-mail"
-      required
-      @input="$v.email.$touch()"
-      @blur="$v.email.$touch()"
-    ></v-text-field>
-
-    <v-text-field
-      v-model="fullAddress"
-      :error-messages="addressErrors"
-      label="주소"
-      required
-      @input="$v.fullAddress.$touch()"
-      @blur="$v.fullAddress.$touch()"
-    ></v-text-field>
-    <v-btn @click="openAddress();">주소검색</v-btn>
-    
-    <v-text-field
-      v-model="detailAddress"
-      :error-messages="detailAddressErrors"
-      label="상세주소"
-      required
-      @input="$v.detailAddress.$touch()"
-      @blur="$v.detailAddress.$touch()"
-    ></v-text-field>
-
- <v-divider class="mx-4"></v-divider>
-<v-card-title>유스비전캠프 참석여부</v-card-title>
-    
-    <v-card-text>
-      <v-chip-group
-        v-model="selection"
-        active-class="deep-purple accent-4 white--text"
-        column
-      >
-        <v-chip>유스비전캠프에 처음참석합니다</v-chip>
-        <v-chip>지난 캠프에 참석한적이 있습니다</v-chip>
-      </v-chip-group>
-    </v-card-text>
- 
- 
- <v-divider class="mx-4"></v-divider>
-<v-card-title>유스비전캠프 알게된 경로</v-card-title>
-    <v-container class="py-0">
-      <v-row
-        align="center"
-        justify="start"
-      >
-        <v-col
-          v-for="(selection, i) in selections"
-          :key="selection.text"
-          class="shrink"
-        >
-          <v-chip
-            :disabled="loading"
-            close
-            @click:close="selected.splice(i, 1)"
-          >
-            <v-icon
-              left
-              v-text="selection.icon"
-            ></v-icon>
-            {{ selection.text }}
-          </v-chip>
+    <v-container>
+       <v-row><!--신청자이름, 직분 -->
+        <v-col cols="12" md="6">
+          <v-text-field
+            v-model="name"
+            ref="name"
+            :error-messages="nameErrors"
+            :counter="10"
+            label="신청자 이름"
+            required
+            @input="$v.name.$touch()"
+            @blur="$v.name.$touch()"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-select
+            v-model="select"
+            ref="select"
+            :items="items"
+            :error-messages="selectErrors"
+            label="직분"
+            required
+            @change="$v.select.$touch()"
+            @blur="$v.select.$touch()"
+          ></v-select>
         </v-col>
       </v-row>
-    </v-container>
+      <v-row><!--교회명,교단,목사님성함 -->
+        <v-divider class="ma-5"></v-divider>
+        <v-col cols="12" md="12">
+          <v-card-title>교회정보</v-card-title>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-text-field
+            v-model="church"
+            ref="church"
+            :error-messages="churchErrors"
+            label="교회명 (ex:주님이꿈꾸신교회)"
+            required
+            @input="$v.church.$touch()"
+            @blur="$v.church.$touch()"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-text-field
+            v-model="churchSe"
+            ref="churchSe"
+            :error-messages="churchSeErrors"
+            label="교단 (ex:한국기독교침례회)"
+            required
+            @input="$v.churchSe.$touch()"
+            @blur="$v.churchSe.$touch()"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-text-field
+            v-model="churchAdtr"
+            ref="churchAdtr"
+            :error-messages="churchAdtrErrors"
+            label="목사님 성함"
+            required
+            @input="$v.churchAdtr.$touch()"
+            @blur="$v.churchAdtr.$touch()"
+          ></v-text-field>
 
-    <v-list>
-      <template v-for="item in paths">
-        <v-list-item
-          v-if="!selected.includes(item)"
-          :key="item.text"
-          :disabled="loading"
-          @click="selected.push(item)"
-        >
-          <v-list-item-avatar>
-            <v-icon
-              :disabled="loading"
-              v-text="item.icon"
-            ></v-icon>
-          </v-list-item-avatar>
-          <v-list-item-title v-text="item.text"></v-list-item-title>
-        </v-list-item>
-      </template>
-    </v-list>
+        </v-col>
+      </v-row>
+      <v-row><!--교회주소-->
+        <v-col cols="7" md="9" sm="6">
+          <v-text-field
+            v-model="churchAddr"
+            ref="churchAddr"
+            :error-messages="churchAddrErrors"
+            label="교회주소"
+            required
+            @input="$v.churchAddr.$touch()"
+            @blur="$v.churchAddr.$touch()"
+          ></v-text-field>
 
-    
-    <v-divider class="mx-4"></v-divider>
-    <v-card-title>
-      * 참석인원 변경
-    </v-card-title>
-<v-card-text>
-  * 캠프 일주일 전, 최종명단, 회비완납과 함께 알려주시면 됩니다.(최종명단양식은 캠프일주일 전 신위 메일로 별도 발송)
-</v-card-text>
+        </v-col>
+        <v-col cols="5" md="3" sm="6">
+          <v-btn @click="openAddrPop('churchAddr');">교회주소검색</v-btn>
+          
 
+        </v-col>
+        <v-col cols="12" md="12" class="pa-0">
+          <div id="churchAddrDiv" ref="churchAddrPop" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
+          <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" @click="foldAddrPop('churchAddr')" alt="접기 버튼">
+          </div>
 
-    <v-btn
-      class="mr-4"
-      @click="submit"
-    >
-      신청하기
-    </v-btn>
-    <!-- <v-btn @click="clear">
-      clear
-    </v-btn> -->
-    <v-container fluid>
-      <v-row dense>
+        </v-col>
+        <v-col cols="12" md="12">
+          <v-text-field
+            v-model="churchDtlAddr"
+            ref="churchDtlAddr"
+            :error-messages="churchDtlAddrErrors"
+            label="상세주소"
+            required
+            @input="$v.churchDtlAddr.$touch()"
+            @blur="$v.churchDtlAddr.$touch()"
+          ></v-text-field>
+
+        </v-col>
+      </v-row>
+      <v-row><!--연락처,Email-->
+        <v-col cols="12" md="12" sm="12">
+          <v-card-title>연락처,E-MAIL 우편물주소</v-card-title>
+        </v-col>
+        <v-col cols="6" md="6">
+          <v-text-field
+            v-model="phone"
+            ref="phone"
+            :error-messages="phoneErrors"
+            label="연락처 (신청자, 인솔자 핸드폰 번호)"
+            required
+            @input="$v.phone.$touch()"
+            @blur="$v.phone.$touch()"
+          ></v-text-field>
+
+        </v-col>
+        <v-col cols="6" md="6">
+          <v-text-field
+            v-model="email"
+            ref="email"
+            :error-messages="emailErrors"
+            label="E-mail"
+            required
+            @input="$v.email.$touch()"
+            @blur="$v.email.$touch()"
+          ></v-text-field>
+
+        </v-col>
+      </v-row>
+      <v-row><!--우편물주소-->
+        <v-col cols="7" md="9" sm="6">
+          <v-text-field
+            v-model="fullAddress"
+            ref="fullAddress"
+            :error-messages="addressErrors"
+            label="우편물 주소"
+            required
+            @input="$v.fullAddress.$touch()"
+            @blur="$v.fullAddress.$touch()"
+          ></v-text-field>
+
+        </v-col>
+        <v-col cols="5" md="3" sm="6">
+          <v-btn @click="openAddrPop();">우편물 주소검색</v-btn>
+
+        </v-col>
+        <v-col cols="12" md="12" class="pa-0">
+          <div id="addrDiv" ref="addrPop" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
+          <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" @click="foldAddrPop()" alt="접기 버튼">
+          </div>
+
+        </v-col>
+        <v-col cols="12" md="12">
+          <v-text-field
+            v-model="detailAddress"
+            ref="detailAddress"
+            :error-messages="detailAddressErrors"
+            label="우편물 상세주소"
+            required
+            @input="$v.detailAddress.$touch()"
+            @blur="$v.detailAddress.$touch()"
+          ></v-text-field>
+
+        </v-col>
+      </v-row>
+      <v-row><!--기간(2박3일)-->
+        <v-divider class="ma-5"></v-divider>
+        <v-col cols="12" md="12">
+          <v-card-title>캠프참여기간</v-card-title>
+        </v-col>
+        <v-col cols="12" md="12">
+          <v-radio-group
+            v-model="schdlSe"
+            row
+          >
+            <v-radio
+              label="2박3일"
+              value="2박3일"
+            ></v-radio>
+            <v-radio
+              label="1박2일"
+              value="1박2일"
+            ></v-radio>
+            <v-radio
+              label="무박2일"
+              value="무박2일"
+            ></v-radio>
+          </v-radio-group>
+          
+        </v-col>
+      </v-row>
+      <v-row><!--유스비전 참석여부-->
+        <v-divider class="ma-5"></v-divider>
+        <v-col cols="12" md="12">
+          <v-card-title>유스비전캠프 참석여부</v-card-title>
+
+        </v-col>
+        <v-col cols="12" md="12">
+          <v-chip-group
+            v-model="selection"
+            active-class="deep-purple accent-4 white--text"
+            column
+          >
+            <v-chip value="처음참석">유스비전캠프에 처음참석합니다</v-chip>
+            <v-chip value="참석한적있음">지난 캠프에 참석한적이 있습니다</v-chip>
+          </v-chip-group>
+        </v-col>
+      </v-row>
+      <v-row><!--유스비전 알게된 경로-->
+        <v-divider class="ma-5"></v-divider>
+        <v-col cols="12" md="12">
+          <v-card-title>유스비전캠프 알게된 경로</v-card-title>
+        </v-col>
+        <v-col cols="12" md="12">
+          <v-chip-group
+            v-model="selected"
+            column
+            multiple
+          >
+            <v-chip
+              filter
+              outlined
+              v-for="path in paths"
+              :key="path.text"
+              :value="path.text"
+            >
+            {{path.text}}
+            </v-chip>
+          </v-chip-group>
+        </v-col>
+      </v-row>
+      <v-row><!--인원선택-->
+        <v-divider class="ma-5"></v-divider>
+        <v-col cols="12" md="12">
+          <v-card-title>참여인원</v-card-title>
+
+        </v-col>
+        <v-col cols="3" md="3" sm="4">
+          <v-select
+            v-model="campCnt.chodeung"
+            :items="cnt50"
+            attach
+            label="초등"
+          ></v-select>
+        </v-col>
+        <v-col cols="3" md="3" sm="4">
+          <v-select
+            v-model="campCnt.cheongsonyeon"
+            :items="cnt50"
+            attach
+            label="청소년"
+          ></v-select>
+        </v-col>
+        <v-col cols="3" md="3" sm="4">
+          <v-select
+            v-model="campCnt.cheongnyeon"
+            :items="cnt50"
+            attach
+            label="청년"
+          ></v-select>
+        </v-col>
+        <v-col cols="3" md="3" sm="4">
+          <v-select
+            v-model="campCnt.jangnyeon"
+            :items="cnt50"
+            attach
+            label="장년"
+          ></v-select>
+        </v-col>
+        <v-col cols="3" md="3" sm="4">
+          <v-select
+            v-model="campCnt.sayeogja"
+            :items="cnt50"
+            attach
+            label="사역자"
+          ></v-select>
+        </v-col>
+      </v-row>
+      <v-row><!--참석인원변경안내-->
+        <v-col cols="12" md="12">
+          <v-divider class="ma-4"></v-divider>
+          <v-card-title>
+            * 참석인원 변경
+          </v-card-title>
+          <v-card-text>
+            * 캠프 일주일 전, 최종명단, 회비완납과 함께 알려주시면 됩니다.(최종명단양식은 캠프일주일 전 신위 메일로 별도 발송)
+          </v-card-text>
+
+        </v-col>
+      </v-row>
+      <v-row><!--신청하기버튼-->
+        <v-col cols="12" md="12">
+          <v-btn
+            class="mr-4"
+            @click="submit"
+            color="primary"
+            elevation="14"
+          >
+            신청하기
+          </v-btn>
+
+        </v-col>
+      </v-row>
+      <v-row><!--사진-->
         <v-col
           v-for="card in cards"
           :key="card.title"
@@ -174,13 +361,12 @@
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
-              <!-- <v-card-title v-text="card.title"></v-card-title> -->
-            </v-img>
-
+              </v-img>
           </v-card>
         </v-col>
       </v-row>
     </v-container>
+
   </form>
   </v-card>
 </template>
@@ -196,6 +382,11 @@
       select: { required },
       phone: {required, maxLength: maxLength(11) },
       church: { required, maxLength: maxLength(50) },
+      churchSe: { required, maxLength: maxLength(50) },
+      churchAdtr: { required, maxLength: maxLength(10) },
+      churchAddr: { required },
+      churchDtlAddr: { required },
+      schdlSe:{ required },
       email: { required, email },
       fullAddress: {required },
       detailAddress: {required },
@@ -211,6 +402,12 @@
       name: '',
       select: null,
       church:'',
+      churchSe:'',
+      churchAdtr:'',
+      churchAddr:'',
+      churchDtlAddr:'',
+      churchAddrPop:false,
+      schdlSe:'2박3일',
       phone: '',
       email: '',
       items: [
@@ -229,7 +426,7 @@
         jibunAddress:'',
         extraAddress:'',
       },
-      selection: 1,
+      selection: '처음참석',
       cards: [
         { title: '1', src: require('../../assets/jd2.jpeg'), flex: 12 },
         { title: '2', src: require('../../assets/jd3.jpeg'), flex: 6 },
@@ -258,6 +455,14 @@
           icon: 'mdi-bike',
         },
       ],
+      campCnt:{
+        chodeung: 0,
+        cheongsonyeon: 0,
+        cheongnyeon: 0,
+        jangnyeon: 0,
+        sayeogja: 0,
+      },
+      cnt50:[]
     }),
 
     computed: {
@@ -294,11 +499,43 @@
         !this.$v.email.required && errors.push('E-mail을 입력해주세요')
         return errors
       },
+      churchSeErrors () {
+        const errors = []
+        if (!this.$v.churchSe.$dirty) return errors
+        !this.$v.churchSe.maxLength && errors.push('교단이 50자를 넘을수 없습니다')
+        !this.$v.churchSe.required && errors.push('교단을 입력해주세요. 없으면 "없음" 을 입력해주세요')
+        return errors
+      },
       churchErrors () {
         const errors = []
         if (!this.$v.church.$dirty) return errors
-        !this.$v.church.maxLength && errors.push('교회이름이 20자를 넘을수 없습니다')
+        !this.$v.church.maxLength && errors.push('교회이름이 50자를 넘을수 없습니다')
         !this.$v.church.required && errors.push('교회이름을 입력해주세요. 없으면 "없음" 을 입력해주세요')
+        return errors
+      },
+      churchAdtrErrors () {
+        const errors = []
+        if (!this.$v.churchAdtr.$dirty) return errors
+        !this.$v.churchAdtr.maxLength && errors.push('목사님 성함이 10자를 넘을수 없습니다')
+        !this.$v.churchAdtr.required && errors.push('목사님 성함을 입력해주세요. 없으면 "없음" 을 입력해주세요')
+        return errors
+      },
+      churchAddrErrors () {
+        const errors = []
+        if (!this.$v.churchAddr.$dirty) return errors
+        !this.$v.churchAddr.required && errors.push('주소를 입력해 주세요. 없으면 "없음" 을 입력해주세요')
+        return errors
+      },
+      churchDtlAddrErrors () {
+        const errors = []
+        if (!this.$v.churchDtlAddr.$dirty) return errors
+        !this.$v.churchDtlAddr.required && errors.push('상세주소를 입력해 주세요. 없으면 "없음" 을 입력해주세요')
+        return errors
+      },
+      schdlSeErrors (){
+        const errors = []
+        if (!this.$v.schdlSe.$dirty) return errors
+        !this.$v.schdlSe.required && errors.push('일정을 입력해주세요')
         return errors
       },
       addressErrors () {
@@ -325,16 +562,43 @@
       var user = this.$cookies.get('user_info');
       if(user){
         console.log(user);
-        this.name = user.kakao_account.profile.nickname
-        this.email = user.kakao_account.email
+        // this.name = user.kakao_account.profile.nickname
+        // this.email = user.kakao_account.email
       }
       
+        for(var i = 0 ; i < 50; i++){
+          //this.cnt50.push({disp:i+'명',value:i});
+          this.cnt50.push(i);
+        }
     },
     methods: {
       submit () {
-        console.log(this.$v.$touch());
+        
+        this.$v.$touch();
+
+        if (this.$v.$invalid) {
+        // 1. Loop the keys
+        for (let key in Object.keys(this.$v)) {
+          // 2. Extract the input
+          const input = Object.keys(this.$v)[key];
+          // 3. Remove special properties
+          if (input.includes("$")) return false;
+
+          // 4. Check for errors
+          if (this.$v[input].$error) {
+            // 5. Focus the input with the error
+            this.$refs[input].focus();
+
+            // 6. Break out of the loop
+            break;
+          }
+        }
+      } else {
+        // Submit the form here
         this.loading = true
         setTimeout(() => (this.loading = false), 2000)
+      }
+
       },
       clear () {
         this.$v.$reset()
@@ -342,49 +606,79 @@
         this.email = ''
         this.select = null
         this.checkbox = false
-      },
-      openAddress(){ //@click을 사용할 때 함수는 이렇게 작성해야 한다.
-            var _this = this;
-            new window.daum.Postcode({
-            oncomplete: (data) => { //function이 아니라 => 로 바꿔야한다.
-                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+      }
+    , openAddrPop (addrSe){
+        var _this = this;
+        var element_wrap = document.getElementById('addrDiv');
+        if(addrSe) element_wrap = document.getElementById('churchAddrDiv');
+        // 현재 scroll 위치를 저장해놓는다.
+        var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-                // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
                 // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                var roadAddr = data.roadAddress; // 도로명 주소 변수
-                var extraRoadAddr = ''; // 참고 항목 변수
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
 
-                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                    extraRoadAddr += data.bname;
-                }
-                // 건물명이 있고, 공동주택일 경우 추가한다.
-                if(data.buildingName !== '' && data.apartment === 'Y'){
-                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                }
-                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-                if(extraRoadAddr !== ''){
-                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
                 }
 
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                _this.address.postcode = data.zonecode;
-                _this.address.roadAddress = roadAddr;
-                _this.address.jibunAddress = data.jibunAddress;
-                
-                // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
-                if(roadAddr !== ''){
-                    _this.address.extraAddress = extraRoadAddr;
-                } else {
-                    _this.address.extraAddress = '';
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    // 우편번호와 주소 정보를 해당 필드에 
+                } 
+                if(addrSe){
+                  _this.churchAddr = '('+data.zonecode+') '+addr+' '+extraAddr
+                  _this.$refs.churchDtlAddr.focus();
+                }else{
+                  _this.fullAddress = '('+data.zonecode+') '+addr+' '+extraAddr
+                  _this.$refs.detailAddress.focus();
                 }
-                _this.fullAddress = '('+this.address.postcode+') '+this.address.roadAddress+' '+this.address.extraAddress
-                
-            }
-        }).open();
-        }
-    },
+                // iframe을 넣은 element를 안보이게 한다.
+                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+                element_wrap.style.display = 'none';
+
+                // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
+                document.body.scrollTop = currentScroll;
+            },
+            // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
+            onresize : function(size) {
+                element_wrap.style.height = size.height+'px';
+            },
+            width : '100%',
+            height : '100%'
+        }).embed(element_wrap);
+        // iframe을 넣은 element를 보이게 한다.
+        element_wrap.style.display = 'block';
+      },
+      foldAddrPop(addrSe){
+        var element_wrap = document.getElementById('addrDiv');
+        if(addrSe) element_wrap = document.getElementById('churchAddrDiv');
+        element_wrap.style.display = 'none';
+      }
+
+    }
   }
 </script>
+
 

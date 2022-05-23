@@ -11,8 +11,16 @@
         class="d-flex justify-end mb-6"
         >
         <v-card></v-card>
-        <router-link to="/user" v-if="isLogin">신청</router-link>
-        <router-link to="/admin" v-if="userInfo.auth == 'admin'">관리자</router-link>
+        <router-link to="/user" v-if="isLogin">
+            <v-btn>
+                신청하러가기
+            </v-btn>
+        </router-link>
+        <router-link to="/admin" v-if="userInfo.auth == 'admin'">
+        <v-btn>
+            관리자
+        </v-btn>
+        </router-link>
         <v-spacer></v-spacer>
             <v-img @click="login();" v-if="!isLogin" contain height="40" :src="require('/src/assets/kakaoLogin.png')">
             </v-img>
