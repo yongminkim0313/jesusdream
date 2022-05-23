@@ -16,22 +16,6 @@
                     </v-avatar>
                 </router-link>
                 
-                <router-link to="/user" v-if="isLogin">
-                    <v-btn>
-                        신청하러가기
-                    </v-btn>
-                </router-link>
-                <v-chip
-                    color="purple"
-                    label
-                    link
-                    v-if="isLogin"
-                    class="white--text"
-                    @click="goAplyPage()"
-                    >
-                    신청하러가기
-                </v-chip>
-                
                 <v-icon large color="green" v-if="userInfo.auth == 'admin'" @click="goAdminPage()">
                     mdi-account-supervisor
                 </v-icon>
