@@ -75,8 +75,23 @@ app.post('/getAccessToken', (req, res) => {
         user_info: req.session.userInfo,
     });
 });
+
+app.get('/auth', async(req, res) => {
+    try {
+        var nick = req.session.userInfo.kakao_account.profile.nickname;
+        if('kimyongmin1@kakao.com' == req.session.userInfo.kakao_account.email|| nick.indexOf('YOUTHVISION')){
+            req.session.auth = 'admin';
+        }else{
+            req.session.auth = 'user';
+        }
+        res.status(200).json({auth:req.session.auth});
+    } catch (err) {
+        winston.error("Error >>" + err);
+        res.status(401).json({msg:'권한 가져오기 실패'});
+    }
+});
 require('./modules/socketConfig')(app, winston);
 //require('./modules/mgdbOrder')(app, mongoose, winston);
-require('./modules/aplyService')(app, mongoose, winston);
+require('./modules/campService')(app, mongoose, winston);
 require('./modules/kakaoLogin')(app, winston);
-require('./modules/userService')(app, winston);
+require('./modules/aplyService')(app, mongoose, winston);

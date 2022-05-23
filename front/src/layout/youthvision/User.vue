@@ -14,63 +14,81 @@
 
     <v-img
       height="250"
-      :src="require('../../assets/jd1.jpeg')"
+      src="https://modo-phinf.pstatic.net/20190417_275/1555469222917i4LfY_JPEG/mosacMoDVY.jpeg"
     ></v-img>
+      <!-- src="https://modo-phinf.pstatic.net/20190417_140/15554692250648Rq2Y_JPEG/mosa4Ri4kd.jpeg" -->
   <v-card-title>YOUTH VISION CAMP</v-card-title>
+  <v-card-subtitle>2022 여름 유스비전캠프 (since 2006)</v-card-subtitle>
   <v-card-text>
-    2022 여름 유스비전캠프 (since 2006)
-    "회복을 넘어 부흥의 새역사를 쓰자!"
-
-    ●강사: 장용성목사(유스비전대표) 김선배총장(한국침례신학대학교) 강은도목사(더푸른교회) 박윤호목사(강화하늘중앙교회) 민호기목사(찬미워십) 손경민목사(은혜, 행복) 
-    김정희사모 듀나미스워십 외
-
-    ●날짜: 8월 4일(목)~6일(토)
-    ●장소: 한국침례신학대학교 대강당 (대전)
-    ●대상: 초중고대청장년 선착순500명 조기마감
-
-    ●회비: 78,000원 선등록 할인
-    (5.31까지 73,000원 6.30까지 74,000원 7.30까지 75,000원 8월부터 78,000원)
-    ●1박 2일 참여시 60,000원 무박 2일 참여시 50,000원
-
-    ●등록: 1인 1만원 선입금시 정식등록  070-7796-1009
-    youthvision.co.kr 
-    ●계좌 : 국민 172601-04-185856 (유스비전)
-
-    ●주최: 유스비전미니스트리
-
+    
+    "회복을 넘어 부흥의 새역사를 쓰자!"<br/>
+<br/>
+    ●강사: 장용성목사(유스비전대표) 김선배총장(한국침례신학대학교) 강은도목사(더푸른교회) 박윤호목사(강화하늘중앙교회) 민호기목사(찬미워십) 손경민목사(은혜, 행복) <br/>
+    김정희사모 듀나미스워십 외<br/>
+<br/>
+    ●날짜: 8월 4일(목)~6일(토)<br/>
+    ●장소: 한국침례신학대학교 대강당 (대전)<br/>
+    ●대상: 초중고대청장년 선착순500명 조기마감<br/>
+<br/>
+    ●회비: 78,000원 선등록 할인<br/>
+    (5.31까지 73,000원 6.30까지 74,000원 7.30까지 75,000원 8월부터 78,000원)<br/>
+    ●1박 2일 참여시 60,000원 무박 2일 참여시 50,000원<br/>
+<br/>
+    ●등록: 1인 1만원 선입금시 정식등록  070-7796-1009<br/>
+    youthvision.co.kr <br/>
+    ●계좌 : 국민 172601-04-185856 (유스비전)<br/>
+<br/>
+    ●주최: 유스비전미니스트리<br/>
+<br/>
     ※유스비전캠프는 노는 캠프가 아닙니다. 살아계신 하나님을 만나는 캠프입니다.
   </v-card-text>
   <form>
     <v-container>
        <v-row><!--신청자이름, 직분 -->
+        <v-divider class="ma-5"></v-divider>
+        <v-col cols="12" md="12" class="d-flex flex-row">
+          <v-icon
+            large
+            color="green darken-2"
+          >
+            mdi-human
+          </v-icon>
+          <v-card-title>신청자 정보</v-card-title>
+        </v-col>
         <v-col cols="12" md="6">
           <v-text-field
-            v-model="name"
-            ref="name"
-            :error-messages="nameErrors"
+            v-model="aplyName"
+            ref="aplyName"
+            :error-messages="aplyNameErrors"
             :counter="10"
             label="신청자 이름"
             required
-            @input="$v.name.$touch()"
-            @blur="$v.name.$touch()"
+            @input="$v.aplyName.$touch()"
+            @blur="$v.aplyName.$touch()"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="6">
           <v-select
-            v-model="select"
-            ref="select"
+            v-model="jikbunSe"
+            ref="jikbunSe"
             :items="items"
-            :error-messages="selectErrors"
+            :error-messages="jikbunSeErrors"
             label="직분"
             required
-            @change="$v.select.$touch()"
-            @blur="$v.select.$touch()"
+            @change="$v.jikbunSe.$touch()"
+            @blur="$v.jikbunSe.$touch()"
           ></v-select>
         </v-col>
       </v-row>
       <v-row><!--교회명,교단,목사님성함 -->
         <v-divider class="ma-5"></v-divider>
-        <v-col cols="12" md="12">
+        <v-col cols="12" md="12" class="d-flex flex-row">
+          <v-icon
+            large
+            color="green darken-2"
+          >
+            mdi-church
+          </v-icon>
           <v-card-title>교회정보</v-card-title>
         </v-col>
         <v-col cols="12" md="4">
@@ -146,7 +164,13 @@
         </v-col>
       </v-row>
       <v-row><!--연락처,Email-->
-        <v-col cols="12" md="12" sm="12">
+        <v-col cols="12" md="12" class="d-flex flex-row">
+          <v-icon
+            large
+            color="green darken-2"
+          >
+            mdi-email-box
+          </v-icon>
           <v-card-title>연락처,E-MAIL 우편물주소</v-card-title>
         </v-col>
         <v-col cols="6" md="6">
@@ -212,7 +236,13 @@
       </v-row>
       <v-row><!--기간(2박3일)-->
         <v-divider class="ma-5"></v-divider>
-        <v-col cols="12" md="12">
+        <v-col cols="12" md="12" class="d-flex flex-row">
+          <v-icon
+            large
+            color="green darken-2"
+          >
+            mdi-calendar
+          </v-icon>
           <v-card-title>캠프참여기간</v-card-title>
         </v-col>
         <v-col cols="12" md="12">
@@ -238,13 +268,19 @@
       </v-row>
       <v-row><!--유스비전 참석여부-->
         <v-divider class="ma-5"></v-divider>
-        <v-col cols="12" md="12">
+        <v-col cols="12" md="12" class="d-flex flex-row">
+          <v-icon
+            large
+            color="green darken-2"
+          >
+            mdi-home-group
+          </v-icon>
           <v-card-title>유스비전캠프 참석여부</v-card-title>
 
         </v-col>
         <v-col cols="12" md="12">
           <v-chip-group
-            v-model="selection"
+            v-model="joinHisSe"
             active-class="deep-purple accent-4 white--text"
             column
           >
@@ -255,12 +291,18 @@
       </v-row>
       <v-row><!--유스비전 알게된 경로-->
         <v-divider class="ma-5"></v-divider>
-        <v-col cols="12" md="12">
+        <v-col cols="12" md="12" class="d-flex flex-row">
+          <v-icon
+            large
+            color="green darken-2"
+          >
+            mdi-youtube-tv
+          </v-icon>
           <v-card-title>유스비전캠프 알게된 경로</v-card-title>
         </v-col>
         <v-col cols="12" md="12">
           <v-chip-group
-            v-model="selected"
+            v-model="joinPathSe"
             column
             multiple
           >
@@ -278,7 +320,13 @@
       </v-row>
       <v-row><!--인원선택-->
         <v-divider class="ma-5"></v-divider>
-        <v-col cols="12" md="12">
+        <v-col cols="12" md="12" class="d-flex flex-row">
+          <v-icon
+            large
+            color="green darken-2"
+          >
+            mdi-counter
+          </v-icon>
           <v-card-title>참여인원</v-card-title>
 
         </v-col>
@@ -335,6 +383,15 @@
 
         </v-col>
       </v-row>
+      <v-row><!--자동취소 동의-->
+        <v-col>
+            <v-checkbox
+            v-model="checkbox"
+            label="신청후 선입금 3일내 확인되지 않을 시 자동취소(동의 체크)"
+            value="동의"
+          ></v-checkbox>
+        </v-col>
+      </v-row>
       <v-row><!--신청하기버튼-->
         <v-col cols="12" md="12">
           <v-btn
@@ -378,8 +435,8 @@
     mixins: [validationMixin],
 
     validations: {
-      name: { required, maxLength: maxLength(10) },
-      select: { required },
+      aplyName: { required, maxLength: maxLength(10) },
+      jikbunSe: { required },
       phone: {required, maxLength: maxLength(11) },
       church: { required, maxLength: maxLength(50) },
       churchSe: { required, maxLength: maxLength(50) },
@@ -399,8 +456,8 @@
 
     data: () => ({
       loading: false,
-      name: '',
-      select: null,
+      aplyName: '',
+      jikbunSe: null,
       church:'',
       churchSe:'',
       churchAdtr:'',
@@ -417,22 +474,16 @@
         '성도',
         '기타',
       ],
-      checkbox: false,
+      checkbox: '',
       fullAddress: '',
       detailAddress:'',
-      address:{
-        postcode:'',
-        roadAddress:'',
-        jibunAddress:'',
-        extraAddress:'',
-      },
-      selection: '처음참석',
+      joinHisSe: '처음참석',
       cards: [
         { title: '1', src: require('../../assets/jd2.jpeg'), flex: 12 },
         { title: '2', src: require('../../assets/jd3.jpeg'), flex: 6 },
         { title: '3', src: require('../../assets/jd4.jpeg'), flex: 6 },
       ],
-      selected: [],
+      joinPathSe: [],
       paths: [
         {
           text: '인터넷 홍보(youtube, instar, facebook)',
@@ -469,20 +520,20 @@
       checkboxErrors () {
         const errors = []
         if (!this.$v.checkbox.$dirty) return errors
-        !this.$v.checkbox.checked && errors.push('동의')
+        !this.$v.checkbox.checked && errors.push('동의가 필요합니다.')
         return errors
       },
-      selectErrors () {
+      jikbunSeErrors () {
         const errors = []
-        if (!this.$v.select.$dirty) return errors
-        !this.$v.select.required && errors.push('직분을 입력해주세요')
+        if (!this.$v.jikbunSe.$dirty) return errors
+        !this.$v.jikbunSe.required && errors.push('직분을 입력해주세요')
         return errors
       },
-      nameErrors () {
+      aplyNameErrors () {
         const errors = []
-        if (!this.$v.name.$dirty) return errors
-        !this.$v.name.maxLength && errors.push('이름을 10자 내로 입력해주세요')
-        !this.$v.name.required && errors.push('이름을 입력해주세요')
+        if (!this.$v.aplyName.$dirty) return errors
+        !this.$v.aplyName.maxLength && errors.push('이름을 10자 내로 입력해주세요')
+        !this.$v.aplyName.required && errors.push('이름을 입력해주세요')
         return errors
       },
       phoneErrors () {
@@ -552,7 +603,7 @@
       },
       selections () {
         const selections = []
-        for (const selection of this.selected) {
+        for (const selection of this.joinPathSe) {
           selections.push(selection)
         }
         return selections
@@ -562,7 +613,7 @@
       var user = this.$cookies.get('user_info');
       if(user){
         console.log(user);
-        // this.name = user.kakao_account.profile.nickname
+        // this.aplyName = user.kakao_account.profile.nickname
         // this.email = user.kakao_account.email
       }
       
@@ -574,6 +625,43 @@
     methods: {
       submit () {
         
+
+
+var test = {
+    "aplyTotAmt": 10000,
+    "aplyPrgrs": "접수",
+    "aplyDt": "2022-05-22",
+    "aplyName": "김용민",
+    "jikbunSe": "학생",
+    "church": "주님이꿈꾸신교회",
+    "churchSe": "한국기독교침례회",
+    "churchAdtr": "장용성",
+    "churchAddr": "(22389) 인천 중구 은하수로 412  (운남동, 영종센트럴 푸르지오자이)",
+    "churchDtlAddr": "114동 902호",
+    "schdlSe": "2박3일",
+    "phone": "01074418548",
+    "email": "kimyongmin1@naver.com",
+    "checkbox": "동의",
+    "fullAddress": "(22389) 인천 중구 은하수로 412  (운남동, 영종센트럴 푸르지오자이)",
+    "detailAddress": "114동 902호",
+    "joinHisSe": "처음참석",
+    "joinPathSe": [
+        "인터넷 홍보(youtube, instar, facebook)",
+        "포스터, 브로셔"
+    ],
+    "campCnt": {
+        "chodeung": 4,
+        "cheongsonyeon": 3,
+        "cheongnyeon": 2,
+        "jangnyeon": 1,
+        "sayeogja": 1
+    }
+}
+this.axios.post('/aply',test);
+
+
+
+
         this.$v.$touch();
 
         if (this.$v.$invalid) {
@@ -597,17 +685,36 @@
         // Submit the form here
         this.loading = true
         setTimeout(() => (this.loading = false), 2000)
+        
+
+        var aplyContents = {
+          aplyTotAmt: 10000, //신청총금액
+          aplyPrgrs: '접수', //신청진행상황(접수, 접수완료, 신청취소)
+          aplyDt: '2022-05-22', //신청일시
+          aplyName: this.aplyName,
+          jikbunSe: this.jikbunSe,
+          church: this.church,
+          churchSe: this.churchSe,
+          churchAdtr: this.churchAdtr,
+          churchAddr: this.churchAddr,
+          churchDtlAddr: this.churchDtlAddr,
+          schdlSe: this.schdlSe,
+          phone: this.phone,
+          email: this.email,
+          checkbox: this.checkbox,
+          fullAddress: this.fullAddress,
+          detailAddress: this.detailAddress,
+          joinHisSe: this.joinHisSe,
+          joinPathSe: this.joinPathSe,
+          campCnt: this.campCnt,
+        }
+        
+        console.log(aplyContents);
+        this.axios.post('/aply',aplyContents);
       }
 
       },
-      clear () {
-        this.$v.$reset()
-        this.name = ''
-        this.email = ''
-        this.select = null
-        this.checkbox = false
-      }
-    , openAddrPop (addrSe){
+      openAddrPop (addrSe){
         var _this = this;
         var element_wrap = document.getElementById('addrDiv');
         if(addrSe) element_wrap = document.getElementById('churchAddrDiv');
