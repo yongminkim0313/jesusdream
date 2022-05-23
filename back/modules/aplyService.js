@@ -44,14 +44,19 @@ module.exports = (app, mongoose, winston) => {
     const Aply = mongoose.model("aply", aplySchema);
 
     app.post('/aply', async(req, res) => {
-        console.log('post) aply insert!');
+        winston.info('post) aply insert!');
         try {
-            console.log(req.body);
+            const today = moment();
+
+            winston.info(req.body);
             const aply = new Aply(req.body);
             aply.kakaoEmail = req.session.userInfo.kakao_account.email;
+            aply.aplyTotAmt = 10000 //신청총금액
+            aply.aplyPrgrs = '접수' //신청진행상황(접수, 접수완료, 신청취소)
+            aply.aplyDt = today.format('YYYY-MM-DD') //신청일시
             await aply.save()
             .then(() => {res.json({ result: 'success' })})
-            .catch((err) => {console.log("Error : " + err)})
+            .catch((err) => {winston.error("Error : " + err)})
             .then(() => {});
         } catch (err) {
             winston.error("Error >>" + err);
@@ -60,17 +65,26 @@ module.exports = (app, mongoose, winston) => {
     });
 
     app.get('/aply', (req, res) => {
-        console.log('get) aply select!');
-        res.json({ result: 'success' });
+        winston.info('get) aply select!');
+        console.log(req.session);
+        try{
+            Aply.find({ kakaoEmail: req.session.userInfo.kakao_account.email }).sort({ seq: 'desc' }).exec(function(err, orderList) {
+                if (err) res.json({ result: -1 })
+                res.json(orderList);
+            })
+        } catch (err) {
+            winston.error("Error >>" + err);
+            res.status(401).json({msg: '캠프신청 불러오기 실패'});
+        }
     });
 
     app.put('/aply', (req, res) => {
-        console.log('put) aply update!');
+        winston.info('put) aply update!');
         res.json({ result: 'success' });
     });
 
     app.delete('/aply', (req, res) => {
-        console.log('delete) aply delete!');
+        winston.info('delete) aply delete!');
         res.json({ result: 'success' });
     });
 

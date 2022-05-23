@@ -2,41 +2,60 @@
     <div>
         <v-app-bar
         app
-        color="purple"
-        dense
         elevation="4"
         flat
-        outlined
-        fade-img-on-scroll
-        class="d-flex justify-end mb-6"
+        src="https://modo-phinf.pstatic.net/20190417_140/15554692250648Rq2Y_JPEG/mosa4Ri4kd.jpeg"
+        class="d-flex flex-column"
         >
-        <v-card></v-card>
-        <router-link to="/user" v-if="isLogin">
-            <v-btn>
-                신청하러가기
-            </v-btn>
-        </router-link>
-        <router-link to="/admin" v-if="userInfo.auth == 'admin'">
-        <v-btn>
-            관리자
-        </v-btn>
-        </router-link>
-        <v-spacer></v-spacer>
-            <v-img @click="login();" v-if="!isLogin" contain height="40" :src="require('/src/assets/kakaoLogin.png')">
-            </v-img>
-            <v-avatar size="40" v-if="isLogin">
-            <v-img :src="userInfo.thumb"></v-img>
-            </v-avatar>
-            <v-btn
-              color="warning"
-              fab
-              dark
-              small
-              @click="logout();"
-              v-if="isLogin"
-            >
-              로그아웃
-            </v-btn>
+                <router-link to="/" class="mr-auto">
+                    <v-avatar>
+                    <img
+                        src="../../assets/jesusdream.png"
+                        alt="주님이꿈꾸신교회"
+                    >
+                    </v-avatar>
+                </router-link>
+                
+                <router-link to="/user" v-if="isLogin">
+                    <v-btn>
+                        신청하러가기
+                    </v-btn>
+                </router-link>
+                <v-chip
+                    color="purple"
+                    label
+                    link
+                    v-if="isLogin"
+                    class="white--text"
+                    @click="goAplyPage()"
+                    >
+                    신청하러가기
+                </v-chip>
+                
+                <v-icon large color="green" v-if="userInfo.auth == 'admin'" @click="goAdminPage()">
+                    mdi-account-supervisor
+                </v-icon>
+                    <v-img @click="login();" v-if="!isLogin" contain height="40" :src="require('/src/assets/kakaoLogin.png')"></v-img>
+                    <v-chip
+                    color="purple"
+                    label
+                    link
+                    v-if="isLogin"
+                    class="white--text"
+                    >
+                    {{userInfo.nick}} 님
+                    </v-chip>
+                    
+                    <v-btn
+                    fab
+                    small
+                    @click="logout();"
+                    v-if="isLogin"
+                    >
+                    <v-icon small color="pink">
+                        mdi-logout
+                    </v-icon>
+                    </v-btn>
         </v-app-bar>
     </div>
 </template>
@@ -82,6 +101,12 @@ export default {
              .then(()=>{
                 this.$router.push('/');
              });
+        },
+        goAdminPage: function(){
+            this.$router.push('/admin').catch(()=>{})
+        },
+        goAplyPage: function(){
+            this.$router.push('/user').catch(()=>{})
         }
     },
 

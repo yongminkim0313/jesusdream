@@ -416,7 +416,7 @@
               :src="card.src"
               class="white--text align-end"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-              height="200px"
+              height="300px"
             >
               </v-img>
           </v-card>
@@ -479,7 +479,7 @@
       detailAddress:'',
       joinHisSe: '처음참석',
       cards: [
-        { title: '1', src: require('../../assets/jd2.jpeg'), flex: 12 },
+        { title: '1', src: "https://modo-phinf.pstatic.net/20190419_50/15556444931447dN5T_JPEG/mosazECj1j.jpeg?type=a1100", flex: 12 },
         { title: '2', src: require('../../assets/jd3.jpeg'), flex: 6 },
         { title: '3', src: require('../../assets/jd4.jpeg'), flex: 6 },
       ],
@@ -610,7 +610,7 @@
       },
     },
     created: function(){
-      var user = this.$cookies.get('user_info');
+       var user = this.$cookies.get('user_info');
       if(user){
         console.log(user);
         // this.aplyName = user.kakao_account.profile.nickname
@@ -624,44 +624,6 @@
     },
     methods: {
       submit () {
-        
-
-
-var test = {
-    "aplyTotAmt": 10000,
-    "aplyPrgrs": "접수",
-    "aplyDt": "2022-05-22",
-    "aplyName": "김용민",
-    "jikbunSe": "학생",
-    "church": "주님이꿈꾸신교회",
-    "churchSe": "한국기독교침례회",
-    "churchAdtr": "장용성",
-    "churchAddr": "(22389) 인천 중구 은하수로 412  (운남동, 영종센트럴 푸르지오자이)",
-    "churchDtlAddr": "114동 902호",
-    "schdlSe": "2박3일",
-    "phone": "01074418548",
-    "email": "kimyongmin1@naver.com",
-    "checkbox": "동의",
-    "fullAddress": "(22389) 인천 중구 은하수로 412  (운남동, 영종센트럴 푸르지오자이)",
-    "detailAddress": "114동 902호",
-    "joinHisSe": "처음참석",
-    "joinPathSe": [
-        "인터넷 홍보(youtube, instar, facebook)",
-        "포스터, 브로셔"
-    ],
-    "campCnt": {
-        "chodeung": 4,
-        "cheongsonyeon": 3,
-        "cheongnyeon": 2,
-        "jangnyeon": 1,
-        "sayeogja": 1
-    }
-}
-this.axios.post('/aply',test);
-
-
-
-
         this.$v.$touch();
 
         if (this.$v.$invalid) {
@@ -688,9 +650,6 @@ this.axios.post('/aply',test);
         
 
         var aplyContents = {
-          aplyTotAmt: 10000, //신청총금액
-          aplyPrgrs: '접수', //신청진행상황(접수, 접수완료, 신청취소)
-          aplyDt: '2022-05-22', //신청일시
           aplyName: this.aplyName,
           jikbunSe: this.jikbunSe,
           church: this.church,
@@ -710,7 +669,12 @@ this.axios.post('/aply',test);
         }
         
         console.log(aplyContents);
-        this.axios.post('/aply',aplyContents);
+        this.axios.post('/aply',aplyContents)
+        .then((result)=>{
+          console.log(result);
+          this.$awn.success('신청이 완료되었습니다.');
+          this.$router.push('/myAply');
+        })
       }
 
       },
