@@ -17,14 +17,9 @@ module.exports = (app, winston) => {
         socket.on('reconnecting', () => { winston.info("@ socket reconnecting @@@@"); });
         socket.on('reconnection', () => { winston.info("@ socket reconnection @@@@"); });
 
-        socket.on('order', (data) => {
-            console.log('order', data.order);
-
-            var userInfo = new Object();
-            userInfo['customerName'] = data.order.customerName;
-            userInfo['id'] = socket.id;
-            userList.push(userInfo);
-            socket.broadcast.emit('order', 'refresh');
+        socket.on('aply', (data) => {
+            console.log('aply', data);
+            socket.broadcast.emit('aply', data);
         });
 
         socket.on('sendMsgUser', (data) => {

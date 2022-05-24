@@ -235,19 +235,19 @@
           <v-card-title>참여인원</v-card-title>
 
         </v-col>
-        <v-col cols="3" md="3" sm="4">
+        <v-col cols="4" md="4" sm="4">
           초등 {{aplyData.campCnt.chodeung}} 명
         </v-col>
-        <v-col cols="3" md="3" sm="4">
+        <v-col cols="4" md="4" sm="4">
           청소년 {{aplyData.campCnt.cheongsonyeon}} 명
         </v-col>
-        <v-col cols="3" md="3" sm="4">
+        <v-col cols="4" md="4" sm="4">
           청년 {{aplyData.campCnt.cheongnyeon}} 명
         </v-col>
-        <v-col cols="3" md="3" sm="4">
+        <v-col cols="4" md="4" sm="4">
           장년 {{aplyData.campCnt.jangnyeon}} 명
         </v-col>
-        <v-col cols="3" md="3" sm="4">
+        <v-col cols="4" md="4" sm="4">
           사역자 {{aplyData.campCnt.sayeogja}} 명
         </v-col>
       </v-row>

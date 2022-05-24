@@ -1,9 +1,77 @@
 <template>
-  <v-parallax src="https://modo-phinf.pstatic.net/20190419_50/15556444931447dN5T_JPEG/mosazECj1j.jpeg?type=a1100"
-  height="800">
+    <v-card
+    class="mx-auto my-5 pa-5"
+    max-width="800"
+  >
     <v-container fluid class="pa-5">
-    <v-row>
-      <v-col cols="12" md="4" sm="12" v-if="isLogin">
+      <v-row v-if="!isLogin">
+      <v-col cols="12" md="6" sm="12">
+        <v-card>
+          <v-img 
+            src="https://modo-phinf.pstatic.net/20190419_277/1555644483981oEXf1_JPEG/mosanZXmAK.jpeg?type=a1100"
+            class="white--text align-end"
+            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+          >
+          </v-img>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6" sm="12">
+          <v-card>
+            <v-img
+              :src="require('../assets/jd3.jpeg')"
+              class="white--text align-end"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            >
+            </v-img>
+          </v-card>
+      </v-col>
+      <v-col cols="12" md="6" sm="12">
+          <v-card>
+            <v-img
+              :src="require('../assets/jd4.jpeg')"
+              class="white--text align-end"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            >
+              <v-card-title></v-card-title>
+            </v-img>
+          </v-card>
+      </v-col>
+      <v-col cols="12" md="6" sm="12">
+          <v-card>
+            <v-img
+              :src="require('../assets/jd5.jpeg')"
+              class="white--text align-end"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            >
+              <v-card-title></v-card-title>
+            </v-img>
+          </v-card>
+      </v-col>
+      <v-col cols="12" md="6" sm="12">
+          <v-card>
+            <v-img
+              :src="require('../assets/jd6.jpeg')"
+              class="white--text align-end"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            >
+              <v-card-title></v-card-title>
+            </v-img>
+          </v-card>
+      </v-col>
+      <v-col cols="12" md="6" sm="12">
+          <v-card>
+            <v-img
+              :src="require('../assets/jd7.jpeg')"
+              class="white--text align-end"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            >
+              <v-card-title></v-card-title>
+            </v-img>
+          </v-card>
+      </v-col>
+    </v-row>
+    <v-row v-if="isLogin">
+      <v-col cols="12" md="6" sm="12">
         <router-link to="/user">
         <v-card>
           <v-img 
@@ -16,7 +84,7 @@
         </v-card>
         </router-link>
       </v-col>
-      <v-col cols="12" md="4" sm="12" v-if="isLogin">
+      <v-col cols="12" md="6" sm="12">
         <router-link to="/myAply">
           <v-card>
             <v-img
@@ -29,7 +97,7 @@
           </v-card>
           </router-link>
       </v-col>
-      <v-col cols="12" md="4" sm="12" v-if="isLogin">
+      <v-col cols="12" md="6" sm="12">
           <v-card>
             <v-img
               :src="require('../assets/jd4.jpeg')"
@@ -40,7 +108,7 @@
             </v-img>
           </v-card>
       </v-col>
-      <v-col cols="12" md="4" sm="12" v-if="isLogin">
+      <v-col cols="12" md="6" sm="12">
           <v-card>
             <v-img
               :src="require('../assets/jd5.jpeg')"
@@ -51,7 +119,7 @@
             </v-img>
           </v-card>
       </v-col>
-      <v-col cols="12" md="4" sm="12" v-if="isLogin">
+      <v-col cols="12" md="6" sm="12">
           <v-card>
             <v-img
               :src="require('../assets/jd6.jpeg')"
@@ -62,7 +130,7 @@
             </v-img>
           </v-card>
       </v-col>
-      <v-col cols="12" md="4" sm="12" v-if="isLogin">
+      <v-col cols="12" md="6" sm="12">
           <v-card>
             <v-img
               :src="require('../assets/jd7.jpeg')"
@@ -76,7 +144,7 @@
     </v-row>
 
     </v-container>
-  </v-parallax>
+    </v-card>
 </template>
 <script>
 

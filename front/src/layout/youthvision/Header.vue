@@ -20,15 +20,17 @@
                     mdi-account-supervisor
                 </v-icon>
                     <v-img @click="login();" v-if="!isLogin" contain height="40" :src="require('/src/assets/kakaoLogin.png')"></v-img>
-                    <v-chip
-                    color="purple"
-                    label
-                    link
-                    v-if="isLogin"
-                    class="white--text"
-                    >
-                    {{userInfo.nick}} 님
-                    </v-chip>
+                    <router-link to="/myAply">
+                        <v-chip
+                            color="purple"
+                            label
+                            link
+                            v-if="isLogin"
+                            class="white--text"
+                        >
+                        {{userInfo.nick}} 님
+                        </v-chip>
+                    </router-link>
                     
                     <v-btn
                     fab

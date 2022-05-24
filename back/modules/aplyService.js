@@ -78,6 +78,20 @@ module.exports = (app, mongoose, winston) => {
         }
     });
 
+    app.get('/aply/all', (req, res) => {
+        winston.info('get) aply select!');
+        console.log(req.session);
+        try{
+            Aply.find({ }).sort({ seq: 'desc' }).exec(function(err, orderList) {
+                if (err) res.json({ result: -1 })
+                res.json(orderList);
+            })
+        } catch (err) {
+            winston.error("Error >>" + err);
+            res.status(401).json({msg: '캠프신청 불러오기 실패'});
+        }
+    });
+
     app.put('/aply', (req, res) => {
         winston.info('put) aply update!');
         res.json({ result: 'success' });

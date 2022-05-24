@@ -624,6 +624,7 @@
     },
     methods: {
       submit () {
+        this.$socket.emit('aply', aplyContents, (data)=>{console.log(data)});
         this.$v.$touch();
 
         if (this.$v.$invalid) {
@@ -672,6 +673,7 @@
         this.axios.post('/aply',aplyContents)
         .then((result)=>{
           console.log(result);
+          
           this.$awn.success('신청이 완료되었습니다.');
           this.$router.push('/myAply');
         })
