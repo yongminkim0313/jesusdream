@@ -624,11 +624,10 @@
     },
     methods: {
       submit () {
-        this.$socket.emit('aply', aplyContents, (data)=>{console.log(data)});
         this.$v.$touch();
 
         if (this.$v.$invalid) {
-        // 1. Loop the keys
+          // 1. Loop the keys
         for (let key in Object.keys(this.$v)) {
           // 2. Extract the input
           const input = Object.keys(this.$v)[key];
@@ -674,6 +673,7 @@
         .then((result)=>{
           console.log(result);
           
+          this.$socket.emit('aply', aplyContents, (data)=>{console.log(data)});
           this.$awn.success('신청이 완료되었습니다.');
           this.$router.push('/myAply');
         })
