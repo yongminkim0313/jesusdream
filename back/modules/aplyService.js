@@ -64,6 +64,29 @@ module.exports = (app, mongoose, winston) => {
         }
     });
 
+    app.get('/aply/one', (req, res) => {
+        winston.info('get) aply select!');
+        console.log(req.query)
+        if(!req.query.phone|| !req.query.seq){
+            res.status(402).json({msg: '올바른 접근이 아닙니다.'})
+            return; 
+        }
+        try{
+            Aply.findOne({ phone : req.query.phone, seq : req.query.seq }).sort({ seq: 'desc' }).exec(function(err, aply) {
+                if (err) res.json({ result: -1 })
+                console.log(aply);
+                if(!aply) {
+                    res.status(402).json({msg:'값이 존재하지 않습니다.'})
+                    return;
+                }
+                res.json(aply);
+            })
+        } catch (err) {
+            winston.error("Error >>" + err);
+            res.status(401).json({msg: '캠프신청 불러오기 실패'});
+        }
+    });
+
     app.get('/aply', (req, res) => {
         winston.info('get) aply select!');
         console.log(req.session);
@@ -92,8 +115,36 @@ module.exports = (app, mongoose, winston) => {
         }
     });
 
-    app.put('/aply', (req, res) => {
+    app.put('/aply', async(req, res) => {
         winston.info('put) aply update!');
+        console.log(req.body);
+        var item = req.body;
+        try{
+        var result = await Aply.updateOne({ seq: item.seq }, {
+            $set: {
+                aplyPrgrs: item.aplyPrgrs,
+                aplyName: item.aplyName,
+                jikbunSe: item.jikbunSe,
+                church: item.church,
+                churchSe: item.churchSe,
+                churchAdtr: item.churchAdtr,
+                churchAddr: item.churchAddr,
+                churchDtlAddr: item.churchDtlAddr,
+                schdlSe: item.schdlSe,
+                phone: item.phone,
+                email: item.email,
+                checkbox: item.checkbox,
+                fullAddress: item.fullAddress,
+                detailAddress:item.detailAddress,
+                joinHisSe: item.joinHisSe,
+                joinPathSe: item.joinPathSe,
+                campCnt: item.campCnt,
+            },
+            })
+            console.log(result);
+        }catch(err){
+            winston.error(err);
+        } 
         res.json({ result: 'success' });
     });
 

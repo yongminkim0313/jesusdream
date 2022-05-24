@@ -37,17 +37,20 @@
             dense
             :headers="headers"
             :items="aplyList"
-            item-key="name"
-            class="elevation-7 pa-2"
+            item-key="seq"
+            class="elevation-7"
         >
-        <!-- <template v-slot:[`item.seq`]="{ item }">
-        <v-btn
-          elevation="2"
-          @click="deleteAply(item);"
-        >
-          삭제
-        </v-btn>
-        </template> -->
+        <template v-slot:[`item.aplyPrgrs`]="{ item }">
+          <v-select
+            v-model="item.aplyPrgrs"
+            :items="aplyPrgrsList"
+            dense
+            solo
+            class="pt-5"
+            width="10"
+            @change="saveAply(item)"
+          ></v-select>
+        </template>
         <template v-slot:[`item.aplyDt`]="{ item }">
           <v-row>{{item.aplyDt }}</v-row>
           <v-row class="text-truncate">{{diffTime(item.aplyDt)}}</v-row>
@@ -133,12 +136,13 @@ export default {
           //{text: '카카오아이디', value: 'kakaoEmail'},
           {text: '총금액', value: 'aplyTotAmt'}, //신청총금액
         ],
+        aplyPrgrsList:['접수','가등록','등록완료','등록취소']
       }
     },
   created() {
       // this.findaplyList();
       var _this = this;
-      _this.getAplyAll();
+      this.getAplyAll();
       this.$socket.on('aply', (data)=>{
         console.log(data);
         _this.$awn.success('신청이 등록 되었습니다.');
@@ -152,6 +156,7 @@ export default {
       var _this = this;
       this.axios.get('/aply/all',{})
       .then((result)=>{
+        console.log(result);
         _this.aplyList = result.data;
        })
     },
@@ -180,6 +185,12 @@ export default {
     sendMsgUser(order){
       console.log(order);
       this.$socket.emit('sendMsgUser', { customerName: order.customerName, msg:'주문접수되었습니다.'})
+    },
+    saveAply(item){
+      this.axios.put('/aply',item)
+      .then((data)=>{
+        console.log(data);
+       })
     }
   }
  };

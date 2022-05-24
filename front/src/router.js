@@ -40,6 +40,7 @@
      },
      {
          path: "/myAply",
+         name: "MyAply",
          components: {
              header: Header,
              default: MyAply,

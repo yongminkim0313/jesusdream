@@ -235,20 +235,45 @@
           <v-card-title>참여인원</v-card-title>
 
         </v-col>
-        <v-col cols="4" md="4" sm="4">
-          초등 {{aplyData.campCnt.chodeung}} 명
+         <v-col cols="3" md="3" sm="4">
+          <v-select
+            v-model="aplyData.campCnt.chodeung"
+            :items="cnt50"
+            attach
+            label="초등"
+          ></v-select>
         </v-col>
-        <v-col cols="4" md="4" sm="4">
-          청소년 {{aplyData.campCnt.cheongsonyeon}} 명
+        <v-col cols="3" md="3" sm="4">
+          <v-select
+            v-model="aplyData.campCnt.cheongsonyeon"
+            :items="cnt50"
+            attach
+            label="청소년"
+          ></v-select>
         </v-col>
-        <v-col cols="4" md="4" sm="4">
-          청년 {{aplyData.campCnt.cheongnyeon}} 명
+        <v-col cols="3" md="3" sm="4">
+          <v-select
+            v-model="aplyData.campCnt.cheongnyeon"
+            :items="cnt50"
+            attach
+            label="청년"
+          ></v-select>
         </v-col>
-        <v-col cols="4" md="4" sm="4">
-          장년 {{aplyData.campCnt.jangnyeon}} 명
+        <v-col cols="3" md="3" sm="4">
+          <v-select
+            v-model="aplyData.campCnt.jangnyeon"
+            :items="cnt50"
+            attach
+            label="장년"
+          ></v-select>
         </v-col>
-        <v-col cols="4" md="4" sm="4">
-          사역자 {{aplyData.campCnt.sayeogja}} 명
+        <v-col cols="3" md="3" sm="4">
+          <v-select
+            v-model="aplyData.campCnt.sayeogja"
+            :items="cnt50"
+            attach
+            label="사역자"
+          ></v-select>
         </v-col>
       </v-row>
       <v-row><!--참석인원변경안내-->
@@ -333,18 +358,27 @@
             '성도',
             '기타',
         ],
+        cnt50:[]
     }),
 
     computed: {},
     created: function(){
+       for(var i = 0 ; i < 50; i++){
+          //this.cnt50.push({disp:i+'명',value:i});
+          this.cnt50.push(i);
+        }
        var _this = this;
-       this.axios.get('/aply')
+       var params = this.$route.params
+       this.axios.get('/aply/one',{params:{phone : params.phone ,seq : params.seq}})
         .then((result)=>{
-          _this.aplyData = result.data[0]
+          _this.aplyData = result.data
           console.log('aplyData:::',_this.aplyData )
         })
     },
-    methods: {}
+    methods: {
+
+      
+    }
   }
 </script>
 

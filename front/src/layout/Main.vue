@@ -84,8 +84,8 @@
         </v-card>
         </router-link>
       </v-col>
-      <v-col cols="12" md="6" sm="12">
-        <router-link to="/myAply">
+      <v-col cols="12" md="6" sm="12" v-for="item in myAplyList" :key="item.seq">
+        <router-link :to="{name:'MyAply', params:{phone: item.phone, seq:item.seq}}">
           <v-card>
             <v-img
               :src="require('../assets/jd3.jpeg')"
@@ -153,6 +153,7 @@ export default {
   components: { },
   data(){return {
     isLogin: false,
+    myAplyList: []
   }},
   created() {
     var user = this.$cookies.get("user_info");
@@ -174,7 +175,7 @@ export default {
       if(this.isLogin){
         this.axios.get('/aply')
         .then((result)=>{
-          console.log(result.data);
+          this.myAplyList = result.data;
         })
       }
     }
