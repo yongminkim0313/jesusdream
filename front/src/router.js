@@ -6,9 +6,8 @@
  import Admin from "./layout/youthvision/Admin.vue";
  import User from "./layout/youthvision/User.vue";
  import MyAply from "./layout/youthvision/MyAply.vue";
+ import MyAplyList from "./layout/youthvision/MyAplyList.vue";
  import Main from "./layout/Main.vue";
-
-
 
  Vue.use(VueRouter);
  const route = [
@@ -40,7 +39,7 @@
              default: User,
              footer: Footer
          },
-         meta: { unauthorized: true }
+         meta: { unauthorized: true } 
      },
      {
          path: "/myAply",
@@ -60,6 +59,16 @@
              default: Admin
          },
          meta:{auth:'admin'}
+     },
+     {
+         path: "/myAplyList",
+         name: 'MyAplyList',
+         components: {
+             header: Header,
+             default: MyAplyList,
+             footer: Footer
+         },
+         meta: { unauthorized: true }
      }
  ];
  const router = new VueRouter({ mode: 'history', routes: route });

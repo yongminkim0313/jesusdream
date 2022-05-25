@@ -42,9 +42,19 @@
             <v-icon large color="white" v-if="userInfo.auth == 'admin'" @click="goAdminPage()" class="">
                 mdi-account-supervisor
             </v-icon>
+            
+            </v-chip>
+            <v-chip
+                color="purple"
+                label
+                link
+                v-if="isLogin"
+                class="white--text mr-5"
+                @click="goMyAplyList()"
+            >
             {{userInfo.nick}} 님
             </v-chip>
-            
+
             <v-btn
                 fab
                 small
@@ -120,7 +130,10 @@ export default {
             .then(()=>{
 
             })
-        }
+        },
+        goMyAplyList: function(){
+            this.$router.push('/myAplyList').catch(()=>{})
+        },
     },
 
 }
