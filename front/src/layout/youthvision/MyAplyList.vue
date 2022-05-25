@@ -35,7 +35,7 @@ export default {
     isLogin: false,
     myAplyList: [],
     headers: [
-          {text: '번호', value: 'seq', align: 'center',sortable: false },
+          //{text: '번호', value: 'seq', align: 'center',sortable: false },
           {text: '상태', value: 'aplyPrgrs'}, //신청진행상황(접수, 접수완료, 신청취소)
           {text: '신청일시', value: 'aplyDt'}, //신청일시
           {text: '신청자명', value: 'aplyName'},
