@@ -1,26 +1,29 @@
 <template>
-    <v-data-table fixed-header dense :headers="headers" :items="myAplyList" item-key="seq" class="elevation-7" @click:row="clickList"
-    disable-sort
-    hide-default-footer
-    >
-    <template v-slot:[`item.campCnt`]="{ item }">
-    <v-chip small v-if="item.campCnt.chodeung != 0">
-        {{ '초등:'+item.campCnt.chodeung}}
-    </v-chip>
-    <v-chip small v-if="item.campCnt.cheongsonyeon != 0">
-        {{ '청소년:'+item.campCnt.cheongsonyeon}}
-    </v-chip>
-    <v-chip small v-if="item.campCnt.cheongnyeon != 0">
-        {{ '청년:'+item.campCnt.cheongnyeon}}
-    </v-chip>
-    <v-chip small v-if="item.campCnt.jangnyeon != 0">
-        {{ '장년:'+item.campCnt.jangnyeon}}
-    </v-chip>
-    <v-chip small v-if="item.campCnt.sayeogja != 0">
-        {{ '사역자:'+item.campCnt.sayeogja}}
-    </v-chip>
-    </template>
-    </v-data-table>
+    <v-card>
+        <v-card-title>나의 신청내역</v-card-title>
+        <v-data-table fixed-header dense :headers="headers" :items="myAplyList" item-key="seq" class="elevation-7" @click:row="clickList"
+            disable-sort
+            hide-default-footer
+        >
+            <template v-slot:[`item.campCnt`]="{ item }">
+                <v-chip small v-if="item.campCnt.chodeung != 0">
+                {{ '초등:'+item.campCnt.chodeung}}
+            </v-chip>
+            <v-chip small v-if="item.campCnt.cheongsonyeon != 0">
+                {{ '청소년:'+item.campCnt.cheongsonyeon}}
+            </v-chip>
+            <v-chip small v-if="item.campCnt.cheongnyeon != 0">
+                {{ '청년:'+item.campCnt.cheongnyeon}}
+            </v-chip>
+            <v-chip small v-if="item.campCnt.jangnyeon != 0">
+                {{ '장년:'+item.campCnt.jangnyeon}}
+            </v-chip>
+            <v-chip small v-if="item.campCnt.sayeogja != 0">
+                {{ '사역자:'+item.campCnt.sayeogja}}
+            </v-chip>
+            </template>
+        </v-data-table>
+    </v-card>
 </template>
 
 <script>
@@ -56,7 +59,7 @@ export default {
           //{text: '수정자', value: 'updtNm'},
           //{text: '수정일시', value: 'updtDt'},
           //{text: '카카오아이디', value: 'kakaoEmail'},
-          {text: '총금액', value: 'aplyTotAmt'}, //신청총금액
+          //{text: '총금액', value: 'aplyTotAmt'}, //신청총금액
         ],
   }},
   created() {

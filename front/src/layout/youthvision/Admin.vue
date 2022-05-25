@@ -1,6 +1,6 @@
 <template>
   <v-card>
-<v-navigation-drawer
+            <!-- <v-navigation-drawer
             app
             permanent
             mini-variant
@@ -30,7 +30,7 @@
                 </v-list-item-content>
                 </v-list-item>
             </v-list>
-            </v-navigation-drawer>
+            </v-navigation-drawer> -->
 
         <v-data-table
             fixed-header
@@ -106,7 +106,7 @@ export default {
       return {
         aplyList: [],
         items: [
-          { title: '주문접수내역', icon: 'mdi-home-city' },
+          { title: '캠프등록현황', icon: 'mdi-home-city' },
           { title: '완료내역', icon: 'mdi-account-group-outline' },
         ],
          headers: [
@@ -134,7 +134,7 @@ export default {
           //{text: '수정자', value: 'updtNm'},
           //{text: '수정일시', value: 'updtDt'},
           //{text: '카카오아이디', value: 'kakaoEmail'},
-          {text: '총금액', value: 'aplyTotAmt'}, //신청총금액
+          //{text: '총금액', value: 'aplyTotAmt'}, //신청총금액
         ],
         aplyPrgrsList:['접수','가등록','등록완료','등록취소']
       }
