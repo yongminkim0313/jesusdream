@@ -31,7 +31,13 @@
                 </v-list-item>
             </v-list>
             </v-navigation-drawer> -->
-
+        <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
         <v-data-table
             fixed-header
             dense
@@ -39,6 +45,7 @@
             :items="aplyList"
             item-key="seq"
             class="elevation-7"
+            :search="search"
         >
         <template v-slot:[`item.aplyPrgrs`]="{ item }">
           <v-select
@@ -104,6 +111,7 @@ export default {
   },
   data(){
       return {
+        search:'',
         aplyList: [],
         items: [
           { title: '캠프등록현황', icon: 'mdi-home-city' },

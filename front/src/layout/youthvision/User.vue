@@ -421,7 +421,7 @@
             v-model="kakaoEmail"
             ref="kakaoEmail"
             :error-messages="kakaoEmailErrors"
-            label="등록 신청후 홈페이지확인 E-mail ( kakao 아이디로 로그인시 더 편리합니다 )"
+            label="확인 E-mail ( kakao 아이디로 로그인시 더 편리합니다 )"
             required
             @input="$v.kakaoEmail.$touch()"
             @blur="$v.kakaoEmail.$touch()"

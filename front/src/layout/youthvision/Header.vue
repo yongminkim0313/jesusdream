@@ -22,9 +22,10 @@
 
             <v-text-field
             v-model="email"
-            label="간편 EMIAIL 확인"
+            label="EMIAIL로 확인"
             hide-details
             rounded
+            v-if="!isLogin"
             @keydown.enter="loginGuest();"
           ></v-text-field>
             </v-card>
