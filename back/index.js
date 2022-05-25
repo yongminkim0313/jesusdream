@@ -69,7 +69,10 @@ app.use(function(req, res, next) {
 });
 app.post('/getAccessToken', (req, res) => {
     console.log('/getAccessToken');
-    console.log(req.session.userInfo);
+    winston.info(req.session.userInfo);
+    winston.info(req.session.userInfo.kakao_account.profile);
+    winston.info(req.session.userInfo.kakao_account.profile.nickname);
+    
     res.json({
         access_token: req.session.access_token,
         user_info: req.session.userInfo,
@@ -79,10 +82,14 @@ app.post('/getAccessToken', (req, res) => {
 app.get('/auth', async(req, res) => {
     try {
         var nick = req.session.userInfo.kakao_account.profile.nickname;
+        
         if('kimyongmin1@kakao.com' == req.session.userInfo.kakao_account.email|| nick.indexOf('YOUTHVISION') > -1 || nick.indexOf('선영') > -1){
             req.session.auth = 'admin';
         }else{
             req.session.auth = 'user';
+        }
+        if('lovely_s2_@nate.com' == req.session.userInfo.kakao_account.email){
+            req.session.auth = 'admin'
         }
         res.status(200).json({auth:req.session.auth});
     } catch (err) {
