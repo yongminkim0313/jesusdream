@@ -30,12 +30,16 @@ module.exports = (app, winston) => {
             });
             req.session.userInfo = response2.data;
             req.session.access_token = `${access_token}`;
-            if('kimyongmin1@kakao.com' == req.session.userInfo.kakao_account.email){
+            if('kimyongmin1@kakao.com' == req.session.userInfo.kakao_account.email || nick.indexOf('YOUTHVISION') > -1 || nick.indexOf('선영') > -1){
                 req.session.userInfo.auth = 'admin';
             }else{
                 req.session.userInfo.auth = 'user';
             }
-            console.log('req.session', req.session);
+            
+            if('lovely_s2_@nate.com' == req.session.userInfo.kakao_account.email){
+                req.session.auth = 'admin'
+            }
+            winston.info('req.session', req.session);
             req.session.save(function() {
                 res.redirect(`${process.env.MAIN_URL}`);
             });
