@@ -5,9 +5,8 @@
       <v-col cols="12" md="6" sm="12">
         <v-card @click="clickReg()">
           <v-img 
-            :src="require('../assets/jang.png')"
-            class="white--text align-end"
-            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            :src="require('../assets/about.png')"
+            class="black--text align-end"
           >
           <v-card-title>등록신청</v-card-title>
           </v-img>

@@ -34,11 +34,12 @@
     (5.31까지 73,000원 6.30까지 74,000원 7.30까지 75,000원 8월부터 78,000원)<br/>
     ●1박 2일 참여시 60,000원 무박 2일 참여시 50,000원<br/>
 <br/>
-    ●등록: 1인 1만원 선입금시 정식등록  070-7796-1009<br/>
-    youthvision.co.kr <br/>
+    ●등록: 1인 1만원 선입금시 정식등록  
     ●계좌 : 국민 172601-04-185856 (유스비전)<br/>
 <br/>
     ●주최: 유스비전미니스트리<br/>
+    <br />070-7796-1009<br/>
+    youthvision.co.kr <br/>
 <br/>
     ※유스비전캠프는 노는 캠프가 아닙니다. 살아계신 하나님을 만나는 캠프입니다.
   </v-card-text>
@@ -109,7 +110,7 @@
             v-model="churchSe"
             ref="churchSe"
             :error-messages="churchSeErrors"
-            label="교단 (ex:한국기독교침례회)"
+            label="교단 (ex:기독교한국침례회)"
             required
             @input="$v.churchSe.$touch()"
             @blur="$v.churchSe.$touch()"
@@ -384,6 +385,17 @@
           </v-card-text>
 
         </v-col>
+        <v-col cols="12" md="12">
+          <v-text-field
+            v-model="pyrNm"
+            ref="pyrNm"
+            :error-messages="pyrNmErrors"
+            label="입금자명"
+            required
+            @input="$v.pryNm.$touch()"
+            @blur="$v.pryNm.$touch()"
+          ></v-text-field>
+        </v-col>
       </v-row>
       <v-row><!--자동취소 동의-->
         <v-col>
@@ -458,6 +470,7 @@
       email: { required, email },
       fullAddress: {required },
       detailAddress: {required },
+      pyrNm: {required},
       checkbox: {
         checked (val) {
           return val
@@ -492,8 +505,8 @@
       joinHisSe: '처음참석',
       cards: [
         { title: '1', src: "https://modo-phinf.pstatic.net/20190419_50/15556444931447dN5T_JPEG/mosazECj1j.jpeg?type=a1100", flex: 12 },
-        { title: '2', src: require('../../assets/jd3.jpeg'), flex: 6 },
-        { title: '3', src: require('../../assets/jd4.jpeg'), flex: 6 },
+        { title: '2', src: require('../../assets/jd3.jpeg'), flex: 12 },
+        { title: '3', src: require('../../assets/jd4.jpeg'), flex: 12 },
       ],
       joinPathSe: [],
       paths: [
@@ -513,6 +526,7 @@
       cnt50:[],
       kakaoEmail:'',
       isKakaoLogin: false,
+      pyrNm: '',
     }),
 
     computed: {
@@ -614,6 +628,12 @@
         !this.$v.kakaoEmail.required && errors.push('E-mail을 입력해주세요')
         return errors
       },
+      pyrNmErrors () {
+        const errors = []
+        if (!this.$v.pyrNm.$dirty) return errors
+        !this.$v.pyrNm.required && errors.push('입금자명을 입력해 주세요')
+        return errors
+      },
     },
     created: function(){
        var user = this.$cookies.get('user_info');
@@ -672,6 +692,7 @@
           joinHisSe: this.joinHisSe,
           joinPathSe: this.joinPathSe,
           campCnt: this.campCnt,
+          pyrNm: this.pyrNm
         }
         
         console.log(aplyContents);

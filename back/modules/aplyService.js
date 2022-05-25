@@ -32,6 +32,7 @@ module.exports = (app, mongoose, winston) => {
         updtNm: String,
         updtDt: String,
         kakaoEmail: String,
+        pyrNm: String
       });
 
     aplySchema.plugin(autoIncrement.plugin, {
@@ -54,9 +55,10 @@ module.exports = (app, mongoose, winston) => {
             if(!req.session.userInfo){
                 res.status(401).json({error_code:'kakao acount is null' , msg:"세션에 사용자가 없습니다."});
             }
-
+            var cm = aply.campCnt
+            var cnt = cm.chodeung+cm.cheongsonyeon+cm.cheongnyeon+cm.jangnyeon+cm.sayeogja; //총인원
             aply.kakaoEmail = req.session.userInfo.kakao_account.email;
-            aply.aplyTotAmt = 10000 //신청총금액
+            aply.aplyTotAmt = cnt*10000 //신청총금액
             aply.aplyPrgrs = '접수' //신청진행상황(접수, 접수완료, 신청취소)
             aply.aplyDt = today.format('YYYY-MM-DD') //신청일시
             await aply.save()
@@ -145,6 +147,7 @@ module.exports = (app, mongoose, winston) => {
                 joinHisSe: item.joinHisSe,
                 joinPathSe: item.joinPathSe,
                 campCnt: item.campCnt,
+                pyrNm: item.pyrNm,
             },
             })
             console.log('result:::::::',result);

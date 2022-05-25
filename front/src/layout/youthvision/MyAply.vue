@@ -83,7 +83,7 @@
             v-model="churchSe"
             ref="churchSe"
             :error-messages="churchSeErrors"
-            label="교단 (ex:한국기독교침례회)"
+            label="교단 (ex:기독교한국침례회)"
             required
             @input="$v.churchSe.$touch()"
             @blur="$v.churchSe.$touch()"
@@ -358,6 +358,17 @@
           </v-card-text>
 
         </v-col>
+        <v-col cols="12" md="12">
+          <v-text-field
+            v-model="pyrNm"
+            ref="pyrNm"
+            :error-messages="pyrNmErrors"
+            label="입금자명"
+            required
+            @input="$v.pryNm.$touch()"
+            @blur="$v.pryNm.$touch()"
+          ></v-text-field>
+        </v-col>
       </v-row>
       <v-row><!--자동취소 동의-->
         <v-col>
@@ -423,6 +434,7 @@
       email: { required, email },
       fullAddress: {required },
       detailAddress: {required },
+      pyrNm: {required},
       checkbox: {
         checked (val) {
           return val
@@ -490,7 +502,8 @@
         jangnyeon: 0,
         sayeogja: 0,
       },
-      cnt50:[]
+      cnt50:[],
+      pyrNm: '',
     }),
 
     computed: {
@@ -585,6 +598,12 @@
         }
         return selections
       },
+      pyrNmErrors () {
+        const errors = []
+        if (!this.$v.pyrNm.$dirty) return errors
+        !this.$v.pyrNm.required && errors.push('입금자명을 입력해 주세요')
+        return errors
+      },
     },
     created: function(){
        var user = this.$cookies.get('user_info');
@@ -641,6 +660,7 @@
           joinHisSe: this.joinHisSe,
           joinPathSe: this.joinPathSe,
           campCnt: this.campCnt,
+          pyrNm: this.pyrNm
         }
         
         console.log(aplyContents);
