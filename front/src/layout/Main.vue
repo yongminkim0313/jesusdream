@@ -23,14 +23,20 @@
               <v-img 
                 :src="slide"
                 class="black--text align-end"
+                contain
                 height="400"
+                max-heigth="400"
               ></v-img>
             </div>
           </v-row>
         </v-sheet>
       </v-carousel-item>
     </v-carousel>
-    
+    <v-img 
+      :src="require('../assets/about.png')"
+      class="black--text align-end"
+      contain
+    ></v-img>
     <v-btn @click="clickReg()">등록신청</v-btn>
     <v-btn @click="clickAbout()">About</v-btn>
 
@@ -44,7 +50,6 @@ export default {
   data(){return {
     isLogin: false,
     slides: [
-      require('../assets/about.png'),
       require('../assets/jd5.jpeg'),
       require('../assets/jd6.jpeg'),
       require('../assets/jd9.jpeg'),
