@@ -1,5 +1,8 @@
 <template>
-    <v-data-table fixed-header dense :headers="headers" :items="myAplyList" item-key="seq" class="elevation-7" @click:row="clickList">
+    <v-data-table fixed-header dense :headers="headers" :items="myAplyList" item-key="seq" class="elevation-7" @click:row="clickList"
+    disable-sort
+    hide-default-footer
+    >
     <template v-slot:[`item.campCnt`]="{ item }">
     <v-chip small v-if="item.campCnt.chodeung != 0">
         {{ '초등:'+item.campCnt.chodeung}}
