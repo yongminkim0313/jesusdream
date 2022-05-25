@@ -79,7 +79,7 @@ app.post('/getAccessToken', (req, res) => {
 app.get('/auth', async(req, res) => {
     try {
         var nick = req.session.userInfo.kakao_account.profile.nickname;
-        if('kimyongmin1@kakao.com' == req.session.userInfo.kakao_account.email|| nick.indexOf('YOUTHVISION')){
+        if('kimyongmin1@kakao.com' == req.session.userInfo.kakao_account.email|| nick.indexOf('YOUTHVISION') > -1 || nick.indexOf('선영') > -1){
             req.session.auth = 'admin';
         }else{
             req.session.auth = 'user';
