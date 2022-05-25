@@ -39,7 +39,7 @@
                 v-if="isLogin"
                 class="white--text mr-5"
             >
-            <v-icon large color="white" v-if="userInfo.auth == 'admin'" @click="goAdminPage()" class="">
+            <v-icon large color="white" v-if="userInfo.auth == 'admin'" @click="goAdminPage()">
                 mdi-account-supervisor
             </v-icon>
             

@@ -69,14 +69,19 @@ app.use(function(req, res, next) {
 });
 app.post('/getAccessToken', (req, res) => {
     console.log('/getAccessToken');
-    winston.info(req.session.userInfo);
-    winston.info(req.session.userInfo.kakao_account.profile);
-    winston.info(req.session.userInfo.kakao_account.profile.nickname);
-    
-    res.json({
-        access_token: req.session.access_token,
-        user_info: req.session.userInfo,
-    });
+    if(req.session.userInfo && req.session.access_token){
+
+        winston.info(req.session.userInfo);
+        winston.info(req.session.userInfo.kakao_account.profile);
+        winston.info(req.session.userInfo.kakao_account.profile.nickname);
+        
+        res.json({
+            access_token: req.session.access_token,
+            user_info: req.session.userInfo,
+        });
+    }else{
+        res.status(200).json({})
+    }
 });
 
 app.get('/auth', async(req, res) => {

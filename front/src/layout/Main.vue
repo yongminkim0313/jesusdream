@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mx-auto my-5 pa-5" max-width="800">
+    <v-container fluid class="pa-0">
     <v-carousel
       cycle
       height="500"
@@ -39,8 +39,7 @@
     ></v-img>
     <v-btn @click="clickReg()">등록신청</v-btn>
     <v-btn @click="clickAbout()">About</v-btn>
-
-    </v-card>
+  </v-container>
 </template>
 <script>
 

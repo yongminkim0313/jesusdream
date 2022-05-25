@@ -45,7 +45,7 @@ router.beforeEach(async(to, from, next) => {
         if(!vueCookies.get('access_token')){
             const access = await Axios.post('/getAccessToken');
             console.log('access:::::',access);
-            if(access.data.access_token){
+            if(access.data && access.data.access_token){
                 
                 vueCookies.set('access_token',access.data.access_token,60*60*6);
                 vueCookies.set('user_info',access.data.user_info,60*60*6);
