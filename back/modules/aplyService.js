@@ -128,6 +128,7 @@ module.exports = (app, mongoose, winston) => {
         var item = req.body;
         try{
             //item.markModified('campCnt');
+            var cnt = item.chodeung+item.cheongsonyeon+item.cheongnyeon+item.jangnyeon+item.sayeogja; //총인원
             var result = await Aply.updateOne({ seq: item.seq }, {
             $set: {
                 aplyPrgrs: item.aplyPrgrs,
@@ -148,6 +149,7 @@ module.exports = (app, mongoose, winston) => {
                 joinPathSe: item.joinPathSe,
                 campCnt: item.campCnt,
                 pyrNm: item.pyrNm,
+                aplyTotAmt: cnt*10000
             },
             })
             console.log('result:::::::',result);

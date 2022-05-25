@@ -1,5 +1,8 @@
 <template>
     <v-container fluid class="pa-0">
+    <v-card class="d-flex flex-center">
+      <v-btn @click="clickReg()" class="mx-auto my-1">캠프등록 하러가기</v-btn>
+    </v-card>
     <v-carousel
       cycle
       height="500"
@@ -37,8 +40,6 @@
       class="black--text align-end"
       contain
     ></v-img>
-    <v-btn @click="clickReg()">등록신청</v-btn>
-    <v-btn @click="clickAbout()">About</v-btn>
   </v-container>
 </template>
 <script>
