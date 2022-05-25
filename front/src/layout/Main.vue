@@ -5,9 +5,10 @@
     </v-card>
     <v-carousel
       cycle
-      height="500"
       hide-delimiter-background
       show-arrows-on-hover
+      height="300"
+      min-height="300"
     >
       <v-carousel-item
         v-for="(slide, i) in slides"
@@ -15,7 +16,7 @@
       >
         <v-sheet
           color="white"
-          height="100%"
+          
         >
           <v-row
             class="fill-height"
