@@ -1,7 +1,9 @@
 <template>
-    <v-container class="pa-0">
-    <v-card class="d-flex flex-center">
-      <v-btn @click="clickReg()" class="mx-auto my-1">캠프등록 하러가기</v-btn>
+    <v-card width="800" class="mx-auto" elevation="0">
+
+      <v-container class="pa-0 mt-4" >
+        <v-card class="d-flex flex-center" elevation="0">
+          <v-btn @click="clickReg()" class="mx-auto my-1">캠프등록 하러가기</v-btn>
     </v-card>
     <v-carousel
       cycle
@@ -24,7 +26,7 @@
             align="center"
             justify="center"
           >
-            <v-card class="text-h2" max-width="500">
+            <v-card class="text-h2" max-width="500" elevation="0">
               <v-img 
                 :src="slide"
                 class="black--text align-end"
@@ -42,6 +44,7 @@
       contain
     ></v-img>
   </v-container>
+  </v-card>
 </template>
 <script>
 
