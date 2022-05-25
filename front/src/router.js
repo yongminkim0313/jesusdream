@@ -14,6 +14,7 @@
  const route = [
      {
          path: "/",
+         name: "Main",
          components: {
              header: Header,
              default: Main,
@@ -23,14 +24,17 @@
      },
      {
          path: "/About",
+         name: "About",
          components: {
              header: Header,
              default: About,
              footer: Footer
-         }
+         },
+         meta: { unauthorized: true }
      },
      {
          path: "/user",
+         name: "User",
          components: {
              header: Header,
              default: User,
@@ -50,6 +54,7 @@
      },
      {
          path: "/admin",
+         name: 'Admin',
          components: {
              header: Header,
              default: Admin

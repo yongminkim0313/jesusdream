@@ -1,143 +1,65 @@
 <template>
-    <v-card
-    class="mx-auto my-5 pa-5"
-    max-width="800"
-  >
-    <v-container fluid class="pa-5">
-      <v-row v-if="!isLogin">
+    <v-card class="mx-auto my-5 pa-5" max-width="800">
+    <v-container fluid >
+      <v-row dense>
       <v-col cols="12" md="6" sm="12">
-        <v-card>
+        <v-card @click="clickReg()">
           <v-img 
-            src="https://modo-phinf.pstatic.net/20190419_277/1555644483981oEXf1_JPEG/mosanZXmAK.jpeg?type=a1100"
+            :src="require('../assets/jang.png')"
             class="white--text align-end"
             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
           >
+          <v-card-title>등록신청</v-card-title>
           </v-img>
         </v-card>
       </v-col>
       <v-col cols="12" md="6" sm="12">
-          <v-card>
-            <v-img
-              :src="require('../assets/jd3.jpeg')"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            >
-            </v-img>
-          </v-card>
-      </v-col>
-      <v-col cols="12" md="6" sm="12">
-          <v-card>
-            <v-img
-              :src="require('../assets/jd4.jpeg')"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            >
-              <v-card-title></v-card-title>
-            </v-img>
-          </v-card>
-      </v-col>
-      <v-col cols="12" md="6" sm="12">
-          <v-card>
-            <v-img
-              :src="require('../assets/jd5.jpeg')"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            >
-              <v-card-title></v-card-title>
-            </v-img>
-          </v-card>
-      </v-col>
-      <v-col cols="12" md="6" sm="12">
-          <v-card>
-            <v-img
-              :src="require('../assets/jd6.jpeg')"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            >
-              <v-card-title></v-card-title>
-            </v-img>
-          </v-card>
-      </v-col>
-      <v-col cols="12" md="6" sm="12">
-          <v-card>
-            <v-img
-              :src="require('../assets/jd7.jpeg')"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            >
-              <v-card-title></v-card-title>
-            </v-img>
-          </v-card>
-      </v-col>
-    </v-row>
-    <v-row v-if="isLogin">
-      <v-col cols="12" md="6" sm="12">
-        <router-link to="/user">
-        <v-card>
+        <v-card @click="clickAbout()">
           <v-img 
-            src="https://modo-phinf.pstatic.net/20190419_277/1555644483981oEXf1_JPEG/mosanZXmAK.jpeg?type=a1100"
+            :src="require('../assets/jd4.jpeg')"
             class="white--text align-end"
             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
           >
-            <v-card-title>신청하러가기</v-card-title>
+          <v-card-title>About</v-card-title>
           </v-img>
         </v-card>
-        </router-link>
       </v-col>
-      <v-col cols="12" md="6" sm="12" v-for="item in myAplyList" :key="item.seq">
-        <router-link :to="{name:'MyAply', params:{phone: item.phone, seq:item.seq}}">
-          <v-card>
+      <v-col cols="12" md="6" sm="12" v-for="( item, index) in myAplyList" :key="item.seq">
+          <v-card @click="clickList(item)">
             <v-img
-              :src="require('../assets/jd3.jpeg')"
+              :src="require(`../assets/jd${index+1}.jpeg`)"
               class="white--text align-end"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
             >
-              <v-card-title>나의신청내역</v-card-title>
-            </v-img>
-          </v-card>
-          </router-link>
-      </v-col>
-      <v-col cols="12" md="6" sm="12">
-          <v-card>
-            <v-img
-              :src="require('../assets/jd4.jpeg')"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            >
-              <v-card-title></v-card-title>
-            </v-img>
-          </v-card>
-      </v-col>
-      <v-col cols="12" md="6" sm="12">
-          <v-card>
-            <v-img
-              :src="require('../assets/jd5.jpeg')"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            >
-              <v-card-title></v-card-title>
-            </v-img>
-          </v-card>
-      </v-col>
-      <v-col cols="12" md="6" sm="12">
-          <v-card>
-            <v-img
-              :src="require('../assets/jd6.jpeg')"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            >
-              <v-card-title></v-card-title>
-            </v-img>
-          </v-card>
-      </v-col>
-      <v-col cols="12" md="6" sm="12">
-          <v-card>
-            <v-img
-              :src="require('../assets/jd7.jpeg')"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            >
-              <v-card-title></v-card-title>
+              <v-row dense v-if="item.aplyName">
+                  <v-card-title>나의신청내역 </v-card-title>
+                  <v-card-subtitle>{{item.church}} {{item.aplyDt}}</v-card-subtitle>
+                  <v-card-text>
+                    <v-row>
+                      <v-col>
+                        {{item.schdlSe}}
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      
+                      <v-chip small v-if="item.campCnt.chodeung != 0">
+                          {{ '초등:'+item.campCnt.chodeung}}
+                      </v-chip>
+                      <v-chip small v-if="item.campCnt.cheongsonyeon != 0">
+                          {{ '청소년:'+item.campCnt.cheongsonyeon}}
+                      </v-chip>
+                      <v-chip small v-if="item.campCnt.cheongnyeon != 0">
+                          {{ '청년:'+item.campCnt.cheongnyeon}}
+                      </v-chip>
+                      <v-chip small v-if="item.campCnt.jangnyeon != 0">
+                          {{ '장년:'+item.campCnt.jangnyeon}}
+                      </v-chip>
+                      <v-chip small v-if="item.campCnt.sayeogja != 0">
+                          {{ '사역자:'+item.campCnt.sayeogja}}
+                      </v-chip>
+                      </v-row>
+                  </v-card-text>
+                </v-row>
             </v-img>
           </v-card>
       </v-col>
@@ -153,7 +75,7 @@ export default {
   components: { },
   data(){return {
     isLogin: false,
-    myAplyList: []
+    myAplyList: [{seq:1},{seq:2}]
   }},
   created() {
     var user = this.$cookies.get("user_info");
@@ -161,23 +83,39 @@ export default {
     this.getUserAply();
   },
   methods : {
-    btnClick: function(){
-      this.axios({
-        method:'post',
-        url:'/auth'
-      })
-      this.axios.get('/auth')
-      .then((result)=>{
-        console.log(result.data);
-      });
-    },
-    getUserAply: function(){
+    getUserAply(){
       if(this.isLogin){
         this.axios.get('/aply')
         .then((result)=>{
           this.myAplyList = result.data;
         })
       }
+      this.cardMaker();
+    },clickList(item) {
+      if(!item.phone || !item.seq) return;
+      this.$router.push({
+        name: "MyAply",
+        query: { phone: item.phone, seq: item.seq },
+      });
+    },
+    clickReg(){
+      this.$router.push({
+        name: "User",
+        query: {},
+      })
+    },
+    cardMaker(){
+      if(this.myAplyList.length == 0){
+        this.myAplyList.push({seq:1});
+        this.myAplyList.push({seq:2});
+      }
+
+    },
+    clickAbout(){
+      this.$router.push({
+        name: "About",
+        query: {},
+      });
     }
   }
 

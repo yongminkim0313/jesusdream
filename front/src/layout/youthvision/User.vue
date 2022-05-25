@@ -75,6 +75,8 @@
             :error-messages="jikbunSeErrors"
             label="직분"
             required
+            solo
+            dense
             @change="$v.jikbunSe.$touch()"
             @blur="$v.jikbunSe.$touch()"
           ></v-select>
@@ -402,7 +404,16 @@
           >
             신청하기
           </v-btn>
-
+          <v-text-field
+            v-if="!isKakaoLogin"
+            v-model="kakaoEmail"
+            ref="kakaoEmail"
+            :error-messages="kakaoEmailErrors"
+            label="등록 신청후 홈페이지확인 E-mail ( kakao 아이디로 로그인시 더 편리합니다 )"
+            required
+            @input="$v.kakaoEmail.$touch()"
+            @blur="$v.kakaoEmail.$touch()"
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row><!--사진-->
@@ -452,6 +463,7 @@
           return val
         },
       },
+      kakaoEmail: { required, email }
     },
 
     data: () => ({
@@ -485,26 +497,11 @@
       ],
       joinPathSe: [],
       paths: [
-        {
-          text: '인터넷 홍보(youtube, instar, facebook)',
-          icon: 'mdi-nature',
-        },
-        {
-          text: '포스터, 브로셔',
-          icon: 'mdi-glass-wine',
-        },
-        {
-          text: '지인소개 및 소문',
-          icon: 'mdi-calendar-range',
-        },
-        {
-          text: '지난 캠프 참석',
-          icon: 'mdi-map-marker',
-        },
-        {
-          text: '기타',
-          icon: 'mdi-bike',
-        },
+        { text: '인터넷 홍보(youtube, instar, facebook)', icon: 'mdi-nature', },
+        { text: '포스터, 브로셔', icon: 'mdi-glass-wine',},
+        { text: '지인소개 및 소문', icon: 'mdi-calendar-range', },
+        { text: '지난 캠프 참석', icon: 'mdi-map-marker', },
+        { text: '기타', icon: 'mdi-bike', },
       ],
       campCnt:{
         chodeung: 0,
@@ -513,7 +510,9 @@
         jangnyeon: 0,
         sayeogja: 0,
       },
-      cnt50:[]
+      cnt50:[],
+      kakaoEmail:'',
+      isKakaoLogin: false,
     }),
 
     computed: {
@@ -608,17 +607,24 @@
         }
         return selections
       },
+      kakaoEmailErrors () {
+        const errors = []
+        if (!this.$v.kakaoEmail.$dirty) return errors
+        !this.$v.kakaoEmail.email && errors.push('올바른 이메일 주소를 입력해주세요')
+        !this.$v.kakaoEmail.required && errors.push('E-mail을 입력해주세요')
+        return errors
+      },
     },
     created: function(){
        var user = this.$cookies.get('user_info');
       if(user){
         console.log(user);
         // this.aplyName = user.kakao_account.profile.nickname
-        // this.email = user.kakao_account.email
+         this.kakaoEmail = user.kakao_account.email
+         this.isKakaoLogin = true;
       }
       
         for(var i = 0 ; i < 50; i++){
-          //this.cnt50.push({disp:i+'명',value:i});
           this.cnt50.push(i);
         }
     },
@@ -671,11 +677,17 @@
         console.log(aplyContents);
         this.axios.post('/aply',aplyContents)
         .then((result)=>{
-          console.log(result);
           
+          if(result.error_code){
+            console.log(error_code);
+            return;
+          }
+
           this.$socket.emit('aply', aplyContents, (data)=>{console.log(data)});
-          this.$awn.success('신청이 완료되었습니다.');
+          this.$awn.success('등록신청이 완료되었습니다.');
           this.$router.push('/myAply');
+        }).catch((err)=>{
+          this.$awn.alert('등록신청에 오류가 발생하였습니다.'+err);
         })
       }
 

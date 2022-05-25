@@ -50,6 +50,11 @@ module.exports = (app, mongoose, winston) => {
 
             winston.info(req.body);
             const aply = new Aply(req.body);
+            
+            if(!req.session.userInfo){
+                res.status(401).json({error_code:'kakao acount is null' , msg:"세션에 사용자가 없습니다."});
+            }
+
             aply.kakaoEmail = req.session.userInfo.kakao_account.email;
             aply.aplyTotAmt = 10000 //신청총금액
             aply.aplyPrgrs = '접수' //신청진행상황(접수, 접수완료, 신청취소)
@@ -79,7 +84,7 @@ module.exports = (app, mongoose, winston) => {
                     res.status(402).json({msg:'값이 존재하지 않습니다.'})
                     return;
                 }
-                res.json(aply);
+                res.status(200).json(aply);
             })
         } catch (err) {
             winston.error("Error >>" + err);
@@ -117,10 +122,11 @@ module.exports = (app, mongoose, winston) => {
 
     app.put('/aply', async(req, res) => {
         winston.info('put) aply update!');
-        console.log(req.body);
+        //console.log(req.body);
         var item = req.body;
         try{
-        var result = await Aply.updateOne({ seq: item.seq }, {
+            //item.markModified('campCnt');
+            var result = await Aply.updateOne({ seq: item.seq }, {
             $set: {
                 aplyPrgrs: item.aplyPrgrs,
                 aplyName: item.aplyName,
@@ -141,7 +147,7 @@ module.exports = (app, mongoose, winston) => {
                 campCnt: item.campCnt,
             },
             })
-            console.log(result);
+            console.log('result:::::::',result);
         }catch(err){
             winston.error(err);
         } 

@@ -7,41 +7,54 @@
         src="https://modo-phinf.pstatic.net/20190417_140/15554692250648Rq2Y_JPEG/mosa4Ri4kd.jpeg"
         class="d-flex flex-column"
         >
-                <router-link to="/" class="mr-auto">
-                    <v-avatar>
-                    <img
-                        src="../../assets/jesusdream.png"
-                        alt="주님이꿈꾸신교회"
-                    >
-                    </v-avatar>
-                </router-link>
+            <router-link to="/" class="mr-auto">
+                <v-avatar>
+                <img
+                    src="../../assets/jesusdream.png"
+                    alt="주님이꿈꾸신교회"
+                >
+                </v-avatar>
+            </router-link>
                 
-                <v-icon large color="green" v-if="userInfo.auth == 'admin'" @click="goAdminPage()">
-                    mdi-account-supervisor
+            
+            <v-spacer></v-spacer>
+            <v-card>
+
+            <v-text-field
+            v-model="email"
+            label="간편 EMIAIL 확인"
+            hide-details
+            rounded
+            @keydown.enter="loginGuest();"
+          ></v-text-field>
+            </v-card>
+
+            <!-- 카카오로그인 -->
+            <v-img @click="login();" v-if="!isLogin" max-height="40" max-width="200" :src="require('/src/assets/kakaoLogin.png')"></v-img>
+            
+            <v-chip
+                color="purple"
+                label
+                link
+                v-if="isLogin"
+                class="white--text mr-5"
+            >
+            <v-icon large color="white" v-if="userInfo.auth == 'admin'" @click="goAdminPage()" class="">
+                mdi-account-supervisor
+            </v-icon>
+            {{userInfo.nick}} 님
+            </v-chip>
+            
+            <v-btn
+                fab
+                small
+                @click="logout();"
+                v-if="isLogin"
+            >
+                <v-icon small color="pink">
+                    mdi-logout
                 </v-icon>
-                    <v-img @click="login();" v-if="!isLogin" contain height="40" :src="require('/src/assets/kakaoLogin.png')"></v-img>
-                    <router-link to="/myAply">
-                        <v-chip
-                            color="purple"
-                            label
-                            link
-                            v-if="isLogin"
-                            class="white--text"
-                        >
-                        {{userInfo.nick}} 님
-                        </v-chip>
-                    </router-link>
-                    
-                    <v-btn
-                    fab
-                    small
-                    @click="logout();"
-                    v-if="isLogin"
-                    >
-                    <v-icon small color="pink">
-                        mdi-logout
-                    </v-icon>
-                    </v-btn>
+            </v-btn>
         </v-app-bar>
     </div>
 </template>
@@ -52,23 +65,31 @@ export default {
         return {
             userInfo:{}
             ,isLogin: false
+            ,email:''
         };
     },
     created() {
        //console.log('access_token',this.$cookies.get("access_token"));
        //console.log('user_info',this.$cookies.get("user_info"));
        
-       var user = this.$cookies.get("user_info");
-       if(user){
-         this.userInfo.nick = user.kakao_account.profile.nickname;
-         this.userInfo.thumb = user.kakao_account.profile.thumbnail_image_url;
-         this.userInfo.img = user.kakao_account.profile.profile_image_url;
-         this.userInfo.auth = user.auth;
-         this.isLogin = true;
-       }
+        this.cookiesCtr();
+       this.$socket.on('aply', (data)=>{
+           console.log(data);
+        _this.$awn.success('신청이 등록 되었습니다.');
+      });
     },
     methods: {
-        login: function() {
+        cookiesCtr: function(){
+            var user = this.$cookies.get("user_info");
+            if(user){
+              this.userInfo.nick = user.kakao_account.profile.nickname;
+              this.userInfo.thumb = user.kakao_account.profile.thumbnail_image_url;
+              this.userInfo.img = user.kakao_account.profile.profile_image_url;
+              this.userInfo.auth = user.auth;
+              this.isLogin = true;
+            }
+        }
+        ,login: function() {
             location.href = 'https://kauth.kakao.com/oauth/authorize?'
                 +'client_id=be0d818c768f8e2198c97470fc7577c5&'
                 +'redirect_uri='+this.APP_URL+'/auth/kakao/callback&'
@@ -85,7 +106,7 @@ export default {
             })
              .catch((e)=>{console.log(e);})
              .then(()=>{
-                this.$router.push('/');
+                this.$router.push('/').catch(()=>{});
              });
         },
         goAdminPage: function(){
@@ -93,6 +114,12 @@ export default {
         },
         goAplyPage: function(){
             this.$router.push('/user').catch(()=>{})
+        },
+        loginGuest: function(){
+            this.axios.post('/login/guest')
+            .then(()=>{
+
+            })
         }
     },
 
