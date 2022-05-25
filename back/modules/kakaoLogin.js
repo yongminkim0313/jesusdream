@@ -30,6 +30,7 @@ module.exports = (app, winston) => {
             });
             req.session.userInfo = response2.data;
             req.session.access_token = `${access_token}`;
+            var nick = req.session.userInfo.kakao_account.profile.nickname;
             if('kimyongmin1@kakao.com' == req.session.userInfo.kakao_account.email || nick.indexOf('YOUTHVISION') > -1 || nick.indexOf('선영') > -1){
                 req.session.userInfo.auth = 'admin';
             }else{
