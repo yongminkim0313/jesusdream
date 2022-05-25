@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid class="pa-0">
+    <v-container class="pa-0">
     <v-card class="d-flex flex-center">
       <v-btn @click="clickReg()" class="mx-auto my-1">캠프등록 하러가기</v-btn>
     </v-card>
@@ -9,6 +9,7 @@
       show-arrows-on-hover
       height="300"
       min-height="300"
+      max-width="500"
     >
       <v-carousel-item
         v-for="(slide, i) in slides"
@@ -23,15 +24,14 @@
             align="center"
             justify="center"
           >
-            <div class="text-h2">
+            <v-card class="text-h2" max-width="500">
               <v-img 
                 :src="slide"
                 class="black--text align-end"
                 contain
                 height="400"
-                max-heigth="400"
               ></v-img>
-            </div>
+            </v-card>
           </v-row>
         </v-sheet>
       </v-carousel-item>

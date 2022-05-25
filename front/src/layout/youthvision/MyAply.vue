@@ -365,8 +365,8 @@
             :error-messages="pyrNmErrors"
             label="입금자명"
             required
-            @input="$v.pryNm.$touch()"
-            @blur="$v.pryNm.$touch()"
+            @input="$v.pyrNm.$touch()"
+            @blur="$v.pyrNm.$touch()"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -672,7 +672,7 @@
           this.$awn.success('신청이 완료되었습니다.');
 
           this.$router.push({
-            name: "Main",
+            name: "MyAplyList",
             query: { phone: aplyContents.phone, seq: aplyContents.seq },
           });
         })
@@ -773,7 +773,9 @@
           _this.joinHisSe=aplyData.joinHisSe;
           _this.joinPathSe=aplyData.joinPathSe;
           _this.campCnt=aplyData.campCnt;
+          _this.pyrNm = aplyData.pyrNm;
         })
+        .catch(()=>{})
       }
     }
   }

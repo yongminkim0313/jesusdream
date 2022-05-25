@@ -187,7 +187,7 @@ export default {
       this.$socket.emit('sendMsgUser', { customerName: order.customerName, msg:'주문접수되었습니다.'})
     },
     saveAply(item){
-      this.axios.put('/aply',item)
+      this.axios.put('/aply/one',item)
       .then((data)=>{
         console.log(data);
        })

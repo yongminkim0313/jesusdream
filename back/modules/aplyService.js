@@ -124,7 +124,7 @@ module.exports = (app, mongoose, winston) => {
 
     app.put('/aply', async(req, res) => {
         winston.info('put) aply update!');
-        //console.log(req.body);
+        console.log(req.body);
         var item = req.body;
         try{
             //item.markModified('campCnt');
@@ -149,19 +149,38 @@ module.exports = (app, mongoose, winston) => {
                 joinPathSe: item.joinPathSe,
                 campCnt: item.campCnt,
                 pyrNm: item.pyrNm,
-                aplyTotAmt: cnt*10000
+                aplyTotAmt: 777
             },
             })
             console.log('result:::::::',result);
+            res.json({ result: 'success' });
         }catch(err){
             winston.error(err);
+            res.status(402).json({msg:'업데이트에 실패'})
         } 
-        res.json({ result: 'success' });
     });
 
     app.delete('/aply', (req, res) => {
         winston.info('delete) aply delete!');
         res.json({ result: 'success' });
+    });
+
+    app.put('/aply/one', async(req, res) => {
+        winston.info('put) aply update!');
+        console.log(req.body);
+        var item = req.body;
+        try{
+            var result = await Aply.updateOne({ seq: item.seq }, {
+            $set: {
+                aplyPrgrs: item.aplyPrgrs,
+            },
+            })
+            console.log('result:::::::',result);
+            res.json({ result: 'success' });
+        }catch(err){
+            winston.error(err);
+            res.status(402).json({msg:'업데이트에 실패'})
+        } 
     });
 
 

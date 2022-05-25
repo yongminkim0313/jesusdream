@@ -392,8 +392,8 @@
             :error-messages="pyrNmErrors"
             label="입금자명"
             required
-            @input="$v.pryNm.$touch()"
-            @blur="$v.pryNm.$touch()"
+            @input="$v.pyrNm.$touch()"
+            @blur="$v.pyrNm.$touch()"
           ></v-text-field>
         </v-col>
       </v-row>
