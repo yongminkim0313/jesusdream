@@ -40,38 +40,37 @@ router.beforeEach(async(to, from, next) => {
     //console.log("path::::::::::::::::", to.path);
     const vueCookies = Vue.prototype.$cookies;
 
-    if (vueCookies.get('access_token') === null ) {
-        //await refreshToken();
-        if(!vueCookies.get('access_token')){
-            const access = await Axios.post('/getAccessToken');
-            console.log('access:::::',access);
-            if(access.data && access.data.access_token){
-                
-                vueCookies.set('access_token',access.data.access_token,60*60*6);
-                vueCookies.set('user_info',access.data.user_info,60*60*6);
+    if (vueCookies.get('accesToken') === null ) {
+        if(!vueCookies.get('accessToken')){
+            const response = await Axios.post('/auth/userInfo');
+            const userInfo = response.data.userInfo;
+            console.log('userInfo:::::',userInfo);
+            if(userInfo){
+                vueCookies.set('userInfo', userInfo);
+                console.log(vueCookies);
             }
         }
     }
 
-    //console.log('vueCookies:::',vueCookies.get('access_token'));
     console.log('path::::',to.path);
+
     if (to.matched.some(record => record.meta.auth === 'admin')){
         try{
-            if(vueCookies.get('user_info').auth =='admin'){
+            if(vueCookies.get('auth') =='admin'){
                 Vue.prototype.$awn.options.labels.warning = '관리자';
                 Vue.prototype.$awn.warning('관리자 페이지 입니다.!!');
                 return next();
             }else{
-                Vue.prototype.$awn.alert('관리자 권한이 없습니다.');
+                Vue.prototype.$awn.alert('권한이 없습니다.');
                 return next('/');    
             }
         }catch(e){
-            Vue.prototype.$awn.alert('오류발생 권한가져오기 실패');
+            Vue.prototype.$awn.alert('오류 권한가져오기 실패');
             return next('/');
         }
     }
 
-    if (to.matched.some(record => record.meta.unauthorized) || vueCookies.get('access_token')) {
+    if (to.matched.some(record => record.meta.unauthorized) || vueCookies.get('accessToken')) {
         return next();
     }else{
         Vue.prototype.$awn.alert('로그인이 필요합니다');
@@ -80,20 +79,11 @@ router.beforeEach(async(to, from, next) => {
 
     
 });
-const vue = new Vue({
-    router,
-    vuetify,
-    render: h => h(App)
-}).$mount('#app');
+const vue = new Vue({ router, vuetify, render: h => h(App) }).$mount('#app');
 
-//console.log(vue.$cookies.get('access_token')); 
 // Add a request interceptor
 Axios.interceptors.request.use(async function(config) {
     // Do something before request is sent
-    // console.log('vue.$session::::',vue.$session);
-    // config.headers.access_token = vue.$session.get('access_token');
-    // config.headers.refresh_token = vue.$session.get('refresh_token');
-
     // console.log(config);
     return config;
 }, function(error) {

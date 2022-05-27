@@ -61,19 +61,8 @@ export default {
     ],
   }},
   created() {
-    var user = this.$cookies.get("user_info");
-    if(user) this.isLogin = true;
-    this.getUserAply();
   },
   methods : {
-    getUserAply(){
-      if(this.isLogin){
-        this.axios.get('/aply')
-        .then((result)=>{
-          this.myAplyList = result.data;
-        })
-      }
-    },
     clickList(item) {
       if(!item.phone || !item.seq) return;
       this.$router.push({

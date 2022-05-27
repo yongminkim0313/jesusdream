@@ -57,7 +57,7 @@ module.exports = (app, mongoose, winston) => {
             }
             var cm = aply.campCnt
             var cnt = cm.chodeung+cm.cheongsonyeon+cm.cheongnyeon+cm.jangnyeon+cm.sayeogja; //총인원
-            aply.kakaoEmail = req.session.userInfo.kakao_account.email;
+            aply.kakaoEmail = req.session.email;
             aply.aplyTotAmt = cnt*10000 //신청총금액
             aply.aplyPrgrs = '접수' //신청진행상황(접수, 접수완료, 신청취소)
             aply.aplyDt = today.format('YYYY-MM-DD') //신청일시
@@ -98,9 +98,9 @@ module.exports = (app, mongoose, winston) => {
         winston.info('get) aply select!');
         console.log(req.session);
         try{
-            Aply.find({ kakaoEmail: req.session.userInfo.kakao_account.email }).sort({ seq: 'desc' }).exec(function(err, orderList) {
+            Aply.find({ kakaoEmail: req.session.email }).sort({ seq: 'desc' }).exec(function(err, orderList) {
                 if (err) res.json({ result: -1 })
-                res.json(orderList);
+                res.status(200).json(orderList);
             })
         } catch (err) {
             winston.error("Error >>" + err);

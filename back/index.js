@@ -67,43 +67,43 @@ app.use(function(req, res, next) {
         }
     }
 });
-app.post('/getAccessToken', (req, res) => {
-    console.log('/getAccessToken');
-    if(req.session.userInfo && req.session.access_token){
-
-        winston.info(req.session.userInfo);
-        winston.info(req.session.userInfo.kakao_account.profile);
-        winston.info(req.session.userInfo.kakao_account.profile.nickname);
-        
-        res.json({
-            access_token: req.session.access_token,
-            user_info: req.session.userInfo,
+app.post('/auth/userInfo', (req, res) => {
+    console.log('/auth/userInfo');
+    if(req.session.accessToken){ 
+        res.status(200).json({
+            userInfo : req.session
         });
     }else{
         res.status(200).json({})
     }
 });
 
-app.get('/auth', async(req, res) => {
-    try {
-        var nick = req.session.userInfo.kakao_account.profile.nickname;
-        
-        if('kimyongmin1@kakao.com' == req.session.userInfo.kakao_account.email|| nick.indexOf('YOUTHVISION') > -1 || nick.indexOf('선영') > -1){
-            req.session.auth = 'admin';
-        }else{
-            req.session.auth = 'user';
+app.post('/auth/logout', async(req, res) => {
+    const type = req.session.type;
+
+    if(type == 'kakao'){
+        const accessToken = req.session.accessToken;
+        try {
+            const response2 = await axios({
+                method: "post",
+                url: "https://kapi.kakao.com/v1/user/logout", // 서버
+                headers: { 'Authorization': `Bearer ${accessToken}` }, // 요청 헤더 설정
+            });
+            req.session.destroy(function(err) {
+                if (err) throw err;
+                res.status(200).json({msg:'success'});
+            });
+        } catch (err) {
+            winston.error("Error >>" + err);
+            res.status(401).json({msg:err});
         }
-        if('lovely_s2_@nate.com' == req.session.userInfo.kakao_account.email){
-            req.session.auth = 'admin'
-        }
-        res.status(200).json({auth:req.session.auth});
-    } catch (err) {
-        winston.error("Error >>" + err);
-        res.status(401).json({msg:'권한 가져오기 실패'});
-    }
+    }else if(type == 'naver'){
+
+    }else{}
 });
+
 require('./modules/socketConfig')(app, winston);
-//require('./modules/mgdbOrder')(app, mongoose, winston);
 require('./modules/campService')(app, mongoose, winston);
 require('./modules/kakaoLogin')(app, winston);
+require('./modules/naverLogin')(app, winston);
 require('./modules/aplyService')(app, mongoose, winston);
