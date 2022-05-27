@@ -59,7 +59,7 @@ app.use(function(req, res, next) {
     }else if (req.url.indexOf('/getAccessToken') > -1) {
         return next();
     } else {
-        if (req.session && req.session.userInfo) {
+        if (req.session && req.session.accessToken) {
             return next();
         } else {
             res.status(401);

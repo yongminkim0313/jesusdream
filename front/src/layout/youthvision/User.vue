@@ -708,7 +708,7 @@
 
           this.$socket.emit('aply', aplyContents, (data)=>{console.log(data)});
           this.$awn.success('등록신청이 완료되었습니다.');
-          this.$router.push('/myAply');
+          this.$router.push('/myAplyList');
         }).catch((err)=>{
           this.$awn.alert('등록신청에 오류가 발생하였습니다.'+err);
         })

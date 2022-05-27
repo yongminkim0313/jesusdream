@@ -44,10 +44,8 @@ router.beforeEach(async(to, from, next) => {
         if(!vueCookies.get('accessToken')){
             const response = await Axios.post('/auth/userInfo');
             const userInfo = response.data.userInfo;
-            console.log('userInfo:::::',userInfo);
             if(userInfo){
                 vueCookies.set('userInfo', userInfo);
-                console.log(vueCookies);
             }
         }
     }
@@ -56,7 +54,7 @@ router.beforeEach(async(to, from, next) => {
 
     if (to.matched.some(record => record.meta.auth === 'admin')){
         try{
-            if(vueCookies.get('auth') =='admin'){
+            if(vueCookies.get('userInfo').auth =='admin'){
                 Vue.prototype.$awn.options.labels.warning = '관리자';
                 Vue.prototype.$awn.warning('관리자 페이지 입니다.!!');
                 return next();

@@ -32,7 +32,6 @@ export default {
   name: 'MyAplyList',
   components: { },
   data(){return {
-    isLogin: false,
     myAplyList: [],
     headers: [
           //{text: '번호', value: 'seq', align: 'center',sortable: false },
@@ -63,18 +62,14 @@ export default {
         ],
   }},
   created() {
-    var user = this.$cookies.get("user_info");
-    if(user) this.isLogin = true;
     this.getUserAply();
   },
   methods : {
     getUserAply(){
-      if(this.isLogin){
-        this.axios.get('/aply')
-        .then((result)=>{
-          this.myAplyList = result.data;
-        })
-      }
+      this.axios.get('/aply')
+      .then((result)=>{
+        this.myAplyList = result.data;
+      })
     },
     clickList(item) {
       if(!item.phone || !item.seq) return;

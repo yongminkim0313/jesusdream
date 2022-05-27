@@ -7,9 +7,6 @@
                 </v-avatar>
             </router-link>
             <v-spacer></v-spacer>
-            <v-card>
-                <v-text-field v-model="email" label="EMIAIL로 확인" hide-details rounded v-if="!isLogin" @keydown.enter="loginGuest();" ></v-text-field>
-            </v-card>
 
             <!-- 카카오로그인 -->
             <v-img @click="kakaoLogin();" v-if="!isLogin" max-height="40" max-width="100" contain :src="require('/src/assets/kakaoLogin.png')"></v-img>
@@ -58,7 +55,6 @@ export default {
         return {
             userInfo:{}
             ,isLogin: false
-            ,email:''
         };
     },
     created() {

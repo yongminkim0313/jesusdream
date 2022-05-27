@@ -52,7 +52,7 @@ module.exports = (app, mongoose, winston) => {
             winston.info(req.body);
             const aply = new Aply(req.body);
             
-            if(!req.session.userInfo){
+            if(!req.session.email){
                 res.status(401).json({error_code:'kakao acount is null' , msg:"세션에 사용자가 없습니다."});
             }
             var cm = aply.campCnt

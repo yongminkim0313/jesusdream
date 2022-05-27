@@ -1,36 +1,7 @@
 <template>
-  <v-card>
-            <!-- <v-navigation-drawer
-            app
-            permanent
-            mini-variant
-            expand-on-hover
-            >
-            <v-list-item class="px-2">
-                <v-list-item-avatar>
-                <v-img :src="require('../../assets/jesusdream.png')"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-title>유스비전</v-list-item-title>
-            </v-list-item>
-
-            <v-divider></v-divider>
-
-            <v-list dense>
-                <v-list-item
-                v-for="item in items"
-                :key="item.title"
-                link
-                >
-                <v-list-item-icon>
-                    <v-icon>{{ item.icon }}</v-icon>
-                </v-list-item-icon>
-
-                <v-list-item-content>
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
-                </v-list-item>
-            </v-list>
-            </v-navigation-drawer> -->
+  <v-card elevation="0">
+    
+    <v-card elevation="0" width="300" class="mx-auto">
         <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
@@ -38,13 +9,13 @@
         single-line
         hide-details
       ></v-text-field>
+      </v-card>
         <v-data-table
             fixed-header
             dense
             :headers="headers"
             :items="aplyList"
             item-key="seq"
-            class="elevation-7"
             :search="search"
         >
         <template v-slot:[`item.aplyPrgrs`]="{ item }">
@@ -60,11 +31,17 @@
         </template>
         <template v-slot:[`item.aplyDt`]="{ item }">
           <v-row>{{item.aplyDt }}</v-row>
-          <v-row class="text-truncate">{{diffTime(item.aplyDt)}}</v-row>
+          <v-row>
+            <v-badge dot
+            :value="diffTime(item.aplyDt) > 3 ?  1 : 0 "
+            >
+            ({{diffTime(item.aplyDt)}}일 지남)
+            </v-badge>
+          </v-row>
         </template>
         <template v-slot:[`item.aplyTotAmt`]="{ item }">
         <v-btn
-          elevation="2"
+          elevation="0"
         >
           {{item.aplyTotAmt | makeComma }}
         </v-btn>
@@ -181,11 +158,10 @@ export default {
        })
     },
     diffTime (time) { 
-      console.log(time);
       const moment = require('moment') 
       const today = moment()
       const diffValue = moment.duration(today.diff(time));
-      return `(${diffValue.days()}일 ${diffValue.hours()}시 ${diffValue.minutes()}분 지남)`; 
+      return diffValue.days(); 
     },
     parseContents(contents){
       return eval(contents);
