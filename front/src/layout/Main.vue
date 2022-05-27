@@ -1,9 +1,9 @@
 <template>
-    <v-card width="800" class="mx-auto" elevation="0">
+    <v-card width="800" class="mx-auto" elevation="5">
 
-      <v-container class="pa-0 mt-4" >
+      <v-container class="pa-0 mt-2" >
         <v-card class="d-flex flex-center" elevation="0">
-          <v-btn @click="clickReg()" class="mx-auto my-1">캠프등록 하러가기</v-btn>
+          <v-btn @click="clickReg()" class="mx-auto my-2">캠프등록 하러가기</v-btn>
     </v-card>
     <v-carousel
       cycle
@@ -16,27 +16,8 @@
       <v-carousel-item
         v-for="(slide, i) in slides"
         :key="i"
-      >
-        <v-sheet
-          color="white"
-          
-        >
-          <v-row
-            class="fill-height"
-            align="center"
-            justify="center"
-          >
-            <v-card class="text-h2" max-width="500" elevation="0">
-              <v-img 
-                :src="slide"
-                class="black--text align-end"
-                contain
-                height="400"
-              ></v-img>
-            </v-card>
-          </v-row>
-        </v-sheet>
-      </v-carousel-item>
+        :src="slide"
+      ></v-carousel-item>
     </v-carousel>
     <v-img 
       :src="require('../assets/about.png')"
