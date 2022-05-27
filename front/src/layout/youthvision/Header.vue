@@ -74,7 +74,7 @@ export default {
     methods: {
         cookiesCtr: function(){
             var userInfo = this.$cookies.get("userInfo");
-            if(userInfo.accessToken){
+            if(userInfo){
               this.userInfo.nick = userInfo.name
               this.userInfo.profileImage = userInfo.profileImage
               this.userInfo.auth = userInfo.auth;
