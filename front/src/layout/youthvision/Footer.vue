@@ -45,7 +45,7 @@
         location.href = 'https://www.youtube.com/channel/UCKpUmAMNQxzzqcTdpJHHMgA'
       },
       instagram: function(){
-        location.href = 'https://www.instagram.com/youthvision1004/';
+        location.href = 'https://www.instagram.com/youthvision_ministry/';
       },
     }
 
