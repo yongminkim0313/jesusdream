@@ -638,11 +638,11 @@
       },
     },
     created: function(){
-       var user = this.$cookies.get('user_info');
-      if(user){
+       var user = this.$cookies.get('userInfo');
         console.log(user);
+      if(user){
         // this.aplyName = user.kakao_account.profile.nickname
-         this.kakaoEmail = user.kakao_account.email
+         this.kakaoEmail = user.email
          this.isKakaoLogin = true;
       }
       

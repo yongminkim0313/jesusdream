@@ -4,17 +4,18 @@
     dark
   >
 
-      <v-card-text class="d-flex justify-center">
-        <v-btn
-            v-for="icon in icons"
-            :key="icon"
-            class="mx-4 white--text"
-            icon
-            >
-            <v-icon size="24px">
-              {{ icon }}
-            </v-icon>
-            </v-btn>
+        <v-card-text class="d-flex justify-center">
+          <v-btn class="mx-4 white--text" icon @click="facebook()">
+            <v-icon size="24px"> mdi-facebook </v-icon>
+          </v-btn>
+
+          <v-btn class="mx-4 white--text" icon @click="youtube()">
+            <v-icon size="24px"> mdi-youtube </v-icon>
+          </v-btn>
+          
+          <v-btn class="mx-4 white--text" icon @click="instagram()">
+            <v-icon size="24px"> mdi-instagram </v-icon>
+          </v-btn>
         </v-card-text>
 
         <v-card-text class="white--text text-center px-auto">
@@ -35,12 +36,18 @@
 <script>
   export default {
     data: () => ({
-      icons: [
-        'mdi-facebook',
-        'mdi-twitter',
-        'mdi-linkedin',
-        'mdi-instagram',
-      ],
     }),
+    methods: {
+      facebook: function(){
+        location.href = 'https://www.facebook.com/groups/419662904835077/media/';
+      },
+      youtube: function(){
+        location.href = 'https://www.youtube.com/channel/UCKpUmAMNQxzzqcTdpJHHMgA'
+      },
+      instagram: function(){
+        location.href = 'https://www.instagram.com/youthvision1004/';
+      },
+    }
+
   }
 </script>
