@@ -361,7 +361,7 @@
         </v-col>
         <v-col cols="3" md="3" sm="4">
           <v-select
-            v-model="dpstActno"
+            v-model="bankNm"
             :items="dpstList"
             attach
             label="입금은행"
@@ -460,7 +460,7 @@
         },
       },
       checkboxUseRoom: { required },
-      dpstActno: { required }
+      bankNm: { required }
     },
 
     data: () => ({
@@ -527,7 +527,7 @@
       cnt50:[],
       pyrNm: '',
       checkboxUseRoom: '',
-      dpstActno: '',
+      bankNm: '',
       dpstList:[
         '국민',
         '신한',
@@ -641,10 +641,10 @@
         !this.$v.checkboxUseRoom.required && errors.push('숙소 동의를 선택해주세요')
         return errors
       },
-      dpstActnoErrors(){
+      bankNmErrors(){
         const errors = []
-        if (!this.$v.dpstActno.$dirty) return errors
-        !this.$v.apstActno.required && errors.push('입금계좌를 선택해주세요')
+        if (!this.$v.bankNm.$dirty) return errors
+        !this.$v.bankNm.required && errors.push('입금계좌를 선택해주세요')
         return errors
       }
     },
@@ -705,7 +705,7 @@
           campCnt: this.campCnt,
           pyrNm: this.pyrNm,
           checkboxUseRoom: this.checkboxUseRoom,
-          apstActno: this.apstActno
+          bankNm: this.bankNm
         }
         
         console.log(aplyContents);
@@ -820,7 +820,7 @@
           _this.campCnt=aplyData.campCnt;
           _this.pyrNm = aplyData.pyrNm;
           _this.checkboxUseRoom = aplyData.checkboxUseRoom;
-          _this.apstActno = aplyData.apstActno;
+          _this.bankNm = aplyData.bankNm;
         })
         .catch(()=>{})
       }
