@@ -32,7 +32,9 @@ module.exports = (app, mongoose, winston) => {
         updtNm: String,
         updtDt: String,
         kakaoEmail: String,
-        pyrNm: String
+        pyrNm: String,
+        checkboxUseRoom: String,
+        apstActno: String,
       });
 
     aplySchema.plugin(autoIncrement.plugin, {
@@ -149,7 +151,9 @@ module.exports = (app, mongoose, winston) => {
                 joinPathSe: item.joinPathSe,
                 campCnt: item.campCnt,
                 pyrNm: item.pyrNm,
-                aplyTotAmt: 777
+                aplyTotAmt: 0,
+                checkboxUseRoom:item.checkboxUseRoom,
+                apstActno: item.apstActno
             },
             })
             console.log('result:::::::',result);

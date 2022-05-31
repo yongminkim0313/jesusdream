@@ -407,6 +407,15 @@
           ></v-checkbox>
         </v-col>
       </v-row>
+      <v-row><!--숙소(동의선택) 동의-->
+        <v-col>
+            <v-checkbox
+            v-model="checkboxUseRoom"
+            label="4인1실, 인원이 맞지 않을시 다른교회와 같이 쓰실 수 있습니다."
+            value="동의"
+          ></v-checkbox>
+        </v-col>
+      </v-row>
       <v-row><!--신청하기버튼-->
         <v-col cols="12" md="12">
           <v-btn
@@ -477,7 +486,9 @@
           return val
         },
       },
-      kakaoEmail: { required, email }
+      kakaoEmail: { required, email },
+      checkboxUseRoom: { required },
+      dpstActno: { required }
     },
 
     data: () => ({
@@ -529,6 +540,8 @@
       kakaoEmail:'',
       isKakaoLogin: false,
       pyrNm: '',
+      checkboxUseRoom: '',
+      dpstActno: ''
     }),
 
     computed: {
@@ -636,6 +649,18 @@
         !this.$v.pyrNm.required && errors.push('입금자명을 입력해 주세요')
         return errors
       },
+      checkboxUseRoomErrors(){
+        const errors = []
+        if (!this.$v.checkboxUseRoom.$dirty) return errors
+        !this.$v.checkboxUseRoom.required && errors.push('숙소 동의를 선택해주세요')
+        return errors
+      },
+      dpstActnoErrors(){
+        const errors = []
+        if (!this.$v.dpstActno.$dirty) return errors
+        !this.$v.apstActno.required && errors.push('입금계좌를 선택해주세요')
+        return errors
+      }
     },
     created: function(){
        var user = this.$cookies.get('userInfo');
@@ -694,7 +719,9 @@
           joinHisSe: this.joinHisSe,
           joinPathSe: this.joinPathSe,
           campCnt: this.campCnt,
-          pyrNm: this.pyrNm
+          pyrNm: this.pyrNm,
+          checkboxUseRoom: this.checkboxUseRoom,
+          apstActno: this.apstActno
         }
         
         console.log(aplyContents);
