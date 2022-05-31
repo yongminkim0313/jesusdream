@@ -359,7 +359,16 @@
           </v-card-text>
 
         </v-col>
-        <v-col cols="12" md="12">
+        <v-col cols="3" md="3" sm="4">
+          <v-select
+            v-model="dpstActno"
+            :items="dpstList"
+            attach
+            label="입금은행"
+          >
+          </v-select>
+        </v-col>
+        <v-col cols="9" md="9">
           <v-text-field
             v-model="pyrNm"
             ref="pyrNm"
@@ -518,7 +527,14 @@
       cnt50:[],
       pyrNm: '',
       checkboxUseRoom: '',
-      dpstActno: ''
+      dpstActno: '',
+      dpstList:[
+        '국민',
+        '신한',
+        '우리',
+        '하나',
+        '기타'
+      ]
     }),
 
     computed: {
