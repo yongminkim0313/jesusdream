@@ -10,20 +10,20 @@
 
             <!-- 카카오로그인 -->
             <v-img @click="kakaoLogin();" v-if="!isLogin" max-height="40" max-width="100" contain :src="require('/src/assets/kakaoLogin.png')"></v-img>
-            <v-img @click="naverLogin();" v-if="!isLogin" max-height="40" max-width="100" contain src="http://static.nid.naver.com/oauth/small_g_in.PNG"></v-img>
+            <!-- <v-img @click="naverLogin();" v-if="!isLogin" max-height="40" max-width="100" contain src="http://static.nid.naver.com/oauth/small_g_in.PNG"></v-img> -->
             
             <v-chip
                 color="purple"
                 label
                 link
-                v-if="isLogin"
+                v-if="userInfo.auth == 'admin'"
                 class="white--text mr-5"
             >
-            <v-icon large color="white" v-if="userInfo.auth == 'admin'" @click="goAdminPage()">
-                mdi-account-supervisor
-            </v-icon>
-            
+                <v-icon large color="white" @click="goAdminPage()">
+                    mdi-account-supervisor
+                </v-icon>
             </v-chip>
+            
             <v-chip
                 color="purple"
                 label
@@ -86,13 +86,13 @@ export default {
         },
         naverLogin: function(){
             location.href = 'https://nid.naver.com/oauth2.0/authorize?'
-                +'client_id=5cqmO5It7BQBoMXaKyAN&'
+                +'client_id=bPxYuX29XnXff1HhWpHP&'
                 +'redirect_uri='+this.APP_URL+'/auth/naver/callback&'
                 +'response_type=code&'
                 +'&state=random_state';
         },
         logout: function (){
-             this.axios.post('/auth/kakao/logout')
+             this.axios.post('/auth/logout')
              .then(()=>{
                 this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie));
                 this.isLogin = false; 

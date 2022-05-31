@@ -20,8 +20,11 @@ module.exports = {
         return session;
     },
     authInfo: async(session)=>{
-        if(session.name=='김용민') session.auth = 'admin';
-        if(session.name=='선영') session.auth = 'admin';
+        console.log('session authInfo::::::', session.name, session.id, session.email);
+        if(session.email=='kimyongmin1@kakao.com') session.auth = 'admin';
+        if(session.email=='yjcm00@hanmail.net') session.auth = 'admin';//목사님
+        if(session.email=='cnalgus1004@naver.com')session.auth = 'admin';//추미현간사
+        if(session.name == 'YOUTHVISION') session.auth = 'admin';
 
         if(!session.auth) session.auth = 'user';
     }
