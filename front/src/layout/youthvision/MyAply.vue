@@ -359,7 +359,7 @@
           </v-card-text>
 
         </v-col>
-        <v-col cols="3" md="3" sm="4">
+        <v-col cols="12" md="12" sm="12">
           <v-select
             v-model="bankNm"
             :items="dpstList"
@@ -368,7 +368,7 @@
           >
           </v-select>
         </v-col>
-        <v-col cols="9" md="9">
+        <v-col cols="12" md="12" sm="12">
           <v-text-field
             v-model="pyrNm"
             ref="pyrNm"
@@ -529,11 +529,12 @@
       checkboxUseRoom: '',
       bankNm: '',
       dpstList:[
-        '국민',
-        '신한',
-        '우리',
-        '하나',
-        '기타'
+        '농협 351-0823-9838-33'
+        ,'신한 140-011-071790' 
+        ,'국민 172601-04-185856'
+        ,'우리 1005-502-838415'
+        ,'새마을 9002-1937-0057-1'
+        ,'우체국 104570-01-002038'
       ]
     }),
 
