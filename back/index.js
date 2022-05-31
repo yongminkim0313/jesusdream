@@ -80,7 +80,12 @@ app.post('/auth/userInfo', (req, res) => {
 
 app.post('/auth/logout', async(req, res) => {
     const type = req.session.type;
+    req.session.destroy(function(err) {
+        if (err) throw err;
+        res.status(200).json({msg:'success'});
+    });
     if(type == 'kakao'){
+        console.log('kakao logout!');
         const accessToken = req.session.accessToken;
         try {
             const response2 = await axios({
@@ -89,10 +94,6 @@ app.post('/auth/logout', async(req, res) => {
                 headers: { 'Authorization': `Bearer ${accessToken}` }, // 요청 헤더 설정
             });
             winston.info('logout:::::'+response2.status);
-            req.session.destroy(function(err) {
-                if (err) throw err;
-                res.status(200).json({msg:'success'});
-            });
         } catch (err) {
             winston.error("Error >>" + err);
             res.status(401).json({msg:err});

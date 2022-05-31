@@ -23,7 +23,15 @@
             </v-chip>
             </template>
         </v-data-table>
+
+        <v-card-title>나의 포스터 브로셔 신청내역</v-card-title>
+        <v-data-table fixed-header dense :headers="posterHeaders" :items="myPosterList" item-key="seq" class="elevation-7" @click:row="clickList"
+            disable-sort
+            hide-default-footer
+        >
+        </v-data-table>
     </v-card>
+    
 </template>
 
 <script>
@@ -60,15 +68,34 @@ export default {
           //{text: '카카오아이디', value: 'kakaoEmail'},
           //{text: '총금액', value: 'aplyTotAmt'}, //신청총금액
         ],
+    myPosterList: [],
+    posterHeaders: [
+      {text: '상태', value: 'aplyPrgrs'}, //신청진행상황(접수, 접수완료, 신청취소)
+      {text: '신청일시', value: 'aplyDt'}, //신청일시
+      {text: '신청자명', value: 'aplyName'},
+      {text: '교회명', value: 'church'},
+      {text: '브로셔', value: 'brochureCnt'},
+      {text: '포스터', value: 'posterCnt'},
+      {text: '우편물주소', value: 'addr'},
+      {text: '우편물상세주소', value: 'dtlAddr'},
+      //{text: '카카오아이디', value: 'kakaoEmail'},
+    ],
   }},
   created() {
     this.getUserAply();
+    this.getPosterAply();
   },
   methods : {
     getUserAply(){
       this.axios.get('/aply')
       .then((result)=>{
         this.myAplyList = result.data;
+      })
+    },
+    getPosterAply(){
+      this.axios.get('/poster')
+      .then((result)=>{
+        this.myPosterList = result.data;
       })
     },
     clickList(item) {

@@ -1,11 +1,7 @@
 <template>
     <div>
-        <v-app-bar app elevation="4" flat src="https://modo-phinf.pstatic.net/20190417_140/15554692250648Rq2Y_JPEG/mosa4Ri4kd.jpeg" class="d-flex flex-column" >
-            <router-link to="/" class="mr-auto">
-                <v-avatar>
-                <img src="../../assets/jesusdream.png" alt="주님이꿈꾸신교회" >
-                </v-avatar>
-                </router-link>
+        <v-app-bar app elevation="4" flat class="d-flex flex-column" >
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
 
             <!-- 카카오로그인 -->
@@ -46,12 +42,6 @@
                 </v-icon>
             </v-btn>
         </v-app-bar>
-        <v-card class="d-flex justify-center" elevation="0">
-
-            <v-breadcrumbs :items="items" class="pa-2">
-            <template v-slot:divider></template>
-            </v-breadcrumbs>
-        </v-card>
         
         
         <v-layout>
@@ -63,11 +53,8 @@
             <v-divider></v-divider>
 
             <v-list density="compact" nav>
-                <router-link to="/" class="mr-auto">
-                    <v-list-item prepend-icon="mdi-view-dashboard" title="Home" value="home">홈으로</v-list-item>
-                </router-link>
-                <router-link to="/user" class="mr-auto">
-                    <v-list-item prepend-icon="mdi-forum" title="About" value="about">등록하러가기</v-list-item>
+                <router-link :to="item.router" class="mr-auto" v-for="item in menu" :key="item.router">
+                    <v-list-item prepend-icon="mdi-view-dashboard">{{item.menuTitle}}</v-list-item>
                 </router-link>
             </v-list>
         </v-navigation-drawer>
@@ -82,23 +69,12 @@ export default {
             userInfo:{}
             ,isLogin: false
             ,drawer: null
-            ,items: [
-                        {
-                        text: '캠프소개',
-                        disabled: false,
-                        to: 'About',
-                        },
-                        {
-                        text: '캠프등록',
-                        disabled: false,
-                        to: 'User',
-                        },
-                        {
-                        text: '캠프실황',
-                        disabled: false,
-                        to: 'Main',
-                        },
-                    ],
+            ,menu:[
+                {menuTitle:'사용자홈', router:'/'},
+                {menuTitle:'신청등록내역', router:'/admin'},
+                {menuTitle:'포스터신청내역', router:'/adminPoster'},
+                {menuTitle:'신청등록', router:'/user'},
+            ]
         };
     },
     created() {

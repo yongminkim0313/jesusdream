@@ -37,6 +37,25 @@ module.exports = (app, mongoose, winston) => {
         bankNm: String,
       });
 
+      const posterSchema = new mongoose.Schema({
+        seq: Number,
+        aplyPrgrs: String,
+        brochureCnt: Number,
+        posterCnt: Number,
+        aplyDt: String, //신청일시
+        aplyName: String,
+        church: String,
+        addr: String,
+        dtlAddr: String,
+        phone: String,
+        email: String,
+        kakaoEmail: String,
+        rgtrNm: String,
+        rgtrDt: String,
+        updtNm: String,
+        updtDt: String,
+      });
+
     aplySchema.plugin(autoIncrement.plugin, {
         model: 'aply',
         field: 'seq',
@@ -44,8 +63,17 @@ module.exports = (app, mongoose, winston) => {
         increment: 1 // 증가 
     });
 
-    const Aply = mongoose.model("aply", aplySchema);
+    posterSchema.plugin(autoIncrement.plugin, {
+        model: 'poster',
+        field: 'seq',
+        startAt: 1, //시작 
+        increment: 1 // 증가 
+    });
 
+    const Aply = mongoose.model("aply", aplySchema);
+    
+    const Poster = mongoose.model("poster", posterSchema);
+    
     app.post('/aply', async(req, res) => {
         winston.info('post) aply insert!');
         try {
@@ -187,6 +215,75 @@ module.exports = (app, mongoose, winston) => {
         } 
     });
 
+    app.post('/poster',async(req,res)=>{
+        winston.info('post) poster insert!');
+        try {
+            const today = moment();
+            const poster = new Poster(req.body);
+            
+            // if(!req.session.email){
+            //     res.status(401).json({error_code:'kakao account is null' , msg:"로그인이 필요한 서비스 입니다."});
+            // }
 
+            poster.aplyPrgrs = '접수'
+            if(req.session && req.session.email){
+                poster.kakaoEmail = req.session.email;
+            }
+            poster.aplyDt = today.format('YYYY-MM-DD') //신청일시
+            await poster.save()
+            .then(() => {res.status(200).json({ result: 'success' })})
+            .catch((err) => {winston.error("Error : " + err)})
+            .then(() => {});
+        } catch (err) {
+            winston.error("Error >>" + err);
+            res.status(401).json({msg: '캠프신청 실패'});
+        }
+    })
+
+    app.get('/poster', (req, res) => {
+        winston.info('get) poster select!');
+        console.log(req.session);
+        try{
+            Poster.find({ kakaoEmail: req.session.email }).sort({ seq: 'desc' }).exec(function(err, posterList) {
+                if (err) res.json({ result: -1 })
+                res.status(200).json(posterList);
+            })
+        } catch (err) {
+            winston.error("Error >>" + err);
+            res.status(401).json({msg: '캠프신청 불러오기 실패'});
+        }
+    });
+
+    app.get('/poster/all', (req, res) => {
+        winston.info('get) poster select!');
+        console.log(req.session);
+        try{
+            Poster.find({ }).sort({ seq: 'desc' }).exec(function(err, posterList) {
+                if (err) res.json({ result: -1 })
+                res.json(posterList);
+            })
+        } catch (err) {
+            winston.error("Error >>" + err);
+            res.status(401).json({msg: '포스터 브로셔 불러오기 실패'});
+        }
+    });
+
+    app.put('/poster/one', async(req, res) => {
+        winston.info('put) poster update!');
+        console.log(req.body);
+        var item = req.body;
+        try{
+            var result = await Poster.updateOne({ seq: item.seq }, {
+            $set: {
+                aplyPrgrs: item.aplyPrgrs,
+            },
+            })
+            console.log('result:::::::',result);
+            res.json({ result: 'success' });
+        }catch(err){
+            winston.error(err);
+            res.status(402).json({msg:'포스터 업데이트 실패'})
+        } 
+    });
 
 }

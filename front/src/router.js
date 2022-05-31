@@ -1,6 +1,8 @@
  import Vue from 'vue';
  import VueRouter from 'vue-router';
  import Header from "./layout/youthvision/Header.vue";
+ import AdminHeader from "./layout/youthvision/AdminHeader.vue";
+ import AdminPoster from "./layout/youthvision/AdminPoster.vue";
  import Footer from "./layout/youthvision/Footer.vue";
  import About from "./layout/youthvision/About.vue";
  import Admin from "./layout/youthvision/Admin.vue";
@@ -39,7 +41,6 @@
              default: User,
              footer: Footer
          },
-         meta: { unauthorized: true } 
      },
      {
          path: "/myAply",
@@ -49,13 +50,12 @@
              default: MyAply,
              footer: Footer
          },
-         meta: { unauthorized: true }
      },
      {
          path: "/admin",
          name: 'Admin',
          components: {
-             header: Header,
+             header: AdminHeader,
              default: Admin
          },
          meta:{auth:'admin'}
@@ -69,6 +69,15 @@
              footer: Footer
          },
          meta: { unauthorized: true }
+     },
+     {
+         path: "/adminPoster",
+         name: 'AdminPoster',
+         components: {
+             header: AdminHeader,
+             default: AdminPoster,
+         },
+         meta:{auth:'admin'}
      }
  ];
  const router = new VueRouter({ mode: 'history', routes: route });

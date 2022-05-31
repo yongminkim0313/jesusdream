@@ -43,4 +43,12 @@ module.exports = (app, winston) => {
             winston.error("Error >>" + err);
         }
     });
+
+    app.post('/kakao/share/callback', async(req,res)=>{
+        try{
+
+        }catch(err){
+            winston.error("Error >>" + err);
+        }
+    })
 }

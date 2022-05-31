@@ -40,8 +40,8 @@ router.beforeEach(async(to, from, next) => {
     //console.log("path::::::::::::::::", to.path);
     const vueCookies = Vue.prototype.$cookies;
 
-    if (vueCookies.get('accesToken') === null ) {
-        if(!vueCookies.get('accessToken')){
+    if (vueCookies.get('userInfo') === null ) {
+        if(!vueCookies.get('userInfo')){
             const response = await Axios.post('/auth/userInfo');
             const userInfo = response.data.userInfo;
             if(userInfo){
@@ -67,8 +67,7 @@ router.beforeEach(async(to, from, next) => {
             return next('/');
         }
     }
-
-    if (to.matched.some(record => record.meta.unauthorized) || vueCookies.get('accessToken')) {
+    if (to.matched.some(record => record.meta.unauthorized) || vueCookies.get('userInfo')) {
         return next();
     }else{
         Vue.prototype.$awn.alert('로그인이 필요합니다');
