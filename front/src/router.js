@@ -10,6 +10,7 @@
  import MyAply from "./layout/youthvision/MyAply.vue";
  import MyAplyList from "./layout/youthvision/MyAplyList.vue";
  import Main from "./layout/Main.vue";
+ import CampLive from "./layout/youthvision/CampLive.vue";
 
  Vue.use(VueRouter);
  const route = [
@@ -78,6 +79,16 @@
              default: AdminPoster,
          },
          meta:{auth:'admin'}
+     },
+     {
+         path: "/campLive",
+         name: 'CampLive',
+         components: {
+             header: Header,
+             default: CampLive,
+             footer: Footer
+         },
+         meta: { unauthorized: true }
      }
  ];
  const router = new VueRouter({ mode: 'history', routes: route });

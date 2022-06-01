@@ -96,7 +96,7 @@ export default {
                         {
                         text: '캠프실황',
                         disabled: false,
-                        to: 'Main',
+                        to: 'CampLive',
                         },
                     ],
         };
