@@ -3,9 +3,11 @@
         
         
         <v-card max-width="784" class="mx-auto" elevation="5" v-for="item in youtubeList" :key="item.src">
-            <v-card-title>{{item.title}}</v-card-title>
+                <v-card-title>{{item.title}}</v-card-title>
             <v-card-subtitle>{{item.subtitle}}</v-card-subtitle>
-            <iframe width="784" height="441" :src="item.src" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div id="area">
+                <iframe id="video" width="100%" height="100%" :src="item.src" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
         </v-card>
 
     </v-card>
@@ -26,3 +28,15 @@ export default {
     }
 }
 </script>
+<style>
+#area {
+  position: relative; /* absolute는 부모가 relative일 때 부모를 따라간다. */
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 비율 */
+}
+#video {
+  position: absolute;
+  width: 100%; /* 부모에 맞게 꽉 채운다. */
+  height: 100%;
+}
+</style>
