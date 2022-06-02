@@ -24,9 +24,7 @@
                 <v-card>
                   <v-card-title>2022여름유스비전캠프 안내</v-card-title>
                       <!-- <v-img :src="require('../../assets/about.png')" class="white--text align-end"></v-img> -->
-                      <v-sheet height="1540px">
-
-                        <v-carousel
+                    <v-carousel
                       cycle
                       hide-delimiter-background
                       show-arrows-on-hover
@@ -36,11 +34,8 @@
                         v-for="(slide, i) in slides"
                         :key="i"
                         :src="slide"
-                        nuxt
                       ></v-carousel-item>
                     </v-carousel>
-
-                      </v-sheet>
                 </v-card>
               </v-col>
               <v-col cols="12" md="12" sm="12">
@@ -303,6 +298,8 @@ export default {
     for(var i = 0 ; i < 50; i++){
       this.cnt50.push(i);
     }
+
+    console.log(this.$refs);
     
   },
   methods : {
@@ -401,7 +398,7 @@ export default {
       foldAddrPop(){
         var element_wrap = document.getElementById('addrDiv');
         element_wrap.style.display = 'none';
-      }
+      },
   }
 
 }
