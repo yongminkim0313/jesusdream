@@ -20,8 +20,8 @@
       ></v-carousel-item>
     </v-carousel>
     <v-img 
-      :src="require('../assets/about.png')"
-      class="black--text align-end"
+      :src="require('../assets/brochure/poster.png')"
+      max-height="1200"
       contain
     ></v-img>
   </v-container>

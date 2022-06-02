@@ -16,11 +16,9 @@
       </v-row>
       <v-row class="pa-2">
 
-        <v-window v-model="tab">
-          <v-window-item v-for="n in 2" :key="n" >
            
           <v-container fluid>
-            <v-row v-if="n==1">
+            <v-row v-if="tab==0">
               
               <v-col cols="12" md="12" sm="12">
                 <v-card>
@@ -30,19 +28,18 @@
                       cycle
                       hide-delimiter-background
                       show-arrows-on-hover
-                      height="300"
-                      min-height="300"
-                      max-width="500"
+                      max-height="1200"
                     >
                       <v-carousel-item
                         v-for="(slide, i) in slides"
                         :key="i"
                         :src="slide"
+                        nuxt
                       ></v-carousel-item>
                     </v-carousel>
                 </v-card>
               </v-col>
-              <v-col cols="12" md="12" sm="12">
+              <v-col cols="12" md="12" sm="12" v-if="false">
                 <v-card-subtitle>
                   2022 여름 유스비전캠프 (since 2006)
                 </v-card-subtitle>
@@ -85,7 +82,7 @@
             </v-row>
 
 
-            <v-row v-if="n==2">
+            <v-row v-if="tab==1">
               
               <v-col cols="12" md="6" sm="12">
                 <v-card>
@@ -218,8 +215,6 @@
             </v-row>
           </v-container>
       
-        </v-window-item>
-      </v-window>
 
       </v-row>
     </v-container>
@@ -294,13 +289,10 @@ export default {
     phone: '',
     email: '',
     slides: [
-      require('../../assets/jd5.jpeg'),
-      require('../../assets/jd6.jpeg'),
-      require('../../assets/jd9.jpeg'),
-      require('../../assets/jd10.jpeg'),
-      require('../../assets/jd11.jpeg'),
-      require('../../assets/jd12.jpeg'),
-      require('../../assets/jd14.jpeg'),
+      require('../../assets/brochure/brochure01.jpeg'),
+      require('../../assets/brochure/brochure02.jpeg'),
+      require('../../assets/brochure/brochure03.jpeg'),
+      require('../../assets/brochure/brochure04.jpeg'),
     ],
   }},
   created() {
