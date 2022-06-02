@@ -24,7 +24,9 @@
                 <v-card>
                   <v-card-title>2022여름유스비전캠프 안내</v-card-title>
                       <!-- <v-img :src="require('../../assets/about.png')" class="white--text align-end"></v-img> -->
-                    <v-carousel
+                      <v-sheet height="1540px">
+
+                        <v-carousel
                       cycle
                       hide-delimiter-background
                       show-arrows-on-hover
@@ -37,9 +39,11 @@
                         nuxt
                       ></v-carousel-item>
                     </v-carousel>
+
+                      </v-sheet>
                 </v-card>
               </v-col>
-              <v-col cols="12" md="12" sm="12" v-if="false">
+              <v-col cols="12" md="12" sm="12">
                 <v-card-subtitle>
                   2022 여름 유스비전캠프 (since 2006)
                 </v-card-subtitle>
