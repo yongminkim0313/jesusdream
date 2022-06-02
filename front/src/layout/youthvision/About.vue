@@ -28,7 +28,7 @@
                       cycle
                       hide-delimiter-background
                       show-arrows-on-hover
-                      max-height="1200"
+                      height="100%"
                     >
                       <v-carousel-item
                         v-for="(slide, i) in slides"
