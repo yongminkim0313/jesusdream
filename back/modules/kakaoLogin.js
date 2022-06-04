@@ -33,12 +33,6 @@ module.exports = (app, winston) => {
 
             var userSession = userService.kakaoUserInfo(req.session, response2.data, `${access_token}`);
             userService.authInfo(userSession);
-            winston('::::::::::::::: LOGIN INFO :::::::::::::::')
-            for(obj in userSession){
-                winston.info(obj+'::'+userSession[obj]);
-            }
-            winston('::::::::::::::: LOGIN INFO END:::::::::::::::')
-
             console.log(userSession);
             userSession.save(function() {
                 res.redirect(`${process.env.MAIN_URL}`);
