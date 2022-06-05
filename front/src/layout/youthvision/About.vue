@@ -110,7 +110,7 @@
                 </v-card>
               </v-col>
 
-              <v-row class="pa-2">
+              <v-row class="pa-2" dense>
                 
                 <v-col cols="12" md="12" class="d-flex flex-row">
                   <v-icon
