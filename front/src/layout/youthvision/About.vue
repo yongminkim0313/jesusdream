@@ -84,7 +84,19 @@
               <v-col cols="12" md="6" sm="12">
                 <v-card>
                   <v-card-title>브로셔</v-card-title>
-                  <v-img min-height="540" contain :src="require('../../assets/about.png')" class="white--text align-end"></v-img>
+                  <v-img contain :src="require('../../assets/brochure2.jpg')" class="white--text align-end"></v-img>
+                </v-card>
+              </v-col>
+              <v-col cols="12" md="6" sm="12">
+                <v-card>
+                  <v-card-title>포스터</v-card-title>
+                  <v-img contain :src="require('../../assets/포스터.jpeg')" class="white--text align-end"></v-img>
+                </v-card>
+              </v-col>
+
+              <v-row class="pa-2" dense>
+                
+                <v-col cols="6">
                   <v-card-text>
                     <v-select
                       v-model="brochureCnt"
@@ -93,23 +105,18 @@
                       label="브로셔"
                     ></v-select>
                   </v-card-text>
-                </v-card>
-              </v-col>
-              <v-col cols="12" md="6" sm="12">
-                <v-card>
-                  <v-card-title>포스터</v-card-title>
-                  <v-img min-height="540" contain :src="require('../../assets/포스터.jpeg')" class="white--text align-end"></v-img>
-                  <v-card-text>
-                    <v-select
+                  </v-col>
+                  <v-col cols="6">
+                    <v-card-text>
+                      <v-select
                       v-model="posterCnt"
                       :items="cnt50"
                       attach
                       label="포스터"
                     ></v-select>
                   </v-card-text>
-                </v-card>
-              </v-col>
-
+                  </v-col>
+              </v-row>
               <v-row class="pa-2" dense>
                 
                 <v-col cols="12" md="12" class="d-flex flex-row">
