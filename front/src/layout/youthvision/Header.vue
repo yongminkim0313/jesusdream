@@ -119,6 +119,8 @@ export default {
               this.userInfo.profileImage = userInfo.profileImage
               this.userInfo.auth = userInfo.auth;
               this.isLogin = true;
+            }else{
+                this.logout();
             }
         }
         ,kakaoLogin: function() {
