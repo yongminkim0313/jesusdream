@@ -34,7 +34,7 @@
             >
             {{userInfo.nick}} 님
             </v-chip>
-
+            
             <v-btn
                 fab
                 small
@@ -128,7 +128,7 @@ export default {
                 +'client_id=be0d818c768f8e2198c97470fc7577c5&'
                 +'redirect_uri='+this.APP_URL+'/auth/kakao/callback&'
                 +'response_type=code&'
-                +'scope=profile_nickname, profile_image, account_email, gender';
+                +'scope=profile_nickname, profile_image, account_email, gender, talk_message';
         },
         naverLogin: function(){
             location.href = 'https://nid.naver.com/oauth2.0/authorize?'
@@ -164,6 +164,7 @@ export default {
         goMyAplyList: function(){
             this.$router.push('/myAplyList').catch(()=>{})
         },
+
     },
 
 }

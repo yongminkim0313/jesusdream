@@ -43,9 +43,38 @@ module.exports = (app, winston) => {
         }
     });
 
-    app.post('/kakao/share/callback', async(req,res)=>{
+    app.post('/talk/memo/send', async(req,res) => {
+        var item = req.body.campCnt;
+        var args = {};
+        var amt = 0;
+        if(item.chodeung)       {args.chodeung = item.chodeung + ' 명'; amt+=item.chodeung};
+        if(item.cheongsonyeon)  {args.cheongsonyeon = item.cheongsonyeon + ' 명'; amt+=item.cheongsonyeon};
+        if(item.cheongnyeon)    {args.cheongnyeon = item.cheongnyeon + ' 명'; amt+=item.cheongnyeon};
+        if(item.jangnyeon)      {args.jangnyeon = item.jangnyeon + ' 명'; amt+=item.jangnyeon};
+        if(item.sayeogja)       {args.sayeogja = item.sayeogja + ' 명'; amt+=item.sayeogja};
+        args.camp_amt = amt + '만원';
+        
+        console.log(args);
         try{
-
+            console.log('/talk/memo/send');
+            const accessToken = req.session.accessToken;
+            try {
+                const response = await axios({
+                    method: "post",
+                    url: "https://kapi.kakao.com/v2/api/talk/memo/send", // 서버
+                    headers: { 'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+                                ,'Authorization': `Bearer ${accessToken}` }, // 요청 헤더 설정
+                    params:{
+                        template_id:77807,
+                        template_args: args
+                    }
+                });
+                winston.info('/talk/memo/send result_code'+response.result_code);
+                res.status(200).json({result_code: response.result_code});
+            } catch (err) {
+                winston.error("Error >>" + err);
+                res.status(401).json({msg:err});
+            }
         }catch(err){
             winston.error("Error >>" + err);
         }

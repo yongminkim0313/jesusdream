@@ -28,13 +28,10 @@
                       cycle
                       hide-delimiter-background
                       show-arrows-on-hover
-                      height="100%"
                     >
-                      <v-carousel-item
-                        v-for="(slide, i) in slides"
-                        :key="i"
-                        :src="slide"
-                      ></v-carousel-item>
+                      <v-carousel-item v-for="(slide, i) in slides" :key="i">
+                        <v-img contain :src="slide" :alt="slide"></v-img>
+                      </v-carousel-item>
                     </v-carousel>
                 </v-card>
               </v-col>
