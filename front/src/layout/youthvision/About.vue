@@ -297,9 +297,10 @@ export default {
       this.cnt50.push(i);
     }
     this.getMyAply();
+    console.log(this.$route.query);
 
     if(this.$route.query){
-      this.tab = 1;
+      if(this.$route.query.tab == 'poster')this.tab = 1;
     }
   },
   methods : {
