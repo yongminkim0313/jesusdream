@@ -117,7 +117,7 @@ module.exports = (app, winston) => {
         try {
             const response = await axios({
                 method: "get",
-                url: "https://kapi.kakao.comv1/api/talk/friends/message/send", // 서버
+                url: "https://kapi.kakao.com/v1/api/talk/friends/message/send", // 서버
                 headers: { 'Authorization': `Bearer ${accessToken}` }, // 요청 헤더 설정
                 params:{
                         receiver_uuids:[uuid],
