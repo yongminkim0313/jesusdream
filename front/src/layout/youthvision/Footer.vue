@@ -16,6 +16,11 @@
           <v-btn class="mx-4 white--text" icon @click="instagram()">
             <v-icon size="24px"> mdi-instagram </v-icon>
           </v-btn>
+          
+          <v-btn id="kakao-link-btn" class="mx-4 white" icon>
+              <v-img width="24px" height="24px" contain :src="require('../../assets/kakao.png')"></v-img>
+          </v-btn>
+
         </v-card-text>
 
         <v-card-text class="white--text text-center px-auto">
@@ -37,6 +42,9 @@
   export default {
     data: () => ({
     }),
+    created(){
+      
+    },
     methods: {
       facebook: function(){
         location.href = 'https://www.facebook.com/groups/419662904835077/media/';

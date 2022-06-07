@@ -1,8 +1,6 @@
 <template>
-  <v-card
-    class="mx-auto my-5 pa-0"
-    max-width="800"
-  >
+  <v-card width="800" class="mx-auto" elevation="5">
+    
     <v-container fluid>
       <v-row class="pa-0">
         <v-col cols="12" class="d-flex justify-center">
@@ -207,14 +205,9 @@
                 </v-col>
               </v-row>
               <v-col cols="12" md="12" class="d-flex flex-center">
-                  <v-card>
-                    <v-card-subtitle>
-                      <strong>포스터/브로셔 신청:  </strong> 포스터 ( {{brochureCnt}} 장)  브로셔 ( {{posterCnt}} 장)
-                    </v-card-subtitle>
-                  </v-card>
-              </v-col>
-              <v-col cols="12" md="12" sm="12" class="d-flex flex-center">
-                <v-btn @click="aplyPoster()">신청하기</v-btn>
+                    <v-card-actions>
+                      <v-btn color="blue" elevation="5" @click="aplyPoster();" class="mx-auto" outlined><strong> 포스터 ( {{brochureCnt}} 장)  브로셔 ( {{posterCnt}} 장) 신청하기</strong></v-btn>
+                    </v-card-actions>  
               </v-col>
             </v-row>
           </v-container>
@@ -303,47 +296,84 @@ export default {
     for(var i = 0 ; i < 50; i++){
       this.cnt50.push(i);
     }
+    this.getMyAply();
 
-    console.log(this.$refs);
-    
+    if(this.$route.query){
+      this.tab = 1;
+    }
   },
   methods : {
     btnClick: function(){
       this.$router.push('/');
     },
+    getMyAply: function(){
+        this.axios.get('/aply')
+        .then((result)=>{
+
+          if(result.data.length > 0 ){
+            var item = result.data[0];
+            this.aplyName = item.aplyName,
+            this.church = item.church,
+            this.addr = item.fullAddress,
+            this.dtlAddr = item.detailAddress,
+            this.phone = item.phone,
+            this.email = item.email
+          }
+
+        })
+    },
     aplyPoster: function(){
       var _this = this;
-      var aplyContents = {
-          brochureCnt: _this.brochureCnt,
-          posterCnt: _this.posterCnt,
-          aplyName: _this.aplyName,
-          church: _this.church,
-          addr: _this.addr,
-          dtlAddr: _this.dtlAddr,
-          phone: _this.phone,
-          email: _this.email,
+      this.$v.$touch();
+      
+      if (this.$v.$invalid) {
+        // 1. Loop the keys
+        for (let key in Object.keys(this.$v)) {
+          // 2. Extract the input
+          const input = Object.keys(this.$v)[key];
+          // 3. Remove special properties
+          if (input.includes("$")) return false;
+          // 4. Check for errors
+          if (this.$v[input].$error) {
+            // 5. Focus the input with the error
+            this.$refs[input].focus();
+            // 6. Break out of the loop
+            break;
+          }
         }
+      } else {
         
-      console.log(aplyContents);
+        var aplyContents = {
+            brochureCnt: _this.brochureCnt,
+            posterCnt: _this.posterCnt,
+            aplyName: _this.aplyName,
+            church: _this.church,
+            addr: _this.addr,
+            dtlAddr: _this.dtlAddr,
+            phone: _this.phone,
+            email: _this.email,
+          }
+          
+        console.log(aplyContents);
 
-      this.axios.post('/poster',aplyContents)
-      .then((result)=>{
-        
-        if(result.error_code){
-          console.log(error_code);
-          return;
-        }
+        this.axios.post('/poster',aplyContents)
+        .then((result)=>{
+          
+          if(result.error_code){
+            console.log(error_code);
+            return;
+          }
 
-        this.$socket.emit('poster', aplyContents, (data)=>{console.log(data)});
-        this.$awn.success('신청이 완료되었습니다.');
-        this.$router.push('/');
-      }).catch((err)=>{
-        this.$awn.alert('등록신청에 오류가 발생하였습니다.'+err);
-      })
+          this.$socket.emit('poster', aplyContents, (data)=>{console.log(data)});
+          this.$awn.success('신청이 완료되었습니다.');
+          this.$router.push('/myAplyList');
+        }).catch((err)=>{
+          this.$awn.alert('등록신청에 오류가 발생하였습니다.'+err);
+        })
+      }
     },
     openAddrPop (){
         var _this = this;
-        console.log(_this);
         var element_wrap = document.getElementById('addrDiv');
         // 현재 scroll 위치를 저장해놓는다.
         var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);

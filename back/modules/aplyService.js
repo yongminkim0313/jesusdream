@@ -35,6 +35,7 @@ module.exports = (app, mongoose, winston) => {
         pyrNm: String,
         checkboxUseRoom: String,
         bankNm: String,
+        kakaoId: String,
       });
 
       const posterSchema = new mongoose.Schema({
@@ -54,6 +55,7 @@ module.exports = (app, mongoose, winston) => {
         rgtrDt: String,
         updtNm: String,
         updtDt: String,
+        kakaoId: String,
       });
 
     aplySchema.plugin(autoIncrement.plugin, {
@@ -82,12 +84,13 @@ module.exports = (app, mongoose, winston) => {
             winston.info(req.body);
             const aply = new Aply(req.body);
             
-            if(!req.session.email){
+            if(!req.session.kakaoId || !req.session.email){
                 res.status(401).json({error_code:'kakao acount is null' , msg:"세션에 사용자가 없습니다."});
             }
             var cm = aply.campCnt
             var cnt = cm.chodeung+cm.cheongsonyeon+cm.cheongnyeon+cm.jangnyeon+cm.sayeogja; //총인원
             aply.kakaoEmail = req.session.email;
+            aply.kakaoId = req.session.kakaoId;
             aply.aplyTotAmt = cnt*10000 //신청총금액
             aply.aplyPrgrs = '접수' //신청진행상황(접수, 접수완료, 신청취소)
             aply.aplyDt = today.format('YYYY-MM-DD') //신청일시
@@ -226,7 +229,8 @@ module.exports = (app, mongoose, winston) => {
             // }
 
             poster.aplyPrgrs = '접수'
-            if(req.session && req.session.email){
+            if(req.session && req.session.kakaoId){
+                poster.kakaoId = req.session.kakaoId;
                 poster.kakaoEmail = req.session.email;
             }
             poster.aplyDt = today.format('YYYY-MM-DD') //신청일시

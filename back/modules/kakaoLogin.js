@@ -113,14 +113,20 @@ module.exports = (app, winston) => {
         args.camp_amt = amt + '만원';
         console.log(args, uuid);
 
+        const friends = [];
+        friends.push(uuid);
+
         const accessToken = req.session.accessToken;
         try {
             const response = await axios({
-                method: "get",
+                method: "post",
                 url: "https://kapi.kakao.com/v1/api/talk/friends/message/send", // 서버
-                headers: { 'Authorization': `Bearer ${accessToken}` }, // 요청 헤더 설정
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                    'Authorization': `Bearer ${accessToken}`
+                },
                 params:{
-                        receiver_uuids:[uuid],
+                        receiver_uuids: '["'+friends.toString()+'"]',
                         template_id:77807,
                         template_args: args
                     }
@@ -129,6 +135,7 @@ module.exports = (app, winston) => {
             res.status(200).json(response.data);
         } catch (err) {
             winston.error("Error >>" + err);
+            console.log(err);
             res.status(401).json(err);
         }
         

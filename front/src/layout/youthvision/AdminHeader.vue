@@ -58,7 +58,7 @@ export default {
             userInfo:{}
             ,isLogin: false
             ,drawer: null
-            ,selectedMenu:1
+            ,selectedMenu:0
             ,menu:[
                 {menuTitle:'신청등록내역', router:'/admin'},
                 {menuTitle:'포스터신청내역', router:'/adminPoster'},

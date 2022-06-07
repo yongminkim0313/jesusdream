@@ -33,6 +33,7 @@
              footer: Footer
          },
          meta: { unauthorized: true }
+         ,props: true
      },
      {
          path: "/user",

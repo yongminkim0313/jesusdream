@@ -1,9 +1,6 @@
 <template>
- <v-card
-    :loading="loading"
-    class="mx-auto my-5 pa-5"
-    max-width="800"
-  >
+  <v-card width="800" class="mx-auto" elevation="5" :loading="loading">
+  
   <template slot="progress">
       <v-progress-linear
         color="deep-purple"

@@ -650,10 +650,6 @@
       }
     },
     created: function(){
-       var user = this.$cookies.get('user_info');
-      if(user){
-        console.log(user);
-      }
       this.load();
         for(var i = 0 ; i < 50; i++){
           this.cnt50.push(i);

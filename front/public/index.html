@@ -20,8 +20,15 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>유스비전</title>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <script>
+      // init 체크
+    if (!Kakao.isInitialized()) {
+      Kakao.init('6b6647b0c869fcb97fb05dc57061dbf5');
+    }
+    </script>
 </head>
 
 <body>
@@ -30,6 +37,16 @@
     </noscript> -->
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    
 </body>
-
+<script>
+  Kakao.Link.createCustomButton({
+        container: '#kakao-link-btn',
+        templateId: 77557,
+        templateArgs: {
+          'title': '유스비전캠프',
+          'description': '회복을 넘어 부흥의 새역사를 쓰자!'
+        }
+      });
+</script>
 </html>

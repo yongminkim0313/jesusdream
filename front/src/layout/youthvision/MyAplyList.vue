@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card max-width="800" class="mx-auto my-5 pa-5">
         <v-card-title>나의 신청내역</v-card-title>
         <v-data-table fixed-header dense :headers="headers" :items="myAplyList" item-key="seq" class="elevation-7" @click:row="clickList"
             disable-sort
@@ -23,9 +23,11 @@
             </v-chip>
             </template>
         </v-data-table>
-
-        <v-card-title>나의 포스터 브로셔 신청내역</v-card-title>
-        <v-data-table fixed-header dense :headers="posterHeaders" :items="myPosterList" item-key="seq" class="elevation-7" @click:row="clickList"
+        <v-divider class="pa-2"></v-divider>
+        <v-card-title>나의 포스터 신청내역
+          <v-btn dense color="blue" small elevation="5" @click="aplyPoster();" class="mx-auto" outlined>포스터 신청하러가기</v-btn>
+        </v-card-title>
+        <v-data-table fixed-header dense :headers="posterHeaders" :items="myPosterList" item-key="seq" class="elevation-7"
             disable-sort
             hide-default-footer
         >
@@ -44,7 +46,7 @@ export default {
     headers: [
           //{text: '번호', value: 'seq', align: 'center',sortable: false },
           {text: '상태', value: 'aplyPrgrs'}, //신청진행상황(접수, 접수완료, 신청취소)
-          {text: '신청일시', value: 'aplyDt'}, //신청일시
+          {text: '신청일', value: 'aplyDt'}, //신청일시
           {text: '신청자명', value: 'aplyName'},
           {text: '신청자직분', value: 'jikbunSe'},
           {text: '교회명', value: 'church'},
@@ -71,7 +73,7 @@ export default {
     myPosterList: [],
     posterHeaders: [
       {text: '상태', value: 'aplyPrgrs'}, //신청진행상황(접수, 접수완료, 신청취소)
-      {text: '신청일시', value: 'aplyDt'}, //신청일시
+      {text: '신청일', value: 'aplyDt'}, //신청일시
       {text: '신청자명', value: 'aplyName'},
       {text: '교회명', value: 'church'},
       {text: '브로셔', value: 'brochureCnt'},
@@ -117,8 +119,11 @@ export default {
         query: {},
       }); 
     },
-    test(){
-        alert();
+    aplyPoster(){
+        this.$router.push({
+          name: "About",
+          query: {tab:'poster'}
+        })
     }
   }
 
