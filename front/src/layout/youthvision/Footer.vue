@@ -17,8 +17,8 @@
             <v-icon size="24px"> mdi-instagram </v-icon>
           </v-btn>
           
-          <v-btn id="kakao-link-btn" class="mx-4 white" icon>
-              <v-img width="24px" height="24px" contain :src="require('../../assets/kakao.png')"></v-img>
+          <v-btn class="mx-4 white" icon>
+              <v-img width="24px" height="24px" contain :src="require('../../assets/kakao.png')" @click="kakaoshare()"></v-img>
           </v-btn>
 
         </v-card-text>
@@ -43,7 +43,7 @@
     data: () => ({
     }),
     created(){
-      
+       
     },
     methods: {
       facebook: function(){
@@ -55,6 +55,12 @@
       instagram: function(){
         location.href = 'https://www.instagram.com/youthvision_ministry/';
       },
+      kakaoshare: function(){
+        Kakao.Link.sendScrap({
+          requestUrl: 'http://jesusdream.kr',
+          templateId: 77557
+        });
+      }
     }
 
   }
