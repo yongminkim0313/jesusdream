@@ -1,7 +1,33 @@
+const autoIncrement = require('mongoose-auto-increment');
 const axios = require('axios');
 const userService = require('../modules/userService');
+const moment = require('moment');
+require('moment-timezone');
+moment.tz.setDefault('Asia/Seoul');
 
-module.exports = (app, winston) => {
+module.exports = (app, mongoose, winston) => {
+    autoIncrement.initialize(mongoose);
+
+    const userSchema = new mongoose.Schema({
+        seq: Number,
+        kakaoId: Number,
+        name: String,
+        email: String,
+        profileImage: String,
+        nickname: String,
+        auth: String,
+        loginDt: String,
+    });
+    
+    userSchema.plugin(autoIncrement.plugin, {
+        model: 'user',
+        field: 'seq',
+        startAt: 1, //시작 
+        increment: 1 // 증가 
+    });
+
+    const User = mongoose.model("user", userSchema);
+    
     app.get('/auth/kakao/callback', async(req, res) => {
         try {
             const response = await axios({
@@ -34,6 +60,31 @@ module.exports = (app, winston) => {
             var userSession = userService.kakaoUserInfo(req.session, response2.data, `${access_token}`);
             userService.authInfo(userSession);
             console.log(userSession);
+
+            User.findOne({kakaoId: userSession.kakaoId}).exec(async function(err,user){
+                if (err) res.json({ result: -1 })
+                const today = moment();
+                if(user){
+                    User.updateOne({seq: user.seq}, {
+                        $set:{
+                            loginDt: today.format('YYYY-MM-DD')
+                        }
+                    })
+                }else{
+                    var user = new User(user);
+                    user.kakaoId = userSession.kakaoId;
+                    user.name = userSession.name,
+                    user.email = userSession.email,
+                    user.profileImage = userSession.profileImage,
+                    user.nickname = userSession.nickname,
+                    user.auth = userSession.auth,
+                    user.loginDt = today.format('YYYY-MM-DD')
+                    await user.save()
+                    .then(()=>{})
+                    .catch((err)=>{console.log(err)})
+                }
+            });
+
             userSession.save(function() {
                 res.redirect(`${process.env.MAIN_URL}`);
             });

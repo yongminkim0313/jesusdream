@@ -105,6 +105,6 @@ app.post('/auth/logout', async(req, res) => {
 
 require('./modules/socketConfig')(app, winston);
 require('./modules/campService')(app, mongoose, winston);
-require('./modules/kakaoLogin')(app, winston);
+require('./modules/kakaoLogin')(app,mongoose, winston);
 require('./modules/naverLogin')(app, winston);
 require('./modules/aplyService')(app, mongoose, winston);
