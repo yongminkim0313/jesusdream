@@ -164,9 +164,6 @@ module.exports = (app, mongoose, winston) => {
         args.camp_amt = amt + '만원';
         console.log(args, uuid);
 
-        const friends = [];
-        friends.push(uuid);
-
         const accessToken = req.session.accessToken;
         try {
             const response = await axios({
@@ -177,8 +174,8 @@ module.exports = (app, mongoose, winston) => {
                     'Authorization': `Bearer ${accessToken}`
                 },
                 params:{
-                        receiver_uuids: '["'+friends.toString()+'"]',
-                        template_id:77807,
+                        receiver_uuids: '["'+uuid+'"]',
+                        template_id:77885,
                         template_args: args
                     }
             });

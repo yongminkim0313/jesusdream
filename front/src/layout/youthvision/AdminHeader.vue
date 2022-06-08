@@ -62,18 +62,17 @@ export default {
             ,menu:[
                 {menuTitle:'신청등록내역', router:'/admin'},
                 {menuTitle:'포스터신청내역', router:'/adminPoster'},
+                {menuTitle:'달력', router:'/calendar'},
+                {menuTitle:'통계', router:'/statistic'},
+                {menuTitle:'사용자목록', router:'/userList'},
             ]
         };
     },
     created() {
-       console.log('router',this.$router);
-       //console.log('user_info',this.$cookies.get("user_info"));
-       
         this.cookiesCtr();
-       this.$socket.on('aply', (data)=>{
-           console.log(data);
-        _this.$awn.success('신청이 등록 되었습니다.');
-      });
+        this.$socket.on('aply', (data)=>{
+            this.$awn.success('신청이 등록 되었습니다.'+data.aplyName+'  '+data.church);
+        });
     },
     methods: {
         cookiesCtr: function(){
@@ -83,6 +82,8 @@ export default {
               this.userInfo.profileImage = userInfo.profileImage
               this.userInfo.auth = userInfo.auth;
               this.isLogin = true;
+            }else{
+                this.logout();
             }
         },
         logout: function (){

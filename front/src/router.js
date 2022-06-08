@@ -11,6 +11,9 @@
  import MyAplyList from "./layout/youthvision/MyAplyList.vue";
  import Main from "./layout/Main.vue";
  import CampLive from "./layout/youthvision/CampLive.vue";
+ import Calendar from "./layout/youthvision/Calendar.vue";
+ import Statistic from "./layout/youthvision/Statistic.vue";
+ import UserList from "./layout/youthvision/UserList.vue";
 
  Vue.use(VueRouter);
  const route = [
@@ -90,6 +93,33 @@
              footer: Footer
          },
          meta: { unauthorized: true }
+     },
+     {
+         path: "/calendar",
+         name: 'Calendar',
+         components: {
+             header: AdminHeader,
+             default: Calendar,
+         },
+         meta:{auth:'admin'}
+     },
+     {
+         path: "/statistic",
+         name: 'Statistic',
+         components: {
+             header: AdminHeader,
+             default: Statistic,
+         },
+         meta:{auth:'admin'}
+     },
+     {
+         path: "/userList",
+         name: 'UserList',
+         components: {
+             header: AdminHeader,
+             default: UserList,
+         },
+         meta:{auth:'admin'}
      }
  ];
  const router = new VueRouter({ mode: 'history', routes: route });
