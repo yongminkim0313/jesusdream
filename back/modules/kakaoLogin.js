@@ -11,6 +11,7 @@ module.exports = (app, mongoose, winston) => {
     const userSchema = new mongoose.Schema({
         seq: Number,
         kakaoId: Number,
+        uuid: String,
         name: String,
         email: String,
         profileImage: String,
@@ -175,6 +176,45 @@ module.exports = (app, mongoose, winston) => {
                 },
                 params:{
                         receiver_uuids: '["'+uuid+'"]',
+                        template_id:77885,
+                        template_args: args
+                    }
+            });
+            console.log('response::',response.data);
+            res.status(200).json(response.data);
+        } catch (err) {
+            winston.error("Error >>" + err);
+            console.log(err);
+            res.status(401).json(err);
+        }
+        
+    })
+
+
+    app.post('/app/users', async(req,res) => {
+        winston.info('/app/users');
+        if(req.session.auth != 'admin') res.status(401).json({msg:'접근권한이 없습니다.'});
+
+        try {
+            const response = await axios({
+                method: "post",
+                url: "https://kapi.kakao.com/v1/user/ids", // 서버
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                    'Authorization': `KakaoAK ${process.env.admin_key}`
+                }
+            });
+            const users = response.data['elements'];
+            console.log(response.data);
+            const response2 = await axios({
+                method: "post",
+                url: "https://kapi.kakao.com/v2/app/users", // 서버
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                    'Authorization': `KakaoAK ${process.env.admin_key}`
+                },
+                params:{
+                        target_ids: '["'+users.join(',')+'"]',
                         template_id:77885,
                         template_args: args
                     }

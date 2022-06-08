@@ -2,14 +2,14 @@
     <v-card width="800" class="mx-auto" elevation="5">
         
         
-        <v-card max-width="784" class="mx-auto" elevation="5" v-for="item in youtubeList" :key="item.src">
+        <v-card max-width="784" class="mx-auto my-5" elevation="5" v-for="item in youtubeList" :key="item.src">
                 <v-card-title>{{item.title}}</v-card-title>
             <v-card-subtitle>{{item.subtitle}}</v-card-subtitle>
             <div id="area">
                 <iframe id="video" width="100%" height="100%" :src="item.src" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </v-card>
-
+        <v-divider class="pa-5"></v-divider>
     </v-card>
 </template>
 <script>

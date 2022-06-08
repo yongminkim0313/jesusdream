@@ -75,10 +75,7 @@
         <v-btn color="primary" elevation="2" @click="getAplyAll();" class="ma-10">
           조회
         </v-btn>
-        <v-btn color="primary" elevation="2" @click="getFriendList();" class="ma-10">
-          친구목록
-        </v-btn>
-        <v-chip v-for="item in friendList" :key="item.id" @click="sendMsgFriend(item)"> {{item}}</v-chip>
+        
   </v-card>
 </template>
 <script>
@@ -89,7 +86,6 @@ export default {
       return {
         search:'',
         aplyList: [],
-        friendList:[],
         items: [
           { title: '캠프등록현황', icon: 'mdi-home-city' },
           { title: '완료내역', icon: 'mdi-account-group-outline' },
@@ -98,6 +94,7 @@ export default {
           {text: '번호', value: 'seq', align: 'center',sortable: false },
           {text: '상태', value: 'aplyPrgrs'}, //신청진행상황(접수, 접수완료, 신청취소)
           {text: '신청일', value: 'aplyDt'}, //신청일시
+          {text: '은행', value: 'bankNm'},
           {text: '신청자명', value: 'aplyName'},
           {text: '신청자직분', value: 'jikbunSe'},
           {text: '교회명', value: 'church'},
@@ -176,19 +173,7 @@ export default {
         console.log(data);
        })
     },
-    getFriendList(){
-      this.axios.post('/talk/friends',{})
-      .then((result)=>{
-        console.log(result.data);
-        this.friendList = result.data.elements;
-       })
-    },
-    sendMsgFriend(item){
-      this.axios.post('/friends/message/send',{uuid:item.uuid, campCnt:{}})
-      .then((data)=>{
-        console.log(data);
-       })
-    }
+    
   }
  };
 </script>

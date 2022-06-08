@@ -65,6 +65,8 @@ export default {
          headers: [
           {text: '번호', value: 'seq', align: 'center',sortable: false },
           {text: '상태', value: 'aplyPrgrs'}, 
+          {text: '브로셔', value: 'brochureCnt'},
+          {text: '포스터', value: 'posterCnt'},
           {text: '신청일', value: 'aplyDt'}, //신청일시
           {text: '신청자명', value: 'aplyName'},
           {text: '교회명', value: 'church'},
