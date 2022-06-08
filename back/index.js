@@ -54,16 +54,18 @@ app.use(function(req, res, next) {
     // console.log(req.session);
     // console.log(req.header('access_token'));
 
-    if (req.url.indexOf('/auth/kakao/callback') > -1) {
+    if (req.url.indexOf('/auth/') > -1) {
         return next();
     }else if (req.url.indexOf('/getAccessToken') > -1) {
+        return next();
+    }else if (req.url.indexOf('/aply') > -1) {
         return next();
     } else {
         if (req.session && req.session.accessToken) {
             return next();
         } else {
-            res.status(401);
-            return next();
+            console.log('세션 만료')
+            res.status(402).json({msg:'세션 만료, 재로그인해주세요'});
         }
     }
 });
@@ -79,28 +81,26 @@ app.post('/auth/userInfo', (req, res) => {
 });
 
 app.post('/auth/logout', async(req, res) => {
-    const type = req.session.type;
-    req.session.destroy(function(err) {
-        if (err) throw err;
-        res.status(200).json({msg:'success'});
-    });
-    if(type == 'kakao'){
-        console.log('kakao logout!');
-        const accessToken = req.session.accessToken;
-        try {
-            const response2 = await axios({
-                method: "post",
-                url: "https://kapi.kakao.com/v1/user/logout", // 서버
-                headers: { 'Authorization': `Bearer ${accessToken}` }, // 요청 헤더 설정
-            });
-            winston.info('logout:::::'+response2.status);
-        } catch (err) {
-            winston.error("Error >>" + err);
-            res.status(401).json({msg:err});
-        }
-    }else if(type == 'naver'){
-
-    }else{}
+    console.log('kakao logout!');
+    if(!req.session || !req.session.accessToken){
+        res.status(200).json({msg: 'logout!!'});
+    }
+    const accessToken = req.session.accessToken;
+    try {
+        const response2 = await axios({
+            method: "post",
+            url: "https://kapi.kakao.com/v1/user/logout", // 서버
+            headers: { 'Authorization': `Bearer ${accessToken}` }, // 요청 헤더 설정
+        });
+        winston.info('logout:::::'+response2.status);
+        req.session.destroy(function(err) {
+            if (err) throw err;
+            res.status(200).json({msg:'success'});
+        });
+    } catch (err) {
+        winston.error("Error >>" + err);
+        res.status(401).json({msg:err});
+    }
 });
 
 require('./modules/socketConfig')(app, winston);

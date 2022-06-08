@@ -5,20 +5,10 @@
             <v-card class="d-flex justify-space-between mx-auto" flat tile color="#f5f5f5">
                     {{menu[selectedMenu].menuTitle}}
             </v-card>
-                <v-chip
-                    label
-                    link
-                    v-if="userInfo.auth == 'admin'"
-                >
-                    <v-icon @click="goAdminPage()">
-                        mdi-account-supervisor
-                    </v-icon>
+                <v-chip label link>
+                    관리자 {{userInfo.nick}} 님
                 </v-chip>
                 
-                <v-chip label link v-if="isLogin" @click="goMyAplyList()">
-                {{userInfo.nick}} 님
-                </v-chip>
-
                 <v-btn
                     fab
                     small
@@ -73,6 +63,10 @@ export default {
         this.$socket.on('aply', (data)=>{
             this.$awn.success('신청이 등록 되었습니다.'+data.aplyName+'  '+data.church);
         });
+        this.$eventBus.$on('login',(data)=>{
+            this.isLogin = data.isLogin;
+            this.userInfo = data.userInfo;
+        })
     },
     methods: {
         cookiesCtr: function(){
@@ -88,11 +82,7 @@ export default {
         },
         logout: function (){
              this.axios.post('/auth/logout')
-             .then(()=>{
-                this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie));
-                this.isLogin = false; 
-                this.userInfo = {};
-            })
+             .then(()=>{})
              .catch((e)=>{console.log(e);})
              .then(()=>{
                 this.$router.push('/').catch(()=>{});

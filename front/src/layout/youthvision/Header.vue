@@ -105,13 +105,17 @@ export default {
     },
     created() {
        console.log('router',this.$router);
-       //console.log('user_info',this.$cookies.get("user_info"));
        
         this.cookiesCtr();
-       this.$socket.on('aply', (data)=>{
-           console.log(data);
-        _this.$awn.success('신청이 등록 되었습니다.');
-      });
+        this.$socket.on('aply', (data)=>{
+            console.log(data);
+            _this.$awn.success('신청이 등록 되었습니다.');
+        });
+
+        this.$eventBus.$on('login',(data)=>{
+            this.isLogin = data.isLogin;
+            this.userInfo = data.userInfo;
+        })
     },
     methods: {
         cookiesCtr: function(){

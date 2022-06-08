@@ -17,6 +17,9 @@
             :items="posterList"
             item-key="seq"
             :search="search"
+            hide-default-footer
+            :disable-items-per-page="true"
+            :footer-props="{ 'items-per-page-options': [50, -1] }"
         >
         <template v-slot:[`item.aplyPrgrs`]="{ item }">
           <v-select

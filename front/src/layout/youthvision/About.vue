@@ -313,7 +313,7 @@ export default {
         this.axios.get('/aply')
         .then((result)=>{
 
-          if(result.data.length > 0 ){
+          if(result && result.data.length > 0 ){
             var item = result.data[0];
             this.aplyName = item.aplyName,
             this.church = item.church,
@@ -323,7 +323,8 @@ export default {
             this.email = item.email
           }
 
-        })
+        }).catch((e)=>{console.log(e)})
+
     },
     aplyPoster: function(){
       var _this = this;

@@ -55,8 +55,8 @@ router.beforeEach(async(to, from, next) => {
     if (to.matched.some(record => record.meta.auth === 'admin')){
         try{
             if(vueCookies.get('userInfo').auth =='admin'){
-                Vue.prototype.$awn.options.labels.warning = '관리자';
-                Vue.prototype.$awn.warning('관리자 페이지 입니다.!!');
+                // Vue.prototype.$awn.options.labels.warning = '관리자';
+                // Vue.prototype.$awn.warning('관리자 페이지 입니다.!!');
                 return next();
             }else{
                 Vue.prototype.$awn.alert('권한이 없습니다.');
@@ -76,12 +76,10 @@ router.beforeEach(async(to, from, next) => {
 
     
 });
-const vue = new Vue({ router, vuetify, render: h => h(App) }).$mount('#app');
 
 // Add a request interceptor
 Axios.interceptors.request.use(async function(config) {
     // Do something before request is sent
-    // console.log(config);
     return config;
 }, function(error) {
     // Do something with request error
@@ -97,9 +95,15 @@ Axios.interceptors.response.use(function(response) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     console.log('에러', error.response.data);
-    vue.$awn.alert(error.response.data.msg)
+    Vue.prototype.$awn.alert(error.response.data.msg)
     const errorAPI = error.config;
-    if (error.response.data.status === 401 && errorAPI.retry === undefined) {
+    if (error.response.status === 402) { //세션만료시
+        Vue.prototype.$cookies.keys().forEach(cookie => Vue.prototype.$cookies.remove(cookie));//쿠키삭제
+        Vue.prototype.$eventBus.$emit('login',{isLogin:false, userInfo: []}); //로그아웃상태로 변경
+        router.push({name:'Main'})
+    }
+
+    if (error.response.status === 401 && errorAPI.retry === undefined) {
         errorAPI.retry = true;
         console.log('토큰이 이상한 오류일 경우');
         await refreshToken();
@@ -107,5 +111,6 @@ Axios.interceptors.response.use(function(response) {
     }
     //return Promise.reject(error);
 });
+new Vue({ router, vuetify, render: h => h(App) }).$mount('#app');
 
 require("vue-awesome-notifications/dist/styles/style.css");

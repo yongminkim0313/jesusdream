@@ -9,22 +9,11 @@ module.exports = (app, mongoose, winston) => {
     autoIncrement.initialize(mongoose);
 
     const userSchema = new mongoose.Schema({
-        seq: Number,
-        kakaoId: Number,
-        uuid: String,
-        name: String,
-        email: String,
-        profileImage: String,
-        nickname: String,
-        auth: String,
-        loginDt: String,
-    });
-    
-    userSchema.plugin(autoIncrement.plugin, {
-        model: 'user',
-        field: 'seq',
-        startAt: 1, //시작 
-        increment: 1 // 증가 
+        id: Number,
+        connected_at: String,
+        properties: Object,
+        kakao_account: Object,
+        uuid: String
     });
 
     const User = mongoose.model("user", userSchema);
@@ -61,30 +50,6 @@ module.exports = (app, mongoose, winston) => {
             var userSession = userService.kakaoUserInfo(req.session, response2.data, `${access_token}`);
             userService.authInfo(userSession);
             console.log(userSession);
-
-            User.findOne({kakaoId: userSession.kakaoId}).exec(async function(err,user){
-                if (err) res.json({ result: -1 })
-                const today = moment();
-                if(user){
-                    User.updateOne({seq: user.seq}, {
-                        $set:{
-                            loginDt: today.format('YYYY-MM-DD')
-                        }
-                    })
-                }else{
-                    var user = new User(user);
-                    user.kakaoId = userSession.kakaoId;
-                    user.name = userSession.name,
-                    user.email = userSession.email,
-                    user.profileImage = userSession.profileImage,
-                    user.nickname = userSession.nickname,
-                    user.auth = userSession.auth,
-                    user.loginDt = today.format('YYYY-MM-DD')
-                    await user.save()
-                    .then(()=>{})
-                    .catch((err)=>{console.log(err)})
-                }
-            });
 
             userSession.save(function() {
                 res.redirect(`${process.env.MAIN_URL}`);
@@ -154,17 +119,7 @@ module.exports = (app, mongoose, winston) => {
     app.post('/friends/message/send', async(req,res) => {
         winston.info('/friends/message/send');
         var uuid = req.body.uuid;
-        var item = req.body.campCnt;
-        var args = {};
-        var amt = 0;
-        if(item.chodeung)       {args.chodeung = item.chodeung + ' 명'; amt+=item.chodeung};
-        if(item.cheongsonyeon)  {args.cheongsonyeon = item.cheongsonyeon + ' 명'; amt+=item.cheongsonyeon};
-        if(item.cheongnyeon)    {args.cheongnyeon = item.cheongnyeon + ' 명'; amt+=item.cheongnyeon};
-        if(item.jangnyeon)      {args.jangnyeon = item.jangnyeon + ' 명'; amt+=item.jangnyeon};
-        if(item.sayeogja)       {args.sayeogja = item.sayeogja + ' 명'; amt+=item.sayeogja};
-        args.camp_amt = amt + '만원';
-        console.log(args, uuid);
-
+        var args = req.body.args;
         const accessToken = req.session.accessToken;
         try {
             const response = await axios({
@@ -194,37 +149,85 @@ module.exports = (app, mongoose, winston) => {
     app.post('/app/users', async(req,res) => {
         winston.info('/app/users');
         if(req.session.auth != 'admin') res.status(401).json({msg:'접근권한이 없습니다.'});
-
-        try {
-            const response = await axios({
-                method: "post",
-                url: "https://kapi.kakao.com/v1/user/ids", // 서버
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-                    'Authorization': `KakaoAK ${process.env.admin_key}`
-                }
-            });
-            const users = response.data['elements'];
-            console.log(response.data);
-            const response2 = await axios({
-                method: "post",
-                url: "https://kapi.kakao.com/v2/app/users", // 서버
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-                    'Authorization': `KakaoAK ${process.env.admin_key}`
-                },
-                params:{
+        const refresh = req.body.refresh;
+        if(refresh){
+            winston.info('카카오서버에서 친구목록 새로고침!')
+            try {
+                const response = await axios({
+                    method: "post",
+                    url: "https://kapi.kakao.com/v1/user/ids", // 서버
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                        'Authorization': `KakaoAK ${process.env.admin_key}`
+                    }
+                });
+                const users = response.data['elements'];
+                //console.log(response.data);
+                
+                const response2 = await axios({
+                    method: "post",
+                    url: "https://kapi.kakao.com/v2/app/users", // 서버
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                        'Authorization': `KakaoAK ${process.env.admin_key}`
+                    },
+                    params:{
                         target_ids : '['+users.join(',')+']',
                         target_id_type : 'user_id',
                         property_keys : '["kakao_account.","properties.","has_signed_up"]'
                     }
-            });
-            console.log('response::',response2.data);
-            res.status(200).json(response2.data);
-        } catch (err) {
-            winston.error("Error >>" + err);
-            console.log(err);
-            res.status(401).json(err);
+                });
+            //console.log('response::',response2.data);
+            
+                const accessToken = req.session.accessToken;
+                const response3 = await axios({
+                    method: "get",
+                    url: "https://kapi.kakao.com/v1/api/talk/friends", // 서버
+                    headers: { 'Authorization': `Bearer ${accessToken}` }, // 요청 헤더 설정
+                });
+            
+                const allowUser = response3.data['elements'];
+                const result = response2.data;
+            
+                allowUser.forEach(function(allow){
+                    var user = result.find(function(element){ return element.id == allow.id});
+                    user.uuid = allow.uuid;
+                });
+            
+                result.forEach(function(resultUser){
+                    User.findOne({id: resultUser.id}).exec(async function(err,user){
+                        if (err) res.status(400).json({msg:'사용자 가져오기 에러!!'})
+                        
+                        if(user){
+                            User.updateOne({id: user.id}, {
+                                $set:{
+                                    connected_at    : user.connected_at,
+                                    properties      : user.properties,
+                                    kakao_account   : user.kakao_account,
+                                    uuid            : user.uuid,
+                                }
+                            })
+                        }else{
+                            var userSave = new User(resultUser);
+                            await userSave.save()
+                            .then(()=>{})
+                            .catch((err)=>{console.log(err)})
+                        }
+                    });
+                })
+            
+                res.status(200).json(result);
+            } catch (err) {
+                winston.error("Error >>" + err);
+                console.log(err);
+                res.status(401).json(err);
+            }
+        }else{
+            winston.info('저장된 사용자 가져오기!!')
+            User.find({ }).sort({ connected_at: 'desc' }).exec(function(err, userList) {
+                if (err) res.json({ msg: '사용자 가져오기 실패!' })
+                res.json(userList);
+            })
         }
         
     })

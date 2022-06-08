@@ -17,6 +17,9 @@
             :items="aplyList"
             item-key="seq"
             :search="search"
+            hide-default-footer
+            :disable-items-per-page="true"
+            :footer-props="{ 'items-per-page-options': [50, -1] }"
         >
         <template v-slot:[`item.aplyPrgrs`]="{ item }">
           <v-select
@@ -25,7 +28,6 @@
             dense
             solo
             class="pt-5"
-            width="10"
             @change="saveAply(item)"
           ></v-select>
         </template>
@@ -92,7 +94,7 @@ export default {
         ],
          headers: [
           {text: '번호', value: 'seq', align: 'center',sortable: false },
-          {text: '상태', value: 'aplyPrgrs'}, //신청진행상황(접수, 접수완료, 신청취소)
+          {text: '상태', value: 'aplyPrgrs', width: 50}, //신청진행상황(접수, 접수완료, 신청취소)
           {text: '신청일', value: 'aplyDt'}, //신청일시
           {text: '은행', value: 'bankNm'},
           {text: '신청자명', value: 'aplyName'},

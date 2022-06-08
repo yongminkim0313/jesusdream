@@ -159,6 +159,9 @@ module.exports = (app, mongoose, winston) => {
         winston.info('put) aply update!');
         console.log(req.body);
         var item = req.body;
+        if(item.aplyPrgrs != '접수'){
+            res.status(403).json({msg:'접수상태에서 수정이 가능합니다. 관리자에게 문의 바랍니다.'});
+        }
         try{
             //item.markModified('campCnt');
             var cnt = item.chodeung+item.cheongsonyeon+item.cheongnyeon+item.jangnyeon+item.sayeogja; //총인원
