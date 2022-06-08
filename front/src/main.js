@@ -20,7 +20,7 @@ const socket = io(process.env.VUE_APP_SOCKET_URL);
 Vue.prototype.$socket = socket;
 
 Axios.defaults.baseURL = process.env.VUE_APP_API_URL;
-Axios.defaults.timeout = 9000;
+Axios.defaults.timeout = 15000;
 Axios.defaults.withCredentials = true;
 
 Vue.use(VueAxios, Axios);

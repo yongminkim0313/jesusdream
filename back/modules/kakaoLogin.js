@@ -214,13 +214,13 @@ module.exports = (app, mongoose, winston) => {
                     'Authorization': `KakaoAK ${process.env.admin_key}`
                 },
                 params:{
-                        target_ids: '["'+users.join(',')+'"]',
-                        template_id:77885,
-                        template_args: args
+                        target_ids : '['+users.join(',')+']',
+                        target_id_type : 'user_id',
+                        property_keys : '["kakao_account.","properties.","has_signed_up"]'
                     }
             });
-            console.log('response::',response.data);
-            res.status(200).json(response.data);
+            console.log('response::',response2.data);
+            res.status(200).json(response2.data);
         } catch (err) {
             winston.error("Error >>" + err);
             console.log(err);
