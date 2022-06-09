@@ -425,6 +425,7 @@
       </v-row>
       <v-row><!--신청하기버튼-->
         <v-col cols="12" md="12">
+          <v-checkbox label="카카오 메세지 수신 동의(선택)" @change="authorize()" v-model="msgAgree"></v-checkbox>
           <v-btn
             class="mr-4"
             @click="submit"
@@ -556,7 +557,8 @@
         ,'우리 1005-502-838415'
         ,'새마을 9002-1937-0057-1'
         ,'우체국 104570-01-002038'
-      ]
+      ],
+      msgAgree: false,
     }),
 
     computed: {
@@ -686,9 +688,11 @@
          this.isKakaoLogin = true;
       }
       
-        for(var i = 0 ; i < 50; i++){
-          this.cnt50.push(i);
-        }
+      for(var i = 0 ; i < 50; i++){
+        this.cnt50.push(i);
+      }
+
+      this.myKakaoMsgAgree();
     },
     methods: {
       submit () {
@@ -826,6 +830,28 @@
         var element_wrap = document.getElementById('addrDiv');
         if(addrSe) element_wrap = document.getElementById('churchAddrDiv');
         element_wrap.style.display = 'none';
+      },
+      authorize(){
+        console.log(this.msgAgree);
+        var _this = this;
+        Kakao.Auth.login({
+            scope: 'talk_message',
+            success: function(response) {
+                console.log(response);
+                _this.msgAgree = true;
+            },
+            fail: function(error) {
+                console.log(error);
+                _this.msgAgree = false;
+            }
+        });
+      },
+      myKakaoMsgAgree(){
+        var _this = this;
+        this.axios.post('/myKakaoMsgAgree')
+        .then(function(result){
+          _this.msgAgree = result.data;
+        })
       }
 
     }
