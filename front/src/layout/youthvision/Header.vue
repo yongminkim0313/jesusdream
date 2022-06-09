@@ -134,7 +134,7 @@ export default {
                 +'client_id=be0d818c768f8e2198c97470fc7577c5&'
                 +'redirect_uri='+this.APP_URL+'/auth/kakao/callback&'
                 +'response_type=code&'
-                +'scope=profile_nickname, profile_image, account_email, gender, talk_message, friends';
+                +'scope=profile_nickname, profile_image, account_email, gender, friends';
         },
         logout: function (){
              this.axios.post('/auth/logout')
