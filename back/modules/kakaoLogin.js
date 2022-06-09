@@ -231,4 +231,25 @@ module.exports = (app, mongoose, winston) => {
         }
         
     })
+    app.post('/myKakaoMsgAgree', async(req,res) => {
+        console.log('/myKakaoMsgAgree');
+        const accessToken = req.session.accessToken;
+        try {
+            const response = await axios({
+                method: "get",
+                url: "https://kapi.kakao.com/v2/user/scopes", // 서버
+                headers: { 'Authorization': `Bearer ${accessToken}` }, // 요청 헤더 설정
+            });
+            var resData = response.data;
+
+            var talkMsg = resData.scopes.find(data=>{ return data.id =="talk_message";})
+
+            console.log('response::',response.data);
+            res.status(200).json(talkMsg.agreed);
+        } catch (err) {
+            winston.error("Error >>" + err);
+            res.status(401).json(err);
+        }
+    });
+    
 }
