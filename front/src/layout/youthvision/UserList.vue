@@ -34,12 +34,30 @@
         <template v-slot:[`item.connected_at`]="{ item }">
           {{$moment(item.connected_at).format('MM-DD hh시')}}
         </template>
+        <template v-slot:[`item.auth`]="{ item }">
+          <v-select
+            v-model="item.auth"
+            :items="authList"
+            item-text="text"
+            item-value="value"
+            :rules="user_auth_rule"
+            :background-color="item.auth=='admin'?'orange':''"
+            dense
+            solo
+            class="pt-5"
+            width="10"
+            @change="saveAuth(item)"
+          ></v-select>
+        </template>
     </v-data-table>
         <v-btn color="primary" elevation="2" @click="getUserList(false);" class="ma-10">
           저장된 친구목록 가져오기
         </v-btn>
         <v-btn color="warning" elevation="2" @click="getUserList(true);" class="ma-10">
           카카오 서버에서 친구목록 새로고침
+        </v-btn>
+        <v-btn color="success" elevation="2" @click="goTemplateMaker();" class="ma-10">
+          카카오 메세지 템플릿 만들기
         </v-btn>
   </v-card>
 </template>
@@ -58,15 +76,28 @@
           headers: [
             {text: '프로필이미지', value: 'profile_image'},
             {text: '아이디', value: 'id', align: 'center',sortable: false },
+            {text: '권한', value: 'auth', width: 200}, 
             {text: '닉네임', value: 'nickname'}, 
             {text: '가입일시', value: 'connected_at'}, 
             {text: '이메일', value: 'email'},
             {text: '성별', value: 'gender'}, 
             {text: '메세지', value: 'uuid'}, 
         ],
+        authList:[{text:'사용자',value:'user'},{text:'관리자',value:'admin'}],
+        user_auth_rule: [
+          v => !!v || '권한은 필수 선택 사항입니다.'
+        ],
       }
     },
     methods:{
+        saveAuth(item){
+          var _this = this;
+          this.axios.put('/app/user/auth',item)
+          .then((result)=>{
+            console.log(result);
+            _this.$awn.info(result.data.msg);
+          })
+        },
         getUserList(refresh){
             this.userList=[];
             this.axios.post('/app/users',{refresh: refresh})
@@ -81,26 +112,31 @@
                         profile_image: a.properties['thumbnail_image'],
                         email: a.kakao_account['email'],
                         gender: a.kakao_account['gender'],
-                        uuid : a.uuid
+                        uuid : a.uuid,
+                        auth : a.auth
                     })
                 }
             })
         },
-    sendMsgFriend(item){
-      this.axios.post('/friends/message/send',{uuid:item.uuid, args:{}})
-      .then((result)=>{
-        console.log(result.data);
-        if(result.data && result.data['successful_receiver_uuids']){
-          if(item.uuid == result.data['successful_receiver_uuids'][0]){
-            this.$awn.success('메세지 전송 성공');
+      sendMsgFriend(item){
+        this.axios.post('/friends/message/send',{uuid:item.uuid, templateId:77885, args:{}})
+        .then((result)=>{
+          console.log(result.data);
+          if(result.data && result.data['successful_receiver_uuids']){
+            if(item.uuid == result.data['successful_receiver_uuids'][0]){
+              this.$awn.success('메세지 전송 성공');
+            }else{
+              this.$awn.warning('알수없는 오류 관리자에게 문의 요망!');
+            }
           }else{
-            this.$awn.warning('알수없는 오류 관리자에게 문의 요망!');
+            this.$awn.warning('메세지 전송 실패')
           }
-        }else{
-          this.$awn.warning('메세지 전송 실패')
-        }
-       })
+        })
+      },
+      goTemplateMaker(){
+        location.href='https://developers.kakao.com/tool/template-builder/app/745000/template/77557/component/thl/0';
+      }
     }
-    }
+
   }
 </script>

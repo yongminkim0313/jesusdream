@@ -84,6 +84,7 @@ app.post('/auth/logout', async(req, res) => {
     console.log('kakao logout!');
     if(!req.session || !req.session.accessToken){
         res.status(200).json({msg: 'logout!!'});
+        return;
     }
     const accessToken = req.session.accessToken;
     try {

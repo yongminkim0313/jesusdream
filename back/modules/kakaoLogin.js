@@ -13,7 +13,8 @@ module.exports = (app, mongoose, winston) => {
         connected_at: String,
         properties: Object,
         kakao_account: Object,
-        uuid: String
+        uuid: String,
+        auth: String,
     });
 
     const User = mongoose.model("user", userSchema);
@@ -45,15 +46,18 @@ module.exports = (app, mongoose, winston) => {
                     property_keys: `${process.env.property_keys}`
                 },
             });
-            console.log('response2 data::::::::::::', response2.data);
-
+            
             var userSession = userService.kakaoUserInfo(req.session, response2.data, `${access_token}`);
-            userService.authInfo(userSession);
-            console.log(userSession);
-
-            userSession.save(function() {
-                res.redirect(`${process.env.MAIN_URL}`);
-            });
+            
+            await User.findOne({id: response2.data.id}).exec(async function(err,user){
+                if (err) res.json({ msg: '사용자 가져오기 실패!' })
+                userSession.auth = user.auth;
+                console.log('response2 data::::::::::::', response2.data);
+                winston.info(userSession.kakaoId+"::"+userSession.name+"::"+userSession.auth);
+                userSession.save(function() {
+                    res.redirect(`${process.env.MAIN_URL}`);
+                });
+            })
 
         } catch (err) {
             winston.error("Error >>" + err);
@@ -120,6 +124,7 @@ module.exports = (app, mongoose, winston) => {
         winston.info('/friends/message/send');
         var uuid = req.body.uuid;
         var args = req.body.args;
+        var templateId = req.body.templateId;
         const accessToken = req.session.accessToken;
         try {
             const response = await axios({
@@ -131,8 +136,8 @@ module.exports = (app, mongoose, winston) => {
                 },
                 params:{
                         receiver_uuids: '["'+uuid+'"]',
-                        template_id:77885,
-                        template_args: args
+                        template_id : templateId,
+                        template_args : args
                     }
             });
             console.log('response::',response.data);
@@ -209,6 +214,7 @@ module.exports = (app, mongoose, winston) => {
                             })
                         }else{
                             var userSave = new User(resultUser);
+                            userSave.auth='user';
                             await userSave.save()
                             .then(()=>{})
                             .catch((err)=>{console.log(err)})
@@ -231,6 +237,30 @@ module.exports = (app, mongoose, winston) => {
         }
         
     })
+
+    app.put('/app/user/auth', async(req,res) => {
+        winston.info('put) /app/user/auth update!');
+        console.log(req.body);
+        var reqUser = req.body;
+        var userNickname='';
+        try{
+            User.findOne({id: reqUser.id}).exec(async function(err,user){
+                if (err) res.json({ msg: '사용자 가져오기 실패!' })
+                await User.updateOne({id: user.id}, {
+                    $set:{
+                        auth : reqUser.auth
+                    }
+                })
+                userNickname = user.properties.nickname;
+            })
+            res.status(200).json({msg: userNickname+'권한설정이 변경되었습니다.'});
+        }catch(err){
+            winston.error("Error >>" + err);
+            res.status(401).json(err);
+        }
+    });
+
+    //동의항목 가져오기
     app.post('/auth/myKakaoMsgAgree', async(req,res) => {
         console.log('/auth/myKakaoMsgAgree');
         const accessToken = req.session.accessToken;

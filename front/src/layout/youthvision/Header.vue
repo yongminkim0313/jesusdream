@@ -9,8 +9,11 @@
             <v-spacer></v-spacer>
 
             <!-- 카카오로그인 -->
-            <v-btn @click="kakaoLogin();" v-if="!isLogin" icon class="mr-10">
+            <v-btn @click="kakaoLogin();" v-if="!isLogin" icon class="mr-10" :loading="loading" :disabled="loading">
                 <v-img  max-height="30" max-width="122" contain :src="require('/src/assets/kakaoLogin.png')"></v-img>
+                <template v-slot:loader>
+                    <v-chip color="white"> 로그인중...</v-chip>
+                </template>
             </v-btn>
             <!-- <v-img @click="naverLogin();" v-if="!isLogin" max-height="40" max-width="100" contain src="http://static.nid.naver.com/oauth/small_g_in.PNG"></v-img> -->
             
@@ -81,7 +84,8 @@ export default {
     name:'Header',
     data(){
         return {
-            userInfo:{}
+            loading: false
+            ,userInfo:{}
             ,isLogin: false
             ,drawer: null
             ,items: [
@@ -135,6 +139,8 @@ export default {
                 +'redirect_uri='+this.APP_URL+'/auth/kakao/callback&'
                 +'response_type=code&'
                 +'scope=profile_nickname, profile_image, account_email, gender, friends';
+            this.loading = !this.loading;
+            setTimeout(() => (this.loading = false), 3000);
         },
         logout: function (){
              this.axios.post('/auth/logout')
