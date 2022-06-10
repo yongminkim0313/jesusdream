@@ -44,7 +44,7 @@
             :background-color="item.auth=='admin'?'orange':''"
             dense
             solo
-            class="pt-5"
+            class="pa-0 ma-0"
             width="10"
             @change="saveAuth(item)"
           ></v-select>
@@ -59,6 +59,7 @@
         <v-btn color="success" elevation="2" @click="goTemplateMaker();" class="ma-10">
           카카오 메세지 템플릿 만들기
         </v-btn>
+        
   </v-card>
 </template>
 <script>
