@@ -199,12 +199,12 @@ module.exports = (app, mongoose, winston) => {
                         if (err) res.status(400).json({msg:'사용자 가져오기 에러!!'})
                         
                         if(user){
-                            User.updateOne({id: user.id}, {
+                            await User.updateOne({id: user.id}, {
                                 $set:{
-                                    connected_at    : user.connected_at,
-                                    properties      : user.properties,
-                                    kakao_account   : user.kakao_account,
-                                    uuid            : user.uuid,
+                                    connected_at    : resultUser.connected_at,
+                                    properties      : resultUser.properties,
+                                    kakao_account   : resultUser.kakao_account,
+                                    uuid            : resultUser.uuid,
                                 }
                             })
                         }else{
@@ -231,25 +231,30 @@ module.exports = (app, mongoose, winston) => {
         }
         
     })
-    app.post('/myKakaoMsgAgree', async(req,res) => {
-        console.log('/myKakaoMsgAgree');
+    app.post('/auth/myKakaoMsgAgree', async(req,res) => {
+        console.log('/auth/myKakaoMsgAgree');
         const accessToken = req.session.accessToken;
-        try {
-            const response = await axios({
-                method: "get",
-                url: "https://kapi.kakao.com/v2/user/scopes", // 서버
-                headers: { 'Authorization': `Bearer ${accessToken}` }, // 요청 헤더 설정
-            });
-            var resData = response.data;
+        if(accessToken){
+            try {
+                const response = await axios({
+                    method: "get",
+                    url: "https://kapi.kakao.com/v2/user/scopes", // 서버
+                    headers: { 'Authorization': `Bearer ${accessToken}` }, // 요청 헤더 설정
+                });
+                var resData = response.data;
 
-            var talkMsg = resData.scopes.find(data=>{ return data.id =="talk_message";})
+                var talkMsg = resData.scopes.find(data=>{ return data.id =="talk_message";})
 
-            console.log('response::',response.data);
-            res.status(200).json(talkMsg.agreed);
-        } catch (err) {
-            winston.error("Error >>" + err);
-            res.status(401).json(err);
+                console.log('response::',response.data);
+                res.status(200).json(talkMsg.agreed);
+            } catch (err) {
+                winston.error("Error >>" + err);
+                res.status(401).json(err);
+            }
+        }else{
+            res.status(200).json(false);
         }
+
     });
     
 }

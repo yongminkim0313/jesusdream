@@ -425,7 +425,7 @@
       </v-row>
       <v-row><!--신청하기버튼-->
         <v-col cols="12" md="12">
-          <v-checkbox label="카카오 메세지 수신 동의(선택)" @change="authorize()" v-model="msgAgree"></v-checkbox>
+          <v-checkbox label="카카오 메세지 수신 동의(선택)" @click="authorize()" v-model="msgAgree" readonly></v-checkbox>
           <v-btn
             class="mr-4"
             @click="submit"
@@ -833,6 +833,7 @@
       },
       authorize(){
         console.log(this.msgAgree);
+        if(this.msgAgree) return;
         var _this = this;
         Kakao.Auth.login({
             scope: 'talk_message',
@@ -848,7 +849,7 @@
       },
       myKakaoMsgAgree(){
         var _this = this;
-        this.axios.post('/myKakaoMsgAgree')
+        this.axios.post('/auth/myKakaoMsgAgree')
         .then(function(result){
           _this.msgAgree = result.data;
         })

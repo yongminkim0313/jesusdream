@@ -207,6 +207,9 @@
                 </v-col>
               </v-row>
               <v-col cols="12" md="12" class="d-flex flex-center">
+                <v-checkbox label="카카오 메세지 수신 동의(선택)" @click="authorize()" v-model="msgAgree" readonly></v-checkbox>
+              </v-col>
+              <v-col cols="12" md="12" class="d-flex flex-center">
                     <v-card-actions>
                       <v-btn color="blue" elevation="5" @click="aplyPoster();" class="mx-auto" outlined><strong> 포스터 ( {{brochureCnt}} 장)  브로셔 ( {{posterCnt}} 장) 신청하기</strong></v-btn>
                     </v-card-actions>  
@@ -293,6 +296,7 @@ export default {
       require('../../assets/brochure/brochure03.jpeg'),
       require('../../assets/brochure/brochure04.jpeg'),
     ],
+    msgAgree: false,
   }},
   created() {
     for(var i = 0 ; i < 50; i++){
@@ -300,6 +304,8 @@ export default {
     }
     this.getMyAply();
     console.log(this.$route.query);
+
+    this.myKakaoMsgAgree();
 
     if(this.$route.query){
       if(this.$route.query.tab == 'poster')this.tab = 1;
@@ -438,6 +444,29 @@ export default {
         var element_wrap = document.getElementById('addrDiv');
         element_wrap.style.display = 'none';
       },
+      authorize(){
+        console.log(this.msgAgree);
+        if(this.msgAgree) return;
+        var _this = this;
+        Kakao.Auth.login({
+            scope: 'talk_message',
+            success: function(response) {
+                console.log(response);
+                _this.msgAgree = true;
+            },
+            fail: function(error) {
+                console.log(error);
+                _this.msgAgree = false;
+            }
+        });
+      },
+      myKakaoMsgAgree(){
+        var _this = this;
+        this.axios.post('/auth/myKakaoMsgAgree')
+        .then(function(result){
+          _this.msgAgree = result.data;
+        })
+      }
   }
 
 }
