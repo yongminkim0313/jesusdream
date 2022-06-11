@@ -293,4 +293,19 @@ module.exports = (app, mongoose, winston) => {
         } 
     });
 
+    app.post('/app/aply/excel', async(req, res) => {
+        const excelService = require('../modules/excelService');
+        try{
+            Aply.find({ }).sort({ seq: 'desc' }).exec(async function(err, aplyList) {
+                if (err) res.json({ result: -1 })
+                const report = await excelService.makeExcelFile(aplyList);
+                res.status(200).json({content: report.toString('base64'), filename: 'testFile', result:true});
+            })
+        } catch (err) {
+            winston.error("Error >>" + err);
+            res.status(401).json({msg: '캠프신청 불러오기 실패'});
+        }
+        
+    });
+
 }

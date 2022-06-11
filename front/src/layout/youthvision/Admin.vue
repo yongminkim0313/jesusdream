@@ -77,6 +77,9 @@
         <v-btn color="primary" elevation="2" @click="getAplyAll();" class="ma-10">
           조회
         </v-btn>
+        <v-btn color="primary" elevation="2" @click="excelDown();" class="ma-10">
+          엑셀다운로드
+        </v-btn>
         
   </v-card>
 </template>
@@ -101,15 +104,15 @@ export default {
           {text: '신청자직분', value: 'jikbunSe'},
           {text: '교회명', value: 'church'},
           {text: '교단', value: 'churchSe'},
-          //{text: '목사님', value: 'churchAdtr'},
-          //{text: '교회주소', value: 'churchAddr'},
-          //{text: '교회상세주소', value: 'churchDtlAddr'},
+          {text: '목사님', value: 'churchAdtr'},
+          {text: '교회주소', value: 'churchAddr'},
+          {text: '교회상세주소', value: 'churchDtlAddr'},
           {text: '일정', value: 'schdlSe'},
           {text: '연락처', value: 'phone'},
           {text: '이메일', value: 'email'},
           //{text: '동의', value: 'checkbox'},
-          //{text: '우편물주소', value: 'fullAddress'},
-          //{text: '우편물상세주소', value: 'detailAddress'},
+          {text: '우편물주소', value: 'fullAddress'},
+          {text: '우편물상세주소', value: 'detailAddress'},
           //{text: '참석여부', value: 'joinHisSe'},
           //{text: '참여경로', value: 'joinPathSe'},
           {text: '캠프인원', value: 'campCnt'},
@@ -174,6 +177,26 @@ export default {
       .then((data)=>{
         console.log(data);
        })
+    },
+    excelDown(){
+      this.$awn.info('테스트 중입니다.');
+      this.axios.post('/app/aply/excel',{})
+      .then((result)=>{
+          var resp = result.data;
+          if(!resp.result) {
+            alert('엑셀 다운로드 중 문제가 발생했습니다.');
+            return false;
+          }
+          let excelUri = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,";
+          let excelUrl = excelUri + resp.content; // resp.content는 엑셀 데이터입니다. 
+          let filename = '유스비전 등록신청_'+this.$moment().format('YYYY-MM-DD') // 다운받는 파일의 이름 지정 
+          setTimeout(function () {
+            var a = document.createElement("a");
+            a.href = excelUrl;
+            a.download = filename;
+            a.click();
+          }, 100);
+      })
     },
     
   }

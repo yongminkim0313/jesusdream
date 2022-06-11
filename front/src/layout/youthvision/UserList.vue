@@ -68,7 +68,6 @@
     name:'userList',
     created(){
         this.getUserList();
-        console.log(this.$moment);
     },
     data () {
       return {
