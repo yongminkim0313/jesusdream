@@ -32,7 +32,7 @@
         </template>
 
         <template v-slot:[`item.connected_at`]="{ item }">
-          {{$moment(item.connected_at).format('MM-DD hh시')}}
+          {{$moment(item.connected_at).format('MM-DD HH시')}}
         </template>
         <template v-slot:[`item.auth`]="{ item }">
           <v-select

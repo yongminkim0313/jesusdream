@@ -9,10 +9,11 @@
             <v-spacer></v-spacer>
 
             <!-- 카카오로그인 -->
-            <v-btn @click="kakaoLogin();" v-if="!isLogin" icon class="mr-10" :loading="loading" :disabled="loading">
-                <v-img  max-height="30" max-width="122" contain :src="require('/src/assets/kakaoLogin.png')"></v-img>
+            <v-btn @click="kakaoLogin();" v-if="!isLogin" class="mr-10 kakaoLogin" small :loading="loading" :disabled="loading">
+                카카오로그인
+                <!-- <v-img  max-height="30" max-width="122" contain :src="require('/src/assets/kakaoLogin.png')"></v-img> -->
                 <template v-slot:loader>
-                    <v-chip color="white"> 로그인중...</v-chip>
+                        <v-card class="mr-10 pa-2 kakaoLogin text--darken-1">로그인</v-card>
                 </template>
             </v-btn>
             <!-- <v-img @click="naverLogin();" v-if="!isLogin" max-height="40" max-width="100" contain src="http://static.nid.naver.com/oauth/small_g_in.PNG"></v-img> -->
@@ -120,6 +121,7 @@ export default {
             this.isLogin = data.isLogin;
             this.userInfo = data.userInfo;
         })
+        
     },
     methods: {
         cookiesCtr: function(){

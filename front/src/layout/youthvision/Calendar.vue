@@ -1,121 +1,99 @@
 <template>
-  <div>
-    <v-sheet
-      tile
-      height="54"
-      class="d-flex"
-    >
-      <v-btn
-        icon
-        class="ma-2"
-        @click="$refs.calendar.prev()"
-      >
-        <v-icon>mdi-chevron-left</v-icon>
-      </v-btn>
-      <v-select
-        v-model="type"
-        :items="types"
-        dense
-        outlined
-        hide-details
-        class="ma-2"
-        label="type"
-      ></v-select>
-      <v-select
-        v-model="mode"
-        :items="modes"
-        dense
-        outlined
-        hide-details
-        label="event-overlap-mode"
-        class="ma-2"
-      ></v-select>
-      <v-select
-        v-model="weekday"
-        :items="weekdays"
-        dense
-        outlined
-        hide-details
-        label="weekdays"
-        class="ma-2"
-      ></v-select>
-      <v-spacer></v-spacer>
-      <v-btn
-        icon
-        class="ma-2"
-        @click="$refs.calendar.next()"
-      >
-        <v-icon>mdi-chevron-right</v-icon>
-      </v-btn>
-    </v-sheet>
-    <v-sheet height="600">
-      <v-calendar
-        ref="calendar"
-        v-model="value"
-        :weekdays="weekday"
-        :type="type"
-        :events="events"
-        :event-overlap-mode="mode"
-        :event-overlap-threshold="30"
-        :event-color="getEventColor"
-        @change="getEvents"
-      ></v-calendar>
-    </v-sheet>
-  </div>
+  <v-layout>
+    <v-flex>
+      <v-card-title class="text-sm-left text-xs-center">6월</v-card-title>
+      <v-sheet height="500">
+        <v-calendar :now="today" :value="today" color="primary" >
+          <template v-slot:day="{ date }">
+            <template v-for="(event, index) in eventsMap[date] ">
+              <v-menu v-model="event.open" offset-x :key="index" >
+                <template v-slot:activator="{ on }">
+                  <v-card v-if="!event.time" v-ripple class="pt-0 " :class="event.type=='aply'?'lime liten-5':'pink liten-5'" v-on="on" >
+                    <v-card-subtitle class="pa-0">{{event.type=='aply'?'캠프-':'포스터-'}}{{event.title}}</v-card-subtitle>
+                  </v-card>
+                </template>
+                <v-card color="grey lighten-4" min-width="350px" flat >
+                  <v-toolbar dark :class="event.type=='aply'?'lime liten-5':'pink liten-5'">
+                    <v-btn icon>
+                      <v-icon>mdi-calendar-edit</v-icon>
+                    </v-btn>
+                    <v-toolbar-title v-html="event.title"></v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn icon>
+                      <v-icon>mdi-more</v-icon>
+                    </v-btn>
+                  </v-toolbar>
+                  <v-card-text>
+                    <span v-html="event.details"></span>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-btn color="secondary" >
+                      확인
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-menu>
+            </template>
+          </template>
+        </v-calendar>
+      </v-sheet>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
   export default {
     data: () => ({
-      type: 'month',
-      types: ['month', 'week', 'day', '4day'],
-      mode: 'stack',
-      modes: ['stack', 'column'],
-      weekday: [0, 1, 2, 3, 4, 5, 6],
-      weekdays: [
-        { text: 'Sun - Sat', value: [0, 1, 2, 3, 4, 5, 6] },
-        { text: 'Mon - Sun', value: [1, 2, 3, 4, 5, 6, 0] },
-        { text: 'Mon - Fri', value: [1, 2, 3, 4, 5] },
-        { text: 'Mon, Wed, Fri', value: [1, 3, 5] },
-      ],
-      value: '',
-      events: [],
-      colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-      names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
+      today: '2022-06-01',
+      events: []
     }),
-    methods: {
-      getEvents ({ start, end }) {
-        const events = []
+    created(){
+      this.today = this.$moment().format('YYYY-MM-DD');
+      this.loadAplyList();
+      this.loadPosterList();
 
-        const min = new Date(`${start.date}T00:00:00`)
-        const max = new Date(`${end.date}T23:59:59`)
-        const days = (max.getTime() - min.getTime()) / 86400000
-        const eventCount = this.rnd(days, days + 20)
-
-        for (let i = 0; i < eventCount; i++) {
-          const allDay = this.rnd(0, 3) === 0
-          const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-          const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-          const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-          const second = new Date(first.getTime() + secondTimestamp)
-
-          events.push({
-            name: this.names[this.rnd(0, this.names.length - 1)],
-            start: first,
-            end: second,
-            color: this.colors[this.rnd(0, this.colors.length - 1)],
-            timed: !allDay,
-          })
-        }
-
-        this.events = events
-      },
-      getEventColor (event) {
-        return event.color
-      },
-      rnd (a, b) {
-        return Math.floor((b - a + 1) * Math.random()) + a
-      },
+      console.log(this.events);
     },
+    computed: {
+      // convert the list of events into a map of lists keyed by date
+      eventsMap () {
+        const map = {}
+        this.events.forEach(e => (map[e.date] = map[e.date] || []).push(e))
+        return map
+      }
+    },
+    methods: {
+      addEvent(type, title,details,date){
+        this.events.push({ type: type, title: title, details: details, date: date, open: false });
+      },
+      loadAplyList(){
+        var _this = this;
+        this.axios.get('/aply/all',{})
+        .then((result)=>{
+          for(var idx in result.data){
+            _this.addEvent(
+              'aply',
+              result.data[idx].church+' ['+result.data[idx].aplyPrgrs+']',
+              result.data[idx].aplyName+' ['+result.data[idx].aplyDt+'] '+ result.data[idx].schdlSe,
+              result.data[idx].aplyDt
+            )
+          }
+        })
+      },
+      loadPosterList(){
+        var _this = this;
+        this.axios.get('/poster/all',{})
+        .then((result)=>{
+          for(var idx in result.data){
+            _this.addEvent(
+              'poster',
+              result.data[idx].church+' ['+result.data[idx].aplyPrgrs+']',
+              result.data[idx].aplyName+' ['+result.data[idx].aplyDt+'] ',
+              result.data[idx].aplyDt
+            )
+          }
+       })
+      }
+    }
   }
 </script>

@@ -179,10 +179,9 @@ export default {
        })
     },
     excelDown(){
-      this.$awn.info('테스트 중입니다.');
       this.axios.post('/app/aply/excel',{})
       .then((result)=>{
-          var resp = result.data;
+        var resp = result.data;
           if(!resp.result) {
             alert('엑셀 다운로드 중 문제가 발생했습니다.');
             return false;
@@ -196,6 +195,7 @@ export default {
             a.download = filename;
             a.click();
           }, 100);
+          this.$awn.success('엑셀 다운로드를 완료하였습니다.');
       })
     },
     

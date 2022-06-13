@@ -111,6 +111,8 @@ Axios.interceptors.response.use(function(response) {
     }
     //return Promise.reject(error);
 });
+
+vuetify.framework.theme.themes.light.kakaoLogin = '#f8e503'
 new Vue({ router, vuetify, render: h => h(App) }).$mount('#app');
 
 require("vue-awesome-notifications/dist/styles/style.css");

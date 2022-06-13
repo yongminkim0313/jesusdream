@@ -491,8 +491,8 @@
       joinHisSe: '처음참석',
       cards: [
         { title: '1', src: "https://modo-phinf.pstatic.net/20190419_50/15556444931447dN5T_JPEG/mosazECj1j.jpeg?type=a1100", flex: 12 },
-        { title: '2', src: require('../../assets/jd3.jpeg'), flex: 6 },
-        { title: '3', src: require('../../assets/jd4.jpeg'), flex: 6 },
+        { title: '2', src: require('../../assets/jd3.jpeg'), flex: 12 },
+        { title: '3', src: require('../../assets/jd4.jpeg'), flex: 12 },
       ],
       joinPathSe: [],
       paths: [

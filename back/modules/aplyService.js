@@ -94,6 +94,8 @@ module.exports = (app, mongoose, winston) => {
             aply.aplyTotAmt = cnt*10000 //신청총금액
             aply.aplyPrgrs = '접수' //신청진행상황(접수, 접수완료, 신청취소)
             aply.aplyDt = today.format('YYYY-MM-DD') //신청일시
+            aply.rgtrNm = req.session.email
+            aply.rgtrDt = today.format('LLL')
             await aply.save()
             .then(() => {res.json({ result: 'success' })})
             .catch((err) => {winston.error("Error : " + err)})
@@ -149,6 +151,7 @@ module.exports = (app, mongoose, winston) => {
                 if (err) res.json({ result: -1 })
                 res.json(orderList);
             })
+            
         } catch (err) {
             winston.error("Error >>" + err);
             res.status(401).json({msg: '캠프신청 불러오기 실패'});
