@@ -21,11 +21,15 @@ export default {
     data:()=>{
         return{
             youtubeList:[
-                {title:'2020겨울유스비전캠프', src:'https://www.youtube.com/embed/iPPLC9tBmtY', subtitle:'2020겨울 유스비전캠프 선포주일 15주년 특별영상 | 예수의 심정을 가지자'},
-                {title:'2020겨울유스비전캠프', src:'https://www.youtube.com/embed/TA_1ZEBBU2o', subtitle:'예배 중심 캠프로 다음세대 세우자! - 35차 2020 겨울 유스비전캠프 (장현수) l CTS뉴스'},
-                {title:'2019겨울유스비전캠프', src:'https://www.youtube.com/embed/4kGcfGzW-C8', subtitle:'2019겨울 유스비전캠프 하이라이트 풀영상'},
-                {title:'2018겨울유스비전캠프', src:'https://www.youtube.com/embed/3PthIyEr5TU', subtitle:'2018겨울 유스비전캠프 하이라이트영상 "예수의 흔적을 가져라" (31차)'},
-                {title:'2008여름유스비전캠프', src:'https://www.youtube.com/embed/DjVSHbEJsBo', subtitle:'2008여름 유스비전캠프 하이라이트 "성령이여 바람처럼 불처럼 임하소서"'},
+                {sn:1, title:'2022 여름유스비전캠프 홍보영상', src:'https://www.youtube.com/embed/9Ypr3VFt4is', subtitle:'"회복을 넘어 부흥의 새역사를 쓰자!" | 강사:장용성 강은도 민호기 김선배 손경민 박윤호 듀나미스워십 | 어린이청소년청년캠프'},
+                {sn:2, title:'2022 여름유스비전캠프 선포주일', src:'https://www.youtube.com/embed/JuWq510zfco', subtitle:'2022 여름 유스비전캠프 (since 2006) "회복을 넘어 부흥의 새역사를 쓰자!"'},
+                {sn:3, title:'2020겨울 유스비전캠프 하이라이트영상', src:'https://www.youtube.com/embed/VoRzUiTiDMg', subtitle:'"예수의 심정을 가지자"'},
+                {sn:4, title:'2020겨울유스비전캠프', src:'https://www.youtube.com/embed/2mXBoH0EqW8', subtitle:'둘째날저녁실황 Full ver "예수의 심정을 가진 사명자" | 듀나미스워십 / Why should I be afraid/Wake/Turn it up'},
+                {sn:5, title:'2020겨울유스비전캠프', src:'https://www.youtube.com/embed/iPPLC9tBmtY', subtitle:'2020겨울 유스비전캠프 선포주일 15주년 특별영상 | 예수의 심정을 가지자'},
+                {sn:6, title:'2020겨울유스비전캠프', src:'https://www.youtube.com/embed/TA_1ZEBBU2o', subtitle:'예배 중심 캠프로 다음세대 세우자! - 35차 2020 겨울 유스비전캠프 (장현수) l CTS뉴스'},
+                {sn:7, title:'2019겨울유스비전캠프', src:'https://www.youtube.com/embed/4kGcfGzW-C8', subtitle:'2019겨울 유스비전캠프 하이라이트 풀영상'},
+                {sn:8, title:'2018겨울유스비전캠프', src:'https://www.youtube.com/embed/3PthIyEr5TU', subtitle:'2018겨울 유스비전캠프 하이라이트영상 "예수의 흔적을 가져라" (31차)'},
+                {sn:9, title:'2008여름유스비전캠프', src:'https://www.youtube.com/embed/DjVSHbEJsBo', subtitle:'2008여름 유스비전캠프 하이라이트 "성령이여 바람처럼 불처럼 임하소서"'},
             ]
         }
     },

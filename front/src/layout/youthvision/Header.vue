@@ -90,21 +90,11 @@ export default {
             ,isLogin: false
             ,drawer: null
             ,items: [
-                        {
-                        text: '캠프소개',
-                        disabled: false,
-                        to: 'About',
-                        },
-                        {
-                        text: '캠프등록',
-                        disabled: false,
-                        to: 'User',
-                        },
-                        {
-                        text: '캠프실황',
-                        disabled: false,
-                        to: 'CampLive',
-                        },
+                        { text: '캠프소개', disabled: false, to: 'about', },
+                        { text: '캠프등록', disabled: false, to: 'user', },
+                        { text: '홈', disabled: false, to: '/', },
+                        { text: '캠프실황', disabled: false, to: 'campLive', },
+                        { text: '언론보도', disabled: false, to: 'newscast', },
                     ],
         };
     },

@@ -14,6 +14,7 @@
  import Calendar from "./layout/youthvision/Calendar.vue";
  import Statistic from "./layout/youthvision/Statistic.vue";
  import UserList from "./layout/youthvision/UserList.vue";
+ import Newscast from "./layout/youthvision/Newscast.vue";
 
  Vue.use(VueRouter);
  const route = [
@@ -120,6 +121,16 @@
              default: UserList,
          },
          meta:{auth:'admin'}
+     },
+     {
+         path: "/newscast",
+         name: 'Newscast',
+         components: {
+             header: Header,
+             default: Newscast,
+             footer: Footer
+         },
+         meta: { unauthorized: true }
      }
  ];
  const router = new VueRouter({ mode: 'history', routes: route });
