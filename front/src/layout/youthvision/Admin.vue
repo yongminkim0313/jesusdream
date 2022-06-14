@@ -1,14 +1,13 @@
 <template>
   <v-card elevation="0">
     
-    <v-card elevation="0" width="300" class="mx-auto">
-        <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
+    <v-card elevation="0" class="mx-auto">
+        <v-card-title>
+            <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details ></v-text-field>
+            <v-btn color="warning" elevation="2" @click="excelDown();">
+              엑셀다운로드
+            </v-btn>
+        </v-card-title>
       </v-card>
         <v-data-table
             fixed-header
@@ -20,6 +19,9 @@
             hide-default-footer
             :disable-items-per-page="true"
             :footer-props="{ 'items-per-page-options': [50, -1] }"
+            :loading = "loading"
+            loading-text="로딩중 기다려주세요~"
+            disable-sort
         >
         <template v-slot:[`item.aplyPrgrs`]="{ item }">
           <v-select
@@ -74,13 +76,6 @@
         </v-chip>
         </template>
         </v-data-table>
-        <v-btn color="primary" elevation="2" @click="getAplyAll();" class="ma-10">
-          조회
-        </v-btn>
-        <v-btn color="primary" elevation="2" @click="excelDown();" class="ma-10">
-          엑셀다운로드
-        </v-btn>
-        
   </v-card>
 </template>
 <script>
@@ -123,7 +118,8 @@ export default {
           //{text: '카카오아이디', value: 'kakaoEmail'},
           //{text: '총금액', value: 'aplyTotAmt'}, //신청총금액
         ],
-        aplyPrgrsList:['접수','가등록','등록완료','등록취소']
+        aplyPrgrsList:['접수','가등록','등록완료','등록취소'],
+        loading: true,
       }
     },
   created() {
@@ -145,6 +141,7 @@ export default {
       .then((result)=>{
         console.log(result);
         _this.aplyList = result.data;
+        _this.loading = false;
        })
     },
     deleteAply(item){

@@ -31,6 +31,9 @@ Vue.use(VueCookies);
 var eventBus = new Vue();
 Vue.prototype.$eventBus = eventBus;
 Vue.prototype.APP_URL = process.env.VUE_APP_API_URL;
+Vue.prototype.CLIENT_ID = process.env.client_id;
+Vue.prototype.REDIRECT_URI = process.env.redirect_uri;
+Vue.prototype.ADMIN_KEY = process.env.admin_key;
 
 Vue.filter("makeComma", val => {
     return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -112,7 +115,8 @@ Axios.interceptors.response.use(function(response) {
     //return Promise.reject(error);
 });
 
-vuetify.framework.theme.themes.light.kakaoLogin = '#f8e503'
+vuetify.framework.theme.themes.light.kakaoLogin = '#f8e503';
+vuetify.framework.lang.locales.en.noDataText ='신청내역이 없습니다.';
 new Vue({ router, vuetify, render: h => h(App) }).$mount('#app');
 
 require("vue-awesome-notifications/dist/styles/style.css");

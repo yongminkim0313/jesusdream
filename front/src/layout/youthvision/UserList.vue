@@ -1,6 +1,7 @@
 <template>
   <v-card>
       <v-card elevation="0" width="300" class="mx-auto">
+        <v-card-title>{{userUpdateDt}}</v-card-title>
         <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
@@ -17,6 +18,8 @@
             hide-default-footer
             :disable-items-per-page="true"
             :footer-props="{ 'items-per-page-options': [50, -1] }"
+            :loading = "loading"
+            loading-text="로딩중 기다려주세요~"
         >
         <template v-slot:[`item.profile_image`]="{ item }">
             <v-avatar size="36px" >
@@ -73,6 +76,7 @@
       return {
           search:'',
           userList:[],
+          userUpdateDt:'',
           headers: [
             {text: '프로필이미지', value: 'profile_image'},
             {text: '아이디', value: 'id', align: 'center',sortable: false },
@@ -87,6 +91,7 @@
         user_auth_rule: [
           v => !!v || '권한은 필수 선택 사항입니다.'
         ],
+        loading: true,
       }
     },
     methods:{
@@ -99,10 +104,12 @@
           })
         },
         getUserList(refresh){
+          var _this = this;
+            _this.loading = true;
             this.userList=[];
             this.axios.post('/app/users',{refresh: refresh})
             .then((result)=>{
-                var temp = result.data;
+                var temp = result.data.userData;
                 for(var idx in temp){
                     var a = temp[idx];
                     this.userList.push({
@@ -116,6 +123,13 @@
                         auth : a.auth
                     })
                 }
+                if(result.data.etcData.userUpdateDt){
+                  _this.userUpdateDt = this.$moment(result.data.etcData.userUpdateDt).format('YYYY-MM-DD HH시mm분');
+                }
+            }).catch((err)=>{
+              console.log(err);
+            }).then(()=>{
+              _this.loading=false;
             })
         },
       sendMsgFriend(item){

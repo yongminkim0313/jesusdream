@@ -8,8 +8,8 @@
             <template v-for="(event, index) in eventsMap[date] ">
               <v-menu v-model="event.open" offset-x :key="index" >
                 <template v-slot:activator="{ on }">
-                  <v-card v-if="!event.time" v-ripple class="pt-0 " :class="event.type=='aply'?'lime liten-5':'pink liten-5'" v-on="on" >
-                    <v-card-subtitle class="pa-0">{{event.type=='aply'?'캠프-':'포스터-'}}{{event.title}}</v-card-subtitle>
+                  <v-card v-if="!event.time" v-ripple class="pt-0 " max-height="25px" :class="event.type=='aply'?'lime liten-5':'pink liten-5'" v-on="on" >
+                    <v-card-subtitle class="pa-0 text-truncate">{{event.type=='aply'?'캠프-':'포스터-'}}{{event.title}}</v-card-subtitle>
                   </v-card>
                 </template>
                 <v-card color="grey lighten-4" min-width="350px" flat >

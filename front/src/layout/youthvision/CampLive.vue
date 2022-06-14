@@ -10,6 +10,9 @@
             </div>
         </v-card>
         <v-divider class="pa-5"></v-divider>
+        <v-card class="mx-auto pb-5">
+            <v-btn block @click="youtube()" class="mx-auto ">유스비전 캠프 영상 더보기</v-btn>
+        </v-card>
     </v-card>
 </template>
 <script>
@@ -25,6 +28,11 @@ export default {
                 {title:'2008여름유스비전캠프', src:'https://www.youtube.com/embed/DjVSHbEJsBo', subtitle:'2008여름 유스비전캠프 하이라이트 "성령이여 바람처럼 불처럼 임하소서"'},
             ]
         }
+    },
+    methods:{
+        youtube: function(){
+            location.href = 'https://www.youtube.com/watch?v=F4trhwdQzHM&list=PLCAD7DC0417B0E8BB'
+        },
     }
 }
 </script>

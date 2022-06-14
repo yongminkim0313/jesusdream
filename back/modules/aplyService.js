@@ -310,5 +310,26 @@ module.exports = (app, mongoose, winston) => {
         }
         
     });
-
+    app.get('/app/aply/statistic', (req, res) => {
+        winston.info('get) aply statistic select!');
+        try{
+            Aply.find({ }).exec(function(err, aplyList) {
+                if (err) res.json({ result: -1 })
+                
+                var statistic = {"chodeung":0,"jangnyeon":0,"cheongnyeon":0,"cheongsonyeon":0,"sayeogja":0};
+                for(var idx in aplyList){
+                    var aply = aplyList[idx];
+                    for(var key in aply.campCnt){
+                        //console.log(key,aply.campCnt[key])
+                        if(aply.campCnt[key]) statistic[key] += aply.campCnt[key];
+                    }
+                }
+                res.json(statistic);
+            })
+            
+        } catch (err) {
+            winston.error("Error >>" + err);
+            res.status(401).json({msg: '통계 실패'});
+        }
+    });
 }

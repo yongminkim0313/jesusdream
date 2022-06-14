@@ -1,6 +1,6 @@
 <template>
     <v-card max-width="800" class="mx-auto my-5 pa-5">
-        <v-card-title>나의 신청내역</v-card-title>
+        <v-card-title>나의 캠프등록 신청내역</v-card-title>
         <v-data-table fixed-header dense :headers="headers" :items="myAplyList" item-key="seq" class="elevation-7" @click:row="clickList"
             disable-sort
             hide-default-footer

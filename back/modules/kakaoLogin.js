@@ -2,12 +2,16 @@ const autoIncrement = require('mongoose-auto-increment');
 const axios = require('axios');
 const userService = require('../modules/userService');
 const moment = require('moment');
+const async = require('async');
 require('moment-timezone');
 moment.tz.setDefault('Asia/Seoul');
 
 module.exports = (app, mongoose, winston) => {
     autoIncrement.initialize(mongoose);
 
+    const etcSchema = new mongoose.Schema({
+        userUpdateDt: String,
+    })
     const userSchema = new mongoose.Schema({
         id: Number,
         connected_at: String,
@@ -18,6 +22,7 @@ module.exports = (app, mongoose, winston) => {
     });
 
     const User = mongoose.model("user", userSchema);
+    const Etc = mongoose.model("etc", etcSchema);
     
     app.get('/auth/kakao/callback', async(req, res) => {
         try {
@@ -204,14 +209,16 @@ module.exports = (app, mongoose, winston) => {
                         if (err) res.status(400).json({msg:'사용자 가져오기 에러!!'})
                         
                         if(user){
-                            await User.updateOne({id: user.id}, {
-                                $set:{
-                                    connected_at    : resultUser.connected_at,
-                                    properties      : resultUser.properties,
-                                    kakao_account   : resultUser.kakao_account,
-                                    uuid            : resultUser.uuid,
-                                }
-                            })
+                            if(resultUser.uuid != user.uuid){
+                                await User.updateOne({id: user.id}, {
+                                    $set:{
+                                        // connected_at    : resultUser.connected_at,
+                                        // properties      : resultUser.properties,
+                                        // kakao_account   : resultUser.kakao_account,
+                                        uuid            : resultUser.uuid,
+                                    }
+                                })
+                            }
                         }else{
                             var userSave = new User(resultUser);
                             userSave.auth='user';
@@ -221,21 +228,39 @@ module.exports = (app, mongoose, winston) => {
                         }
                     });
                 })
-            
-                res.status(200).json(result);
+                new Etc({userUpdateDt: moment().format('LLL')}).save();
             } catch (err) {
                 winston.error("Error >>" + err);
                 console.log(err);
                 res.status(401).json(err);
             }
-        }else{
-            winston.info('저장된 사용자 가져오기!!')
-            User.find({ }).sort({ connected_at: 'desc' }).exec(function(err, userList) {
-                if (err) res.json({ msg: '사용자 가져오기 실패!' })
-                res.json(userList);
-            })
         }
-        
+
+        try{
+            var userData = function(cb){ 
+                User.find({ }).sort({ connected_at: 'desc' }).exec(async function(err,user){
+                    cb(null,user);
+                })
+            };
+            var etcData = function(cb){
+                Etc.findOne({ },{ },{sort:{'userUpdateDt':-1}}).exec(async function(err,etc){
+                    cb(null,etc);
+                })
+            };
+            
+            async.parallel({
+                userData:userData,
+                etcData:etcData
+            },
+            function(err,result){
+                if (err) res.status(400).json({msg:'페러럴 사용자 기타가져오기 에러!!'})
+                res.status(200).json(result);
+            })
+        }catch(err){
+            winston.error("Error >>" + err);
+                console.log(err);
+                res.status(401).json(err);
+        }
     })
 
     app.put('/app/user/auth', async(req,res) => {
