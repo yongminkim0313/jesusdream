@@ -323,7 +323,6 @@ module.exports = (app, mongoose, winston) => {
                         target_id: user.id
                     }
                 });
-                console.log(response);
             } catch (err) {
                 winston.error("Error >>" + err);
                 res.status(400).json(err);
