@@ -17,8 +17,14 @@
             <v-icon size="24px"> mdi-instagram </v-icon>
           </v-btn>
           
-          <v-btn class="mx-4 white" icon>
+          <v-btn class="mx-4 kakaoLogin" icon>
               <v-img width="24px" height="24px" contain :src="require('../../assets/kakao.png')" @click="kakaoshare()"></v-img>
+          </v-btn>
+          <v-btn class="mx-4 kakaoLogin" icon>
+              <v-img width="24px" height="24px" contain :src="require('../../assets/kakao_chanel.png')" @click="kakaoChanel()"></v-img>
+          </v-btn>
+          <v-btn class="mx-4 kakaoLogin black--text text--lighten-1" icon @click="kakaoChanelChat()">
+            문의
           </v-btn>
 
         </v-card-text>
@@ -60,7 +66,18 @@
           requestUrl: 'http://jesusdream.kr',
           templateId: 77557
         });
+      },
+      kakaoChanel: function(){
+        Kakao.Channel.addChannel({
+          channelPublicId: '_xclMYb'
+        });
+      },
+      kakaoChanelChat: function(){
+        Kakao.Channel.chat({
+          channelPublicId: '_xclMYb' // 카카오톡 채널 홈 URL에 명시된 id로 설정합니다.
+        });
       }
+
     }
 
   }

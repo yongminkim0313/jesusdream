@@ -6,7 +6,7 @@
             :loading="loading" loading-text="로딩중 기다려주세요~" class="elevation-1" sort-by="type,sn">
             <template v-slot:top>
                 <v-toolbar flat>
-                    <v-toolbar-title>유튜브</v-toolbar-title>
+                    <v-toolbar-title>캠프실황, 언론보도</v-toolbar-title>
                     <v-divider class="mx-4" inset vertical></v-divider>
                     <v-spacer></v-spacer>
                     <v-dialog v-model="dialog" max-width="800px">
