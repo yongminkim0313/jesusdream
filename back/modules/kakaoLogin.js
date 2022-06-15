@@ -221,7 +221,7 @@ module.exports = (app, mongoose, winston) => {
                         }
                     });
                 })
-                new Etc({userUpdateDt: moment().format('LLL')}).save();
+                await new Etc({userUpdateDt: moment().format('YYYY-MM-DD HH:mm:ss')}).save();
             } catch (err) {
                 winston.error("Error >>" + err);
                 console.log(err);
@@ -236,7 +236,7 @@ module.exports = (app, mongoose, winston) => {
                 })
             };
             var etcData = function(cb){
-                Etc.findOne({ },{ },{sort:{'userUpdateDt':-1}}).exec(async function(err,etc){
+                Etc.findOne({ }).sort({userUpdateDt : -1}).exec(async function(err,etc){
                     cb(null,etc);
                 })
             };

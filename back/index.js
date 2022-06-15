@@ -51,7 +51,6 @@ app.use(session({
 app.use(function(req, res, next) {
     //인터셉터 역할 부여 
     winston.info('req.url::' + req.url +' req.method::' + req.method);
-    // console.log(req.header('access_token'));
 
     if (req.url.indexOf('/auth/') > -1) {
         return next();

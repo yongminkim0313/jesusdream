@@ -1,7 +1,7 @@
 <template>
   <v-card>
       <v-card elevation="0" width="300" class="mx-auto">
-        <v-card-title>{{userUpdateDt}}</v-card-title>
+        <v-card-title>업데이트한 시간:{{userUpdateDt}}</v-card-title>
         <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
@@ -50,6 +50,7 @@
             class="pa-0 ma-0"
             width="10"
             @change="saveAuth(item)"
+            hide-details
           ></v-select>
         </template>
     </v-data-table>
@@ -127,7 +128,7 @@
                     })
                 }
                 if(result.data.etcData.userUpdateDt){
-                  _this.userUpdateDt = this.$moment(result.data.etcData.userUpdateDt).format('YYYY-MM-DD HH시mm분');
+                  _this.userUpdateDt = this.$moment(result.data.etcData.userUpdateDt,'YYYY-MM-DD HH:mm:ss').fromNow();
                 }
             }).catch((err)=>{
               console.log(err);
