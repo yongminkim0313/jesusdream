@@ -15,6 +15,7 @@
  import Statistic from "./layout/youthvision/Statistic.vue";
  import UserList from "./layout/youthvision/UserList.vue";
  import Newscast from "./layout/youthvision/Newscast.vue";
+ import CampLiveEdit from "./layout/youthvision/CampLiveEdit.vue"
 
  Vue.use(VueRouter);
  const route = [
@@ -131,7 +132,16 @@
              footer: Footer
          },
          meta: { unauthorized: true }
-     }
+     },
+     {
+        path: "/campLiveEdit",
+        name: 'CampLiveEdit',
+        components: {
+            header: AdminHeader,
+            default: CampLiveEdit,
+        },
+        meta:{auth:'admin'}
+    },
  ];
  const router = new VueRouter({ mode: 'history', routes: route });
  export default router;

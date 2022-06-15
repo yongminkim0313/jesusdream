@@ -21,18 +21,35 @@ module.exports = (app, mongoose, winston) => {
         }
     });
 
+    const youtubeSchema = new mongoose.Schema({
+        seq : Number,
+        sn : Number,
+        type : String,
+        title : String,
+        subtitle : String,
+        src : String,
+    })
+
     campSchema.plugin(autoIncrement.plugin, {
         model: 'Camp',
         field: 'campNo',
         startAt: 1, //시작 
         increment: 1 // 증가 
     });
+    
+    youtubeSchema.plugin(autoIncrement.plugin, {
+        model: 'youtube',
+        field: 'seq',
+        startAt: 1, //시작 
+        increment: 1 // 증가 
+    });
 
     const Camp = mongoose.model("Camp", campSchema);
 
+    const Youtube = mongoose.model('Youtube', youtubeSchema);
+
     app.post('/camp', (req, res) => {
-        console.log('post) camp insert!');
-        res.json({ result: 'success' });
+        youtubeSchema
     });
 
     app.get('/camp', (req, res) => {
@@ -48,6 +65,67 @@ module.exports = (app, mongoose, winston) => {
     app.delete('/camp', (req, res) => {
         console.log('delete) camp delete!');
         res.json({ result: 'success' });
+    });
+/////////////////////////////////////////////////
+    app.post('/admin/youtube', async(req, res) => {
+        console.log('post) youtube insert!');
+        try {
+            if(req.session.auth!='admin'){
+                res.status(401).json({msg:"관리자 로그인해주세요"});
+            }
+            const youtube = new Youtube(req.body);
+            const one = await Youtube.findOne({src:youtube.src});
+            if(one){
+                res.status(400).json({ msg: '존재하는 주소입니다.' });
+                return;
+            }
+
+            await youtube.save()
+            .then(() => {res.status(200).json({ result: 'success' })})
+            .catch((err) => {winston.error("Error : " + err)})
+            .then(() => {});
+        } catch (err) {
+            winston.error("Error >>" + err);
+            res.status(401).json({msg: '유튜브 등록 실패'});
+        }
+    });
+
+    app.get('/guest/youtube', (req, res) => {
+        const query = req.query;
+        Youtube.find(query).sort({type: 'desc', sn: 'asc' }).exec(function(err, youtube) {
+            if (err) res.json({ result: -1 });
+            res.status(200).json(youtube);
+        })
+    });
+
+    app.put('/admin/youtube', async(req, res) => {
+        console.log('put) youtube update!');
+        var item = req.body;
+        try{
+            await Youtube.updateOne({ seq: item.seq }, {
+                    sn : item.sn,
+                    titile : item.title,
+                    subtitle : item.subtitle,
+                    src : item.src,
+                    type : item.type,
+            })
+            res.json({ result: 'success' });
+        }catch(err){
+            winston.error(err);
+            res.status(400).json({msg:'업데이트에 실패'});
+        } 
+    });
+
+    app.delete('/admin/youtube', async(req, res) => {
+        console.log('delete) youtube delete!');
+        var item = req.body;
+        try{
+            var result = await Youtube.deleteOne({ seq: item.seq })
+            res.json({ result: 'success' });
+        }catch(err){
+            winston.error(err);
+            res.status(400).json({msg:'삭제 실패'});
+        } 
     });
     
 

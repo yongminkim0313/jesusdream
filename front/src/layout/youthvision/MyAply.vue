@@ -706,7 +706,7 @@
         }
         
         console.log(aplyContents);
-        this.axios.put('/aply',aplyContents)
+        this.axios.put('/user/aply',aplyContents)
         .then((result)=>{
           console.log(result);
           
@@ -793,7 +793,7 @@
       load(){
         var _this = this;
         var query = this.$route.query
-        this.axios.get('/aply/one',{params:{phone : query.phone ,seq : query.seq}})
+        this.axios.get('/user/aply/one',{params:{seq : query.seq}})
         .then((result)=>{
           
           var aplyData = result.data

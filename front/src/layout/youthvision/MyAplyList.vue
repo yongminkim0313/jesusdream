@@ -89,13 +89,13 @@ export default {
   },
   methods : {
     getUserAply(){
-      this.axios.get('/aply')
+      this.axios.get('/user/aply')
       .then((result)=>{
         this.myAplyList = result.data;
       })
     },
     getPosterAply(){
-      this.axios.get('/poster')
+      this.axios.get('/user/poster')
       .then((result)=>{
         this.myPosterList = result.data;
       })

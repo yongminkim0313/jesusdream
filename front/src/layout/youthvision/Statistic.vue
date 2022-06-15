@@ -31,7 +31,7 @@ import DoughnutChart from '../../assets/Chart';
     },
     methods:{
       makeChart(){
-        this.axios.get('/app/aply/statistic')
+        this.axios.get('/admin/aply/statistic')
         .then((result)=>{
           console.log(result);
           this.resultData = result.data;

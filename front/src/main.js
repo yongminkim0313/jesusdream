@@ -8,7 +8,7 @@ import VueAxios from "vue-axios";
 import VueAWN from "vue-awesome-notifications";
 import VueMoment from "vue-moment";
 import VueCookies from 'vue-cookies';
-import { refreshToken } from './tokenServices';
+// import { refreshToken } from './tokenServices';
 
 
 //import VueMoment from "vue-moment";
@@ -40,7 +40,7 @@ Vue.filter("makeComma", val => {
 })
 
 router.beforeEach(async(to, from, next) => {
-    //console.log("path::::::::::::::::", to.path);
+    console.log('path::::',to.path);
     const vueCookies = Vue.prototype.$cookies;
 
     if (vueCookies.get('userInfo') === null ) {
@@ -52,8 +52,6 @@ router.beforeEach(async(to, from, next) => {
             }
         }
     }
-
-    console.log('path::::',to.path);
 
     if (to.matched.some(record => record.meta.auth === 'admin')){
         try{
@@ -76,7 +74,6 @@ router.beforeEach(async(to, from, next) => {
         Vue.prototype.$awn.alert('로그인이 필요합니다');
         return next('/');
     }
-
     
 });
 
@@ -99,20 +96,20 @@ Axios.interceptors.response.use(function(response) {
     // Do something with response error
     console.log('에러', error.response.data);
     Vue.prototype.$awn.alert(error.response.data.msg)
-    const errorAPI = error.config;
+    // const errorAPI = error.config;
     if (error.response.status === 402) { //세션만료시
         Vue.prototype.$cookies.keys().forEach(cookie => Vue.prototype.$cookies.remove(cookie));//쿠키삭제
         Vue.prototype.$eventBus.$emit('login',{isLogin:false, userInfo: []}); //로그아웃상태로 변경
         router.push({name:'Main'})
     }
 
-    if (error.response.status === 401 && errorAPI.retry === undefined) {
-        errorAPI.retry = true;
-        console.log('토큰이 이상한 오류일 경우');
-        await refreshToken();
-        return await Axios(errorAPI);
-    }
-    //return Promise.reject(error);
+    // if (error.response.status === 401 && errorAPI.retry === undefined) {
+    //     errorAPI.retry = true;
+    //     console.log('토큰이 이상한 오류일 경우');
+    //     await refreshToken();
+    //     return await Axios(errorAPI);
+    // }
+    return Promise.reject(error);
 });
 
 vuetify.framework.theme.themes.light.kakaoLogin = '#f8e503';

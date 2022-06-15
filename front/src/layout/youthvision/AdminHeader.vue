@@ -52,6 +52,7 @@ export default {
             ,menu:[
                 {menuTitle:'신청등록내역', router:'/admin'},
                 {menuTitle:'포스터신청내역', router:'/adminPoster'},
+                {menuTitle:'캠프실황', router:'/campLiveEdit'},
                 {menuTitle:'달력', router:'/calendar'},
                 {menuTitle:'통계', router:'/statistic'},
                 {menuTitle:'사용자목록', router:'/userList'},

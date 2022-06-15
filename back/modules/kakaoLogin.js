@@ -53,16 +53,12 @@ module.exports = (app, mongoose, winston) => {
             });
             
             var userSession = userService.kakaoUserInfo(req.session, response2.data, `${access_token}`);
+            var user = await User.findOne({id: response2.data.id});
+            userSession.auth = user.auth;
+            userSession.save(function() {
+                res.redirect(`${process.env.MAIN_URL}`);
+            });
             
-            await User.findOne({id: response2.data.id}).exec(async function(err,user){
-                if (err) res.json({ msg: '사용자 가져오기 실패!' })
-                userSession.auth = user.auth;
-                console.log('response2 data::::::::::::', response2.data);
-                winston.info(userSession.kakaoId+"::"+userSession.name+"::"+userSession.auth);
-                userSession.save(function() {
-                    res.redirect(`${process.env.MAIN_URL}`);
-                });
-            })
 
         } catch (err) {
             winston.error("Error >>" + err);

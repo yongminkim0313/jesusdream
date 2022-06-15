@@ -137,7 +137,7 @@ export default {
   methods : {
     getAplyAll(){
       var _this = this;
-      this.axios.get('/aply/all',{})
+      this.axios.get('/user/aply/all',{})
       .then((result)=>{
         console.log(result);
         _this.aplyList = result.data;
@@ -147,7 +147,7 @@ export default {
     deleteAply(item){
       console.log(item);
       var _this = this;
-      this.axios.delete('/aply',item)
+      this.axios.delete('/user/aply',item)
       .then((data)=>{
         console.log(data);
         var idx = _this.aplyList.findIndex((data)=>{
@@ -170,13 +170,13 @@ export default {
       this.$socket.emit('sendMsgUser', { customerName: order.customerName, msg:'주문접수되었습니다.'})
     },
     saveAply(item){
-      this.axios.put('/aply/one',item)
+      this.axios.put('/admin/aply/one',item)
       .then((data)=>{
         console.log(data);
        })
     },
     excelDown(){
-      this.axios.post('/app/aply/excel',{})
+      this.axios.post('/admin/aply/excel',{})
       .then((result)=>{
         var resp = result.data;
           if(!resp.result) {

@@ -7,6 +7,7 @@ module.exports = {
         session.nickname = userInfo.kakao_account.profile.nickname
         session.accessToken = accessToken;
         session.type='kakao';
+        session.auth='user';
         return session;
     },
     authInfo: async(session)=>{

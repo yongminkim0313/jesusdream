@@ -748,7 +748,7 @@
         }
         
         console.log(aplyContents);
-        this.axios.post('/aply',aplyContents)
+        this.axios.post('/user/aply',aplyContents)
         .then((result)=>{
           
           if(result.error_code){

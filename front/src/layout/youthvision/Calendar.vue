@@ -68,7 +68,7 @@
       },
       loadAplyList(){
         var _this = this;
-        this.axios.get('/aply/all',{})
+        this.axios.get('/admin/aply/all',{})
         .then((result)=>{
           for(var idx in result.data){
             _this.addEvent(

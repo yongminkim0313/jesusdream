@@ -50,27 +50,25 @@ app.use(session({
 
 app.use(function(req, res, next) {
     //인터셉터 역할 부여 
-    winston.info('req.url::' + req.url);
-    // console.log(req.session);
+    winston.info('req.url::' + req.url +' req.method::' + req.method);
     // console.log(req.header('access_token'));
 
     if (req.url.indexOf('/auth/') > -1) {
         return next();
-    }else if (req.url.indexOf('/getAccessToken') > -1) {
+    }else if (req.url.indexOf('/auth/getAccessToken') > -1) {
         return next();
-    }else if (req.url.indexOf('/aply') > -1) {
+    }else if (req.url.indexOf('/guest/') > -1) {
         return next();
     } else {
         if (req.session && req.session.accessToken) {
             return next();
         } else {
             console.log('세션 만료')
-            res.status(402).json({msg:'세션 만료, 재로그인해주세요'});
+            res.status(401).json({msg:'세션 만료, 재로그인해주세요'});
         }
     }
 });
 app.post('/auth/userInfo', (req, res) => {
-    console.log('/auth/userInfo');
     if(req.session.accessToken){ 
         res.status(200).json({
             userInfo : req.session
@@ -100,7 +98,7 @@ app.post('/auth/logout', async(req, res) => {
         });
     } catch (err) {
         winston.error("Error >>" + err);
-        res.status(401).json({msg:err});
+        res.status(404).json({msg:err});
     }
 });
 

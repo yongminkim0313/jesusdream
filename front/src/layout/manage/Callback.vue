@@ -21,7 +21,7 @@ export default {
   methods : {
     getAccessToken: function(){
       console.log("getAccessToken")
-      this.axios.post('/getAccessToken')
+      this.axios.post('/auth/getAccessToken')
       .then(result => {
           this.$cookies.set("access_token", result.data.access_token);
           this.$cookies.set("user_info", result.data.user_info);

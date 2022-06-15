@@ -302,11 +302,13 @@ export default {
     for(var i = 0 ; i < 50; i++){
       this.cnt50.push(i);
     }
-    this.getMyAply();
-    console.log(this.$route.query);
+    var userInfo = this.$cookies.get("userInfo");
+    if(userInfo){
+      this.getMyAply();
+      this.myKakaoMsgAgree();
+    }
 
-    this.myKakaoMsgAgree();
-
+    console.log('$route.query::',this.$route.query);
     if(this.$route.query){
       if(this.$route.query.tab == 'poster')this.tab = 1;
     }
@@ -316,7 +318,7 @@ export default {
       this.$router.push('/');
     },
     getMyAply: function(){
-        this.axios.get('/aply')
+        this.axios.get('/user/aply')
         .then((result)=>{
 
           if(result && result.data.length > 0 ){
