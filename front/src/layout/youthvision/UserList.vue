@@ -100,7 +100,7 @@
     methods:{
         saveAuth(item){
           var _this = this;
-          this.axios.put('/app/user/auth',item)
+          this.axios.put('/admin/auth',item)
           .then((result)=>{
             console.log(result);
             _this.$awn.info(result.data.msg);
@@ -110,7 +110,7 @@
           var _this = this;
             _this.loading = true;
             this.userList=[];
-            this.axios.post('/app/users',{refresh: refresh})
+            this.axios.post('/admin/allUser',{refresh: refresh})
             .then((result)=>{
                 var temp = result.data.userData;
                 for(var idx in temp){
@@ -136,7 +136,7 @@
             })
         },
       sendMsgFriend(item){
-        this.axios.post('/friends/message/send',{uuid:item.uuid, templateId:77885, args:{}})
+        this.axios.post('/admin/message/send',{uuid:item.uuid, templateId:77885, args:{}})
         .then((result)=>{
           console.log(result.data);
           if(result.data && result.data['successful_receiver_uuids']){

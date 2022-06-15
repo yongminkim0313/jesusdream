@@ -123,8 +123,7 @@ module.exports = (app, mongoose, winston) => {
         
     })
 
-    app.post('/friends/message/send', async(req,res) => {
-        winston.info('/friends/message/send');
+    app.post('/admin/message/send', async(req,res) => {
         var uuid = req.body.uuid;
         var args = req.body.args;
         var templateId = req.body.templateId;
@@ -154,9 +153,7 @@ module.exports = (app, mongoose, winston) => {
     })
 
 
-    app.post('/app/users', async(req,res) => {
-        winston.info('/app/users');
-        if(req.session.auth != 'admin') res.status(401).json({msg:'접근권한이 없습니다.'});
+    app.post('/admin/allUser', async(req,res) => {
         const refresh = req.body.refresh;
         if(refresh){
             winston.info('카카오서버에서 친구목록 새로고침!')
@@ -170,7 +167,6 @@ module.exports = (app, mongoose, winston) => {
                     }
                 });
                 const users = response.data['elements'];
-                //console.log(response.data);
                 
                 const response2 = await axios({
                     method: "post",
@@ -185,7 +181,6 @@ module.exports = (app, mongoose, winston) => {
                         property_keys : '["kakao_account.","properties.","has_signed_up"]'
                     }
                 });
-            //console.log('response::',response2.data);
             
                 const accessToken = req.session.accessToken;
                 const response3 = await axios({
@@ -261,7 +256,7 @@ module.exports = (app, mongoose, winston) => {
         }
     })
 
-    app.put('/app/user/auth', async(req,res) => {
+    app.put('/admin/auth', async(req,res) => {
         console.log(req.body);
         var reqUser = req.body;
         var userNickname='';

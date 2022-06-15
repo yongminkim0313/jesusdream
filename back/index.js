@@ -59,6 +59,9 @@ app.use(function(req, res, next) {
         return next();
     }else if (req.url.indexOf('/guest/') > -1) {
         return next();
+    }else if (req.url.indexOf('/admin/') > -1){
+        if(!req.session.auth && !req.session.auth == 'admin')res.status(403).json({msg:'관리자 서비스입니다.'});
+        return next();
     } else {
         if (req.session && req.session.accessToken) {
             return next();
