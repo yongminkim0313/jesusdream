@@ -368,7 +368,7 @@ export default {
           
         console.log(aplyContents);
 
-        this.axios.post('/poster',aplyContents)
+        this.axios.post('/guest/poster',aplyContents)
         .then((result)=>{
           
           if(result.error_code){
@@ -378,7 +378,8 @@ export default {
 
           this.$socket.emit('poster', aplyContents, (data)=>{console.log(data)});
           this.$awn.success('신청이 완료되었습니다.');
-          this.$router.push('/myAplyList');
+          var userInfo = this.$cookies.get("userInfo");
+          if(userInfo) this.$router.push('/myAplyList');
         }).catch((err)=>{
           this.$awn.alert('등록신청에 오류가 발생하였습니다.'+err);
         })

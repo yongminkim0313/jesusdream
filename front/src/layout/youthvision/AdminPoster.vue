@@ -96,7 +96,7 @@ export default {
   methods : {
     getPosterAll(){
       var _this = this;
-      this.axios.get('/poster/all',{})
+      this.axios.get('/admin/poster/all',{})
       .then((result)=>{
         console.log(result);
         _this.posterList = result.data;
@@ -109,7 +109,7 @@ export default {
       return diffValue.days(); 
     },
     savePoster(item){
-      this.axios.put('/poster/one',item)
+      this.axios.put('/user/poster/one',item)
       .then((data)=>{
         console.log(data);
        })

@@ -82,7 +82,7 @@
       },
       loadPosterList(){
         var _this = this;
-        this.axios.get('/poster/all',{})
+        this.axios.get('/admin/poster/all',{})
         .then((result)=>{
           for(var idx in result.data){
             _this.addEvent(

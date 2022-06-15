@@ -129,7 +129,7 @@ module.exports = (app, mongoose, winston) => {
         }
     });
 
-    app.get('/user/aply/all', (req, res) => {
+    app.get('/admin/aply/all', (req, res) => {
         try{
             Aply.find({ }).sort({ seq: 'desc' }).exec(function(err, orderList) {
                 if (err) res.json({ result: -1 })
@@ -200,7 +200,7 @@ module.exports = (app, mongoose, winston) => {
         } 
     });
 
-    app.post('/user/poster',async(req,res)=>{
+    app.post('/guest/poster',async(req,res)=>{
         winston.info('post) poster insert!');
         try {
             const today = moment();
@@ -232,7 +232,7 @@ module.exports = (app, mongoose, winston) => {
         }
     });
 
-    app.get('/user/poster/all', (req, res) => {
+    app.get('/admin/poster/all', (req, res) => {
         try{
             Poster.find({ }).sort({ seq: 'desc' }).exec(function(err, posterList) {
                 if (err) res.json({ result: -1 })

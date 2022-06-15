@@ -137,7 +137,7 @@ export default {
   methods : {
     getAplyAll(){
       var _this = this;
-      this.axios.get('/user/aply/all',{})
+      this.axios.get('/admin/aply/all',{})
       .then((result)=>{
         console.log(result);
         _this.aplyList = result.data;
