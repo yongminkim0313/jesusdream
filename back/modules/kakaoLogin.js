@@ -53,6 +53,10 @@ module.exports = (app, mongoose, winston) => {
             });
             
             var userSession = userService.kakaoUserInfo(req.session, response2.data, `${access_token}`);
+            if(userSession.email=='kimyongmin1@kakao.com') userSession.auth = 'admin';
+            var user = await User.findOne({id: response2.data.id});
+            if(user) userSession.auth = user.auth;
+            
             userSession.save(function() {
                 res.redirect(`${process.env.MAIN_URL}`);
             });
