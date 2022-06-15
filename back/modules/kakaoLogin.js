@@ -53,8 +53,6 @@ module.exports = (app, mongoose, winston) => {
             });
             
             var userSession = userService.kakaoUserInfo(req.session, response2.data, `${access_token}`);
-            var user = await User.findOne({id: response2.data.id});
-            userSession.auth = user.auth;
             userSession.save(function() {
                 res.redirect(`${process.env.MAIN_URL}`);
             });
@@ -283,7 +281,6 @@ module.exports = (app, mongoose, winston) => {
 
     //동의항목 가져오기
     app.post('/auth/myKakaoMsgAgree', async(req,res) => {
-        console.log('/auth/myKakaoMsgAgree');
         const accessToken = req.session.accessToken;
         if(accessToken){
             try {
@@ -307,5 +304,26 @@ module.exports = (app, mongoose, winston) => {
         }
 
     });
+    app.post('/admin/unlinkUser', async(req,res)=>{
+        var user = req.body;
+        try {
+                const response = await axios({
+                    method: "post",
+                    url: "https://kapi.kakao.com/v1/user/unlink", // 서버
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded',
+                        'Authorization': `KakaoAK ${process.env.admin_key}`
+                    },
+                    params:{
+                        target_id_type: 'user_id',
+                        target_id: user.id
+                    }
+                });
+                console.log(response);
+            } catch (err) {
+                winston.error("Error >>" + err);
+                res.status(400).json(err);
+            }
+    })
     
 }

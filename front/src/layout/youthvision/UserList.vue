@@ -62,6 +62,9 @@
         <v-btn color="success" elevation="2" @click="goTemplateMaker();" class="ma-10">
           카카오 메세지 템플릿 만들기
         </v-btn>
+        <v-btn color="success" elevation="2" @click="unlinkUser();" class="ma-10">
+          탈퇴테스트
+        </v-btn>
         
   </v-card>
 </template>
@@ -149,6 +152,12 @@
       },
       goTemplateMaker(){
         location.href='https://developers.kakao.com/tool/template-builder/app/745000/template/77557/component/thl/0';
+      },
+      unlinkUser(){
+        this.axios.post('/admin/unlinkUser',{id:2245466046})
+        .then((result)=>{
+          console.log(result);
+        })
       }
     }
 

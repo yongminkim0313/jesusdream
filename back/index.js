@@ -79,11 +79,11 @@ app.post('/auth/userInfo', (req, res) => {
 });
 
 app.post('/auth/logout', async(req, res) => {
-    console.log('kakao logout!');
     if(!req.session || !req.session.accessToken){
         res.status(200).json({msg: 'logout!!'});
         return;
     }
+    res.status(200).json({msg:'success'});
     const accessToken = req.session.accessToken;
     try {
         const response2 = await axios({
@@ -91,14 +91,14 @@ app.post('/auth/logout', async(req, res) => {
             url: "https://kapi.kakao.com/v1/user/logout", // 서버
             headers: { 'Authorization': `Bearer ${accessToken}` }, // 요청 헤더 설정
         });
+        console.log(response2);
         winston.info('logout:::::'+response2.status);
         req.session.destroy(function(err) {
             if (err) throw err;
-            res.status(200).json({msg:'success'});
         });
     } catch (err) {
         winston.error("Error >>" + err);
-        res.status(404).json({msg:err});
+        res.status(400).json({msg:err});
     }
 });
 
