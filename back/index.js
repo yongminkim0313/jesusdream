@@ -93,7 +93,6 @@ app.post('/auth/logout', async(req, res) => {
             url: "https://kapi.kakao.com/v1/user/logout", // 서버
             headers: { 'Authorization': `Bearer ${accessToken}` }, // 요청 헤더 설정
         });
-        console.log(response2);
         winston.info('logout:::::'+response2.status);
         req.session.destroy(function(err) {
             if (err) throw err;

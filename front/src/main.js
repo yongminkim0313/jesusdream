@@ -15,7 +15,7 @@ import VueCookies from 'vue-cookies';
 
 Vue.config.productionTip = false
 
-const socket = io(process.env.VUE_APP_SOCKET_URL);
+const socket = io(process.env.VUE_APP_SOCKET_URL,{autoConnect: false});
 
 Vue.prototype.$socket = socket;
 

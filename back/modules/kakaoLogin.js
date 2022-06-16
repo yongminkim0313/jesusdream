@@ -291,7 +291,6 @@ module.exports = (app, mongoose, winston) => {
 
                 var talkMsg = resData.scopes.find(data=>{ return data.id =="talk_message";})
 
-                console.log('response::',response.data);
                 res.status(200).json(talkMsg.agreed);
             } catch (err) {
                 winston.error("Error >>" + err);

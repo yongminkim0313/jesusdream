@@ -99,9 +99,18 @@ export default {
         };
     },
     created() {
-       console.log('router',this.$router);
-       
+        console.log('router',this.$router);
+        
+        this.$socket.on("connect", () => {
+            if(this.$socket.connected){
+                this.$socket.emit('set userInfo', this.userInfo, (res)=>{
+                    console.log(res);
+                });
+            }    
+        });
+
         this.cookiesCtr();
+        
         this.$socket.on('aply', (data)=>{
             console.log(data);
             _this.$awn.success('신청이 등록 되었습니다.');
@@ -117,10 +126,11 @@ export default {
         cookiesCtr: function(){
             var userInfo = this.$cookies.get("userInfo");
             if(userInfo){
-              this.userInfo.nick = userInfo.name
-              this.userInfo.profileImage = userInfo.profileImage
-              this.userInfo.auth = userInfo.auth;
-              this.isLogin = true;
+                this.userInfo.nick = userInfo.name
+                this.userInfo.profileImage = userInfo.profileImage
+                this.userInfo.auth = userInfo.auth;
+                this.isLogin = true;
+                this.$socket.connect();
             }else{
                 this.logout();
             }

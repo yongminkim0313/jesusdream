@@ -5,16 +5,12 @@
             <v-card class="d-flex justify-space-between mx-auto" flat tile color="#f5f5f5">
                     {{menu[selectedMenu].menuTitle}}
             </v-card>
+                    <connect-users v-bind:users="users"></connect-users>
                 <v-chip label link>
                     관리자 {{userInfo.nick}} 님
                 </v-chip>
                 
-                <v-btn
-                    fab
-                    small
-                    @click="logout();"
-                    v-if="isLogin"
-                >
+                <v-btn fab small @click="logout();" v-if="isLogin" >
                     <v-icon small color="pink">
                         mdi-logout
                     </v-icon>
@@ -41,11 +37,15 @@
     </div>
 </template>
 <script>
+import ConnectUsers from "./ConnectUsers.vue"; 
+
 export default {
     name:'Header',
+    components:{ ConnectUsers },
     data(){
         return {
             userInfo:{}
+            ,users:[]
             ,isLogin: false
             ,drawer: null
             ,selectedMenu:0
@@ -61,15 +61,36 @@ export default {
     },
     created() {
         this.cookiesCtr();
-        this.$socket.on('connect user info', (data)=>{
-            this.$awn.success('userList::'+ JSON.stringify(data));
+        
+        this.$socket.on("connect", () => {
+            if(this.$socket.connected){
+                this.$socket.emit('set userInfo', this.userInfo, (res)=>{
+                    console.log(res);
+                });
+            }    
         });
+
+        this.$socket.on('connect user info', (res)=>{
+            console.log('connect user info',res);
+            this.users = res;
+        });
+
         this.$eventBus.$on('login',(data)=>{
             this.isLogin = data.isLogin;
             this.userInfo = data.userInfo;
         })
+
+        this.$socket.connect();
+
+        this.getUsers();
     },
     methods: {
+        getUsers: function(){
+            this.$socket.emit('connect users',{},(res)=>{
+                console.log('connect users::::',res);
+                this.users = res;
+            })
+        },
         cookiesCtr: function(){
             var userInfo = this.$cookies.get("userInfo");
             if(userInfo){

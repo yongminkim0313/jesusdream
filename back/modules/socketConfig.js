@@ -12,11 +12,19 @@ module.exports = (app, winston) => {
 
     var userList = [];
     io.on('connection', socket => {
+        socket.on('set userInfo',(userInfo, callback)=>{
+            userList.push({id : socket.id, userInfo : userInfo});
+            socket.broadcast.emit('connect user info', userList);
+            callback('success send user info !!');
+        });
 
-        userList.push(socket.id);
-        socket.broadcast.emit('connect user info', userList);
-        socket.on('disconnect', () => { winston.info("@ socket disconnect @@@@"); 
-            const idx = userList.indexOf(socket.id);
+        socket.on('connect users',(args,callback)=>{
+            callback(userList);
+        });
+        
+        socket.on('disconnect', () => { 
+            winston.info("@ socket disconnect @@@@"); 
+            const idx = userList.findIndex(function(el){return el.id==socket.id});
             if(idx > -1) userList.splice(idx,1);
             socket.broadcast.emit('connect user info', userList);
         });
@@ -38,11 +46,7 @@ module.exports = (app, winston) => {
                 }
             }
         });
-        socket.on('tossInit', (data) => {
-            console.log('tossInit')
-            socket.broadcast.emit('receiveInit', data);
-        })
-        winston.info(`socket.io connected ${JSON.stringify(userList)}`);
+        winston.info(`socket.io connected`);
     });
     return io;
 }
