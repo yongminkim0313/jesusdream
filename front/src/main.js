@@ -113,6 +113,8 @@ Axios.interceptors.response.use(function(response) {
 });
 
 vuetify.framework.theme.themes.light.kakaoLogin = '#f8e503';
+vuetify.framework.theme.themes.light.kakaoText = '#391d1d';
+
 vuetify.framework.lang.locales.en.noDataText ='신청내역이 없습니다.';
 new Vue({ router, vuetify, render: h => h(App) }).$mount('#app');
 

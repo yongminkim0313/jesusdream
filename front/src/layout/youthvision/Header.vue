@@ -9,11 +9,11 @@
             <v-spacer></v-spacer>
 
             <!-- 카카오로그인 -->
-            <v-btn @click="kakaoLogin();" v-if="!isLogin" class="mr-10 kakaoLogin" small :loading="loading" :disabled="loading">
-                카카오로그인
+            <v-btn @click="kakaoLogin();" v-if="!isLogin" class="mr-10 kakaoLogin kakaoText--text" small :loading="loading" :disabled="loading">
+                <strong>카카오로그인</strong>
                 <!-- <v-img  max-height="30" max-width="122" contain :src="require('/src/assets/kakaoLogin.png')"></v-img> -->
                 <template v-slot:loader>
-                        <v-card class="mr-10 pa-2 kakaoLogin text--darken-1">로그인</v-card>
+                        <v-card class="mr-10 pa-2 kakaoLogin kakaoText--text">로그인</v-card>
                 </template>
             </v-btn>
             <!-- <v-img @click="naverLogin();" v-if="!isLogin" max-height="40" max-width="100" contain src="http://static.nid.naver.com/oauth/small_g_in.PNG"></v-img> -->

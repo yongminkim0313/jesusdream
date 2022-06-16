@@ -13,10 +13,15 @@ module.exports = (app, winston) => {
     var userList = [];
     io.on('connection', socket => {
 
-        socket.on('disconnect', () => { winston.info("@ socket disconnect @@@@"); });
+        userList.push(socket.id);
+        socket.broadcast.emit('connect user info', userList);
+        socket.on('disconnect', () => { winston.info("@ socket disconnect @@@@"); 
+            const idx = userList.indexOf(socket.id);
+            if(idx > -1) userList.splice(idx,1);
+            socket.broadcast.emit('connect user info', userList);
+        });
         socket.on('reconnecting', () => { winston.info("@ socket reconnecting @@@@"); });
         socket.on('reconnection', () => { winston.info("@ socket reconnection @@@@"); });
-
         socket.on('aply', (data) => {
             console.log('aply', data);
             socket.broadcast.emit('aply', data);
@@ -37,7 +42,7 @@ module.exports = (app, winston) => {
             console.log('tossInit')
             socket.broadcast.emit('receiveInit', data);
         })
-        winston.info(`socket.io connected`);
+        winston.info(`socket.io connected ${JSON.stringify(userList)}`);
     });
     return io;
 }

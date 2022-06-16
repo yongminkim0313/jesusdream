@@ -61,8 +61,8 @@ export default {
     },
     created() {
         this.cookiesCtr();
-        this.$socket.on('aply', (data)=>{
-            this.$awn.success('신청이 등록 되었습니다.'+data.aplyName+'  '+data.church);
+        this.$socket.on('connect user info', (data)=>{
+            this.$awn.success('userList::'+ JSON.stringify(data));
         });
         this.$eventBus.$on('login',(data)=>{
             this.isLogin = data.isLogin;
