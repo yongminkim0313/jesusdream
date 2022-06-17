@@ -36,6 +36,7 @@ module.exports = {
         bankNm: { displayName: '은행', headerStyle: styles.headerDark, cellStyle: {}, width: 160 },
         phone: { displayName: '연락처', headerStyle: styles.headerDark, cellStyle: {}, width: 100 },
         email: { displayName: '이메일', headerStyle: styles.headerDark, cellStyle: {}, width: 200 },
+        memo: { displayName: '기타의견 및 메모사항', headerStyle: styles.headerDark, cellStyle: {}, width: 200 },
     };
   
     for( idx in aplyList){
@@ -50,8 +51,6 @@ module.exports = {
         aplyList[idx].campCnt = strArr.join(',');
     }
 
-    const dailyDatas = aplyList;
-  
     let exportData = [ 
       {
           name: '유스비전캠프신청등록리스트', // 시트 이름입니다. 

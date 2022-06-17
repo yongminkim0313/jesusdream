@@ -398,6 +398,11 @@
           ></v-checkbox>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col>
+          <v-textarea label="기타의견 및 메모사항" no-resize rows="2" v-model="memo" ></v-textarea>
+        </v-col>
+      </v-row>
       <v-row><!--신청하기버튼-->
         <v-col cols="12" md="12">
           <v-btn
@@ -477,14 +482,7 @@
       schdlSe:'2박3일',
       phone: '',
       email: '',
-      items: [
-        '학생',
-        '교사',
-        '목사',
-        '성도',
-        '전(강)도사',
-        '기타',
-      ],
+      items: [ '학생', '교사', '목사', '성도', '전(강)도사', '기타', ],
       checkbox: '',
       fullAddress: '',
       detailAddress:'',
@@ -496,26 +494,11 @@
       ],
       joinPathSe: [],
       paths: [
-        {
-          text: '인터넷 홍보(youtube, instar, facebook)',
-          icon: 'mdi-nature',
-        },
-        {
-          text: '포스터, 브로셔',
-          icon: 'mdi-glass-wine',
-        },
-        {
-          text: '지인소개 및 소문',
-          icon: 'mdi-calendar-range',
-        },
-        {
-          text: '지난 캠프 참석',
-          icon: 'mdi-map-marker',
-        },
-        {
-          text: '기타',
-          icon: 'mdi-bike',
-        },
+        { text: '인터넷 홍보(youtube, instar, facebook)', icon: 'mdi-nature', },
+        { text: '포스터, 브로셔', icon: 'mdi-glass-wine', },
+        { text: '지인소개 및 소문', icon: 'mdi-calendar-range', },
+        { text: '지난 캠프 참석', icon: 'mdi-map-marker', },
+        { text: '기타', icon: 'mdi-bike', },
       ],
       campCnt:{
         chodeung: 0,
@@ -535,7 +518,8 @@
         ,'우리 1005-502-838415'
         ,'새마을 9002-1937-0057-1'
         ,'우체국 104570-01-002038'
-      ]
+      ],
+      memo:''
     }),
 
     computed: {
@@ -702,7 +686,8 @@
           campCnt: this.campCnt,
           pyrNm: this.pyrNm,
           checkboxUseRoom: this.checkboxUseRoom,
-          bankNm: this.bankNm
+          bankNm: this.bankNm,
+          memo: this.memo
         }
         
         console.log(aplyContents);
@@ -818,6 +803,7 @@
           _this.pyrNm = aplyData.pyrNm;
           _this.checkboxUseRoom = aplyData.checkboxUseRoom;
           _this.bankNm = aplyData.bankNm;
+          _this.memo = aplyData.memo;
         })
         .catch(()=>{})
       }

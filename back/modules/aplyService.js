@@ -36,6 +36,7 @@ module.exports = (app, mongoose, winston) => {
         checkboxUseRoom: String,
         bankNm: String,
         kakaoId: String,
+        memo:String,
       });
 
       const posterSchema = new mongoose.Schema({
@@ -145,8 +146,10 @@ module.exports = (app, mongoose, winston) => {
         winston.info('put) aply update!');
         console.log(req.body);
         var item = req.body;
-        if(item.aplyPrgrs != '접수'){
+        var rs = await Aply.findOne({seq:item.seq});
+        if(rs.aplyPrgrs != '접수'){
             res.status(403).json({msg:'접수상태에서 수정이 가능합니다. 관리자에게 문의 바랍니다.'});
+            return;
         }
         try{
             var result = await Aply.updateOne({ seq: item.seq }, {
@@ -171,9 +174,11 @@ module.exports = (app, mongoose, winston) => {
                     pyrNm: item.pyrNm,
                     aplyTotAmt: 0,
                     checkboxUseRoom:item.checkboxUseRoom,
-                    bankNm: item.bankNm
+                    bankNm: item.bankNm,
+                    memo: item.memo
                 },
             })
+            console.log('/user/aply::',result);
             res.json({ result: 'success' });
         }catch(err){
             winston.error(err);
@@ -185,7 +190,7 @@ module.exports = (app, mongoose, winston) => {
         res.json({ result: 'success' });
     });
 
-    app.put('/user/aply/one', async(req, res) => {
+    app.put('/admin/aply/one', async(req, res) => {
         var item = req.body;
         try{
             var result = await Aply.updateOne({ seq: item.seq }, {

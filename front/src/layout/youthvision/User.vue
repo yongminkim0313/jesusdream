@@ -427,9 +427,14 @@
           ></v-checkbox>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col>
+          <v-checkbox label="카카오 메세지 수신 동의(선택)" @click="authorize()" v-model="msgAgree" readonly></v-checkbox>
+          <v-textarea label="기타의견 및 메모사항" no-resize rows="2" :value="memo" ></v-textarea>
+        </v-col>
+      </v-row>
       <v-row><!--신청하기버튼-->
         <v-col cols="12" md="12">
-          <v-checkbox label="카카오 메세지 수신 동의(선택)" @click="authorize()" v-model="msgAgree" readonly></v-checkbox>
           <v-btn
             class="mr-4"
             @click="submit"
@@ -563,6 +568,7 @@
         ,'우체국 104570-01-002038'
       ],
       msgAgree: false,
+      memo:''
     }),
 
     computed: {
