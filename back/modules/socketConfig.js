@@ -24,6 +24,7 @@ module.exports = (app, winston) => {
             var ns = io.of("/");
             var temp = []
             if (ns) {
+                console.log(ns.server.eio.clientsCount);
                 ns.sockets.forEach((value, key, map) => {
                     var a = userList.find((el)=>{return el.id == key})
                     temp.push(a);
