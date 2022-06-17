@@ -80,6 +80,9 @@ export default {
             this.userInfo = data.userInfo;
         })
 
+        this.$socket.on('message', function (message) {
+        console.log('msg::::::',message);
+        });
         this.$socket.connect();
 
         this.getUsers();

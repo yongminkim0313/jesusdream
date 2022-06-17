@@ -24,13 +24,12 @@ module.exports = (app, winston) => {
             var ns = io.of("/");
             var temp = []
             if (ns) {
-                console.log(ns.server.eio.clientsCount);
                 ns.sockets.forEach((value, key, map) => {
                     var a = userList.find((el)=>{return el.id == key})
                     temp.push(a);
                 });
             }
-            this.userList = temp;
+            userList = temp;
             callback(userList);
         });
         
@@ -46,7 +45,10 @@ module.exports = (app, winston) => {
             console.log('aply', data);
             socket.broadcast.emit('aply', data);
         });
-
+        socket.on('sendMsg',(user)=>{
+            console.log(user);
+            io.to(user.id).send({msg : user.msg, userInfo: user.userInfo});
+        })
         socket.on('sendMsgUser', (data) => {
             data.socketId = socket.id;
             for (var i = 0; i < userList.length; i++) {

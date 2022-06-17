@@ -26,7 +26,7 @@
         </v-list-item-content>
 
         <v-list-item-icon>
-          <v-icon color="deep-purple accent-4">
+          <v-icon color="deep-purple accent-4" @click="sendMsg(chat)">
             mdi-message-outline
           </v-icon>
         </v-list-item-icon>
@@ -41,5 +41,13 @@
         //users: [ { profileImage: 'https://k.kakaocdn.net/dn/boAP5T/btrEYIsmbED/RCkGo3kEfIUuXkcwRZZGEk/img_640x640.jpg', nick: 'Jason Oner', } ],
     }),
     props:['users'],
+    methods:{
+        sendMsg:function(user){
+            user['msg'] = '하하하하하하에헤라~~~~~~!!!!';
+            this.$socket.emit('sendMsg',user,(res)=>{
+                console.log(res);
+            });
+        }
+    }
   }
 </script>
