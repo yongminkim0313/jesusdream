@@ -50,6 +50,9 @@
           {{item.aplyTotAmt | makeComma }}
         </v-btn>
         </template>
+        <template v-slot:[`item.aplyName`]="{ item }">
+            {{item.aplyName}}|{{item.jikbunSe}}
+        </template>
         <!-- <template v-slot:[`item.aplyPrgrs`]="{ item }">
         <v-btn
           elevation="2"
@@ -95,8 +98,8 @@ export default {
           {text: '상태', value: 'aplyPrgrs', width: 50}, //신청진행상황(접수, 접수완료, 신청취소)
           {text: '신청일', value: 'aplyDt'}, //신청일시
           {text: '은행', value: 'bankNm'},
-          {text: '신청자명', value: 'aplyName'},
-          {text: '신청자직분', value: 'jikbunSe'},
+          {text: '신청자|직분', value: 'aplyName'},
+          // {text: '신청자직분', value: 'jikbunSe'},
           {text: '교회명', value: 'church'},
           {text: '교단', value: 'churchSe'},
           {text: '목사님', value: 'churchAdtr'},
@@ -111,6 +114,7 @@ export default {
           //{text: '참석여부', value: 'joinHisSe'},
           //{text: '참여경로', value: 'joinPathSe'},
           {text: '캠프인원', value: 'campCnt'},
+          {text: '기타의견 및 메모사항', value: 'memo'},
           //{text: '등록자', value: 'rgtrNm'},
           //{text: '등록일시', value: 'rgtrDt'},
           //{text: '수정자', value: 'updtNm'},
@@ -139,7 +143,6 @@ export default {
       var _this = this;
       this.axios.get('/admin/aply/all',{})
       .then((result)=>{
-        console.log(result);
         _this.aplyList = result.data;
         _this.loading = false;
        })
