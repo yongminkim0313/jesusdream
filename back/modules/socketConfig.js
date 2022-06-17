@@ -12,6 +12,8 @@ module.exports = (app, winston) => {
 
     var userList = [];
     io.on('connection', socket => {
+        
+        //사용자가 호출 
         socket.on('set userInfo',(userInfo, callback)=>{
             userList.push({id : socket.id, userInfo : userInfo});
             socket.broadcast.emit('connect user info', userList);
@@ -19,6 +21,15 @@ module.exports = (app, winston) => {
         });
 
         socket.on('connect users',(args,callback)=>{
+            var ns = io.of("/");
+            var temp = []
+            if (ns) {
+                ns.sockets.forEach((value, key, map) => {
+                    var a = userList.find((el)=>{return el.id == key})
+                    temp.push(a);
+                });
+            }
+            this.userList = temp;
             callback(userList);
         });
         
