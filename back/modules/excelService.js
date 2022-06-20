@@ -36,6 +36,8 @@ module.exports = {
         bankNm: { displayName: '은행', headerStyle: styles.headerDark, cellStyle: {}, width: 160 },
         phone: { displayName: '연락처', headerStyle: styles.headerDark, cellStyle: {}, width: 100 },
         email: { displayName: '이메일', headerStyle: styles.headerDark, cellStyle: {}, width: 200 },
+        joinHisSe: { displayName: '참석여부', headerStyle: styles.headerDark, cellStyle: {}, width: 200 },
+        joinPathSe: { displayName: '참여경로', headerStyle: styles.headerDark, cellStyle: {}, width: 200 },
         memo: { displayName: '기타의견 및 메모사항', headerStyle: styles.headerDark, cellStyle: {}, width: 200 },
     };
   
