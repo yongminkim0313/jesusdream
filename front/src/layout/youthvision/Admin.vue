@@ -53,14 +53,11 @@
         <template v-slot:[`item.aplyName`]="{ item }">
             {{item.aplyName}}|{{item.jikbunSe}}
         </template>
-        <!-- <template v-slot:[`item.aplyPrgrs`]="{ item }">
-        <v-btn
-          elevation="2"
-          @click="sendMsgUser(item);"
-        >
-          메세지
-        </v-btn>
-        </template> -->
+        <template v-slot:[`item.memo`]="{ item }">
+        <v-card width="200" class="overflow-auto">
+          <v-card-text>{{item.memo}}</v-card-text>
+        </v-card>
+        </template>
         <template v-slot:[`item.campCnt`]="{ item }">
         <v-chip small v-if="item.campCnt.chodeung != 0">
             {{ '초등:'+item.campCnt.chodeung}}
@@ -111,8 +108,8 @@ export default {
           //{text: '동의', value: 'checkbox'},
           {text: '우편물주소', value: 'fullAddress'},
           {text: '우편물상세주소', value: 'detailAddress'},
-          //{text: '참석여부', value: 'joinHisSe'},
-          //{text: '참여경로', value: 'joinPathSe'},
+          {text: '참석여부', value: 'joinHisSe'},
+          {text: '참여경로', value: 'joinPathSe'},
           {text: '캠프인원', value: 'campCnt'},
           {text: '기타의견 및 메모사항', value: 'memo'},
           //{text: '등록자', value: 'rgtrNm'},
