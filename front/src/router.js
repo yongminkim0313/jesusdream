@@ -63,7 +63,7 @@
          name: 'Admin',
          components: {
              header: AdminHeader,
-             default: Admin
+             default: Admin,
          },
          meta:{auth:'admin'}
      },
@@ -83,7 +83,7 @@
          components: {
              header: AdminHeader,
              default: AdminPoster,
-         },
+            },
          meta:{auth:'admin'}
      },
      {

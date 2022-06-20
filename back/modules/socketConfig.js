@@ -23,10 +23,14 @@ module.exports = (app, winston) => {
         socket.on('connect users',(args,callback)=>{
             var ns = io.of("/");
             var temp = []
+            
             if (ns) {
                 ns.sockets.forEach((value, key, map) => {
-                    var a = userList.find((el)=>{return el.id == key})
-                    temp.push(a);
+                    console.log('USERLIST::', userList);
+                    if(userList.length > 0){
+                        var a = userList.find((el)=>{return el.id == key})
+                        temp.push(a);
+                    }
                 });
             }
             userList = temp;
@@ -35,6 +39,7 @@ module.exports = (app, winston) => {
         
         socket.on('disconnect', () => { 
             winston.info("@ socket disconnect @@@@"); 
+            console.log('USERLIST', JSON.stringify(userList));
             const idx = userList.findIndex(function(el){return el.id==socket.id});
             if(idx > -1) userList.splice(idx,1);
             socket.broadcast.emit('connect user info', userList);
@@ -47,7 +52,8 @@ module.exports = (app, winston) => {
         });
         socket.on('sendMsg',(user)=>{
             console.log(user);
-            io.to(user.id).send({msg : user.msg, userInfo: user.userInfo});
+            user.userInfo.me = false;
+            io.to(user.id).send(user);
         })
         socket.on('sendMsgUser', (data) => {
             data.socketId = socket.id;

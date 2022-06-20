@@ -9,20 +9,228 @@
             </v-btn>
         </v-card-title>
       </v-card>
-        <v-data-table
-            fixed-header
-            dense
-            :headers="headers"
-            :items="aplyList"
-            item-key="seq"
-            :search="search"
-            hide-default-footer
-            :disable-items-per-page="true"
-            :footer-props="{ 'items-per-page-options': [50, -1] }"
-            :loading = "loading"
-            loading-text="로딩중 기다려주세요~"
-            disable-sort
-        >
+        <v-data-table fixed-header dense :headers="headers" :items="aplyList" item-key="seq" :search="search" hide-default-footer
+            :disable-items-per-page="true" :footer-props="{ 'items-per-page-options': [50, -1] }" :loading = "loading" loading-text="로딩중 기다려주세요~" disable-sort >
+        <template v-slot:top>
+          <v-dialog v-model="dialog" max-width="800">
+            <v-card width="800" class="mx-auto" elevation="5">
+            <form>
+              <v-container>
+                <v-row><!--신청자이름, 직분 -->
+                  <v-divider class="ma-5"></v-divider>
+                  <v-col cols="12" md="12" class="d-flex flex-row">
+                    <v-icon large color="green darken-2" >
+                      mdi-human
+                    </v-icon>
+                    <v-card-title>신청자 정보</v-card-title>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field v-model="editedItem.aplyName" :counter="10" label="신청자 이름" required ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-select v-model="editedItem.jikbunSe" :items="items" label="직분" required solo dense ></v-select>
+                  </v-col>
+                </v-row>
+                <v-row><!--교회명,교단,목사님성함 -->
+                  <v-divider class="ma-5"></v-divider>
+                  <v-col cols="12" md="12" class="d-flex flex-row">
+                    <v-icon large color="green darken-2" >
+                      mdi-church
+                    </v-icon>
+                    <v-card-title>교회정보</v-card-title>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field
+                      v-model="editedItem.church"
+                      label="교회명 (ex:주님이꿈꾸신교회)"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field
+                      v-model="editedItem.churchSe"
+                      label="교단 (ex:기독교한국침례회)"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-text-field
+                      v-model="editedItem.churchAdtr"
+                      label="목사님 성함"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row><!--교회주소-->
+                  <v-col cols="7" md="9" sm="6">
+                    <v-text-field
+                      v-model="editedItem.churchAddr"
+                      label="교회주소"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="5" md="3" sm="6">
+                    <v-btn @click="openAddrPop('churchAddr');">교회주소검색</v-btn>
+                  </v-col>
+                  <v-col cols="12" md="12" class="pa-0">
+                    <div id="churchAddrDiv" ref="churchAddrPop" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
+                    <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" @click="foldAddrPop('churchAddr')" alt="접기 버튼">
+                    </div>
+                  </v-col>
+                  <v-col cols="12" md="12">
+                    <v-text-field
+                      v-model="editedItem.churchDtlAddr"
+                      label="상세주소"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row><!--연락처,Email-->
+                  <v-col cols="12" md="12" class="d-flex flex-row">
+                    <v-icon large color="green darken-2" >
+                      mdi-email-box
+                    </v-icon>
+                    <v-card-title>연락처,E-MAIL 우편물주소</v-card-title>
+                  </v-col>
+                  <v-col cols="6" md="6">
+                    <v-text-field
+                      v-model="editedItem.phone"
+                      label="연락처 (신청자, 인솔자 핸드폰 번호)"
+                      required
+                    ></v-text-field>
+
+                  </v-col>
+                  <v-col cols="6" md="6">
+                    <v-text-field
+                      v-model="editedItem.email"
+                      label="E-mail"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row><!--우편물주소-->
+                  <v-col cols="7" md="9" sm="6">
+                    <v-text-field
+                      v-model="editedItem.fullAddress"
+                      label="우편물 주소"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="5" md="3" sm="6">
+                    <v-btn @click="openAddrPop();">우편물 주소검색</v-btn>
+                  </v-col>
+                  <v-col cols="12" md="12" class="pa-0">
+                    <div id="addrDiv" ref="addrPop" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
+                    <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" @click="foldAddrPop()" alt="접기 버튼">
+                    </div>
+                  </v-col>
+                  <v-col cols="12" md="12">
+                    <v-text-field
+                      v-model="editedItem.detailAddress"
+                      label="우편물 상세주소"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row><!--기간(2박3일)-->
+                  <v-divider class="ma-5"></v-divider>
+                  <v-col cols="12" md="12" class="d-flex flex-row">
+                    <v-icon large color="green darken-2" >
+                      mdi-calendar
+                    </v-icon>
+                    <v-card-title>캠프참여기간</v-card-title>
+                  </v-col>
+                  <v-col cols="12" md="12">
+                    <v-radio-group v-model="editedItem.schdlSe" row >
+                      <v-radio label="2박3일" value="2박3일" ></v-radio>
+                      <v-radio label="1박2일" value="1박2일" ></v-radio>
+                      <v-radio label="무박2일" value="무박2일" ></v-radio>
+                    </v-radio-group>
+                  </v-col>
+                </v-row>
+                <v-row><!--유스비전 참석여부-->
+                  <v-divider class="ma-5"></v-divider>
+                  <v-col cols="12" md="12" class="d-flex flex-row">
+                    <v-icon large color="green darken-2" >
+                      mdi-home-group
+                    </v-icon>
+                    <v-card-title>유스비전캠프 참석여부</v-card-title>
+                  </v-col>
+                  <v-col cols="12" md="12">
+                    <v-chip-group v-model="editedItem.joinHisSe" active-class="deep-purple accent-4 white--text" column >
+                      <v-chip value="처음참석">유스비전캠프에 처음참석합니다</v-chip>
+                      <v-chip value="참석한적있음">지난 캠프에 참석한적이 있습니다</v-chip>
+                    </v-chip-group>
+                  </v-col>
+                </v-row>
+                <v-row><!--유스비전 알게된 경로-->
+                  <v-divider class="ma-5"></v-divider>
+                  <v-col cols="12" md="12" class="d-flex flex-row">
+                    <v-icon large color="green darken-2" >
+                      mdi-youtube-tv
+                    </v-icon>
+                    <v-card-title>유스비전캠프 알게된 경로</v-card-title>
+                  </v-col>
+                  <v-col cols="12" md="12">
+                    <v-chip-group v-model="editedItem.joinPathSe" column multiple >
+                      <v-chip filter outlined v-for="path in paths" :key="path.text" :value="path.text" >
+                      {{path.text}}
+                      </v-chip>
+                    </v-chip-group>
+                  </v-col>
+                </v-row>
+                <v-row><!--인원선택-->
+                  <v-divider class="ma-5"></v-divider>
+                  <v-col cols="12" md="12" class="d-flex flex-row">
+                    <v-icon large color="green darken-2" >
+                      mdi-counter
+                    </v-icon>
+                    <v-card-title>참여인원</v-card-title>
+                  </v-col>
+                  <v-col cols="3" md="3" sm="4">
+                    <v-select v-model="editedItem.campCnt.chodeung" :items="cnt50" attach label="초등" ></v-select>
+                  </v-col>
+                  <v-col cols="3" md="3" sm="4">
+                    <v-select v-model="editedItem.campCnt.cheongsonyeon" :items="cnt50" attach label="청소년" ></v-select>
+                  </v-col>
+                  <v-col cols="3" md="3" sm="4">
+                    <v-select v-model="editedItem.campCnt.cheongnyeon" :items="cnt50" attach label="청년" ></v-select>
+                  </v-col>
+                  <v-col cols="3" md="3" sm="4">
+                    <v-select v-model="editedItem.campCnt.jangnyeon" :items="cnt50" attach label="장년" ></v-select>
+                  </v-col>
+                  <v-col cols="3" md="3" sm="4">
+                    <v-select v-model="editedItem.campCnt.sayeogja" :items="cnt50" attach label="사역자" ></v-select>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <!-- 입급은행 -->
+                  <v-col cols="12" md="12" sm="12">
+                    <v-select v-model="editedItem.bankNm" :items="dpstList" attach label="입금은행" >
+                    </v-select>
+                  </v-col>
+                  <v-col cols="12" md="12" sm="12">
+                    <v-text-field v-model="editedItem.pyrNm" label="입금자명" required ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-textarea label="기타의견 및 메모사항" no-resize rows="2" v-model="editedItem.memo" ></v-textarea>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="12">
+                    <v-btn class="mr-4" @click="submit" color="primary" elevation="14" >
+                      저장
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+
+            </form>
+            </v-card>
+          </v-dialog>
+        </template>
         <template v-slot:[`item.aplyPrgrs`]="{ item }">
           <v-select
             v-model="item.aplyPrgrs"
@@ -75,26 +283,99 @@
             {{ '사역자:'+item.campCnt.sayeogja}}
         </v-chip>
         </template>
+        <template v-slot:[`item.actions`]="{ item }">
+            <v-icon small class="mr-2" @click="editItem(item)">
+                mdi-pencil
+            </v-icon>
+        </template>
         </v-data-table>
   </v-card>
 </template>
 <script>
+
 export default {
   components: {
   },
   data(){
       return {
+        dialog:false,
+        editedIndex: -1,
+        editedItem: {
+          aplyName: '',
+          jikbunSe: null,
+          church:'',
+          churchSe:'',
+          churchAdtr:'',
+          churchAddr:'',
+          churchDtlAddr:'',
+          churchAddrPop:false,
+          schdlSe:'',
+          phone: '',
+          email: '',
+          checkbox: '',
+          fullAddress: '',
+          detailAddress:'',
+          joinHisSe: '',
+          joinPathSe: [],
+          campCnt:{
+            chodeung: 0,
+            cheongsonyeon: 0,
+            cheongnyeon: 0,
+            jangnyeon: 0,
+            sayeogja: 0,
+          },
+          kakaoEmail:'',
+          isKakaoLogin: false,
+          pyrNm: '',
+          checkboxUseRoom: '',
+          bankNm: '',
+          msgAgree: false,
+          memo:''
+        },
+        defaultItem: {
+          aplyName: '',
+          jikbunSe: null,
+          church:'',
+          churchSe:'',
+          churchAdtr:'',
+          churchAddr:'',
+          churchDtlAddr:'',
+          churchAddrPop:false,
+          schdlSe:'',
+          phone: '',
+          email: '',
+          checkbox: '',
+          fullAddress: '',
+          detailAddress:'',
+          joinHisSe: '',
+          joinPathSe: [],
+          campCnt:{
+            chodeung: 0,
+            cheongsonyeon: 0,
+            cheongnyeon: 0,
+            jangnyeon: 0,
+            sayeogja: 0,
+          },
+          kakaoEmail:'',
+          isKakaoLogin: false,
+          pyrNm: '',
+          checkboxUseRoom: '',
+          bankNm: '',
+          msgAgree: false,
+          memo:''
+        },
         search:'',
         aplyList: [],
-        items: [
-          { title: '캠프등록현황', icon: 'mdi-home-city' },
-          { title: '완료내역', icon: 'mdi-account-group-outline' },
-        ],
+        // items: [
+        //   { title: '캠프등록현황', icon: 'mdi-home-city' },
+        //   { title: '완료내역', icon: 'mdi-account-group-outline' },
+        // ],
          headers: [
           {text: '번호', value: 'seq', align: 'center',sortable: false },
           {text: '상태', value: 'aplyPrgrs', width: 50}, //신청진행상황(접수, 접수완료, 신청취소)
           {text: '신청일', value: 'aplyDt'}, //신청일시
           {text: '은행', value: 'bankNm'},
+          {text: '입금자명', value: 'pyrNm'},
           {text: '신청자|직분', value: 'aplyName'},
           // {text: '신청자직분', value: 'jikbunSe'},
           {text: '교회명', value: 'church'},
@@ -112,6 +393,7 @@ export default {
           {text: '참여경로', value: 'joinPathSe'},
           {text: '캠프인원', value: 'campCnt'},
           {text: '기타의견 및 메모사항', value: 'memo'},
+          {text: '수정,삭제', value: 'actions', soçrtable: false },
           //{text: '등록자', value: 'rgtrNm'},
           //{text: '등록일시', value: 'rgtrDt'},
           //{text: '수정자', value: 'updtNm'},
@@ -121,10 +403,30 @@ export default {
         ],
         aplyPrgrsList:['접수','가등록','등록완료','등록취소'],
         loading: true,
+
+        items: [ '학생', '교사', '목사', '성도', '전(강)도사', '기타', ],
+        paths: [
+          { text: '인터넷 홍보(youtube, instar, facebook)', icon: 'mdi-nature', },
+          { text: '포스터, 브로셔', icon: 'mdi-glass-wine',},
+          { text: '지인소개 및 소문', icon: 'mdi-calendar-range', },
+          { text: '지난 캠프 참석', icon: 'mdi-map-marker', },
+          { text: '기타', icon: 'mdi-bike', },
+        ],
+        cnt50:[],
+        dpstList:[
+          '농협 351-0823-9838-33'
+          ,'신한 140-011-071790' 
+          ,'국민 172601-04-185856'
+          ,'우리 1005-502-838415'
+          ,'새마을 9002-1937-0057-1'
+          ,'우체국 104570-01-002038'
+        ],
       }
     },
   created() {
-      // this.findaplyList();
+      for(var i = 0 ; i < 50; i++){
+          this.cnt50.push(i);
+        }
       var _this = this;
       this.getAplyAll();
       this.$socket.on('aply', (data)=>{
@@ -134,6 +436,14 @@ export default {
       });
   },
   computed:{
+  },
+  watch: {
+    dialog (val) {
+      val || this.close()
+    },
+    dialogDelete (val) {
+      val || this.closeDelete()
+    },
   },
   methods : {
     getAplyAll(){
@@ -195,6 +505,59 @@ export default {
           this.$awn.success('엑셀 다운로드를 완료하였습니다.');
       })
     },
+      editItem (item) {
+        this.editedIndex = this.aplyList.indexOf(item)
+        this.editedItem = Object.assign({ }, item)
+          console.log(this.editedItem);
+        this.dialog = true
+      },
+
+      // deleteItem (item) {
+      //   this.editedIndex = this.aplyList.indexOf(item)
+      //   this.editedItem = Object.assign({}, item)
+      //   this.dialogDelete = true
+      // },
+
+      // deleteItemConfirm () {
+      //   var deleteItem = this.aplyList.splice(this.editedIndex, 1)
+      //   this.axios.delete('/admin/youtube',{data:deleteItem[0]});
+      //   this.closeDelete()
+      // },
+
+      close () {
+        this.dialog = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+
+      // closeDelete () {
+      //   this.dialogDelete = false
+      //   this.$nextTick(() => {
+      //     this.editedItem = Object.assign({}, this.defaultItem)
+      //     this.editedIndex = -1
+      //   })
+      // },
+      submit () {
+        this.loading = true
+        Object.assign(this.aplyList[this.editedIndex], this.editedItem);
+        this.axios.put('/user/aply',this.editedItem)
+        .then((result)=>{
+            console.log(result);
+            setTimeout(() => (this.loading = false), 2000)
+            this.$awn.info('저장되었습니다.');
+        }).catch((err)=>{
+            this.$awn.alert('등록신청에 오류가 발생하였습니다.'+err);
+        })
+        this.close()
+      },
+      foldAddrPop(addrSe){
+        var element_wrap = document.getElementById('addrDiv');
+        if(addrSe) element_wrap = document.getElementById('churchAddrDiv');
+        element_wrap.style.display = 'none';
+      },
+
     
   }
  };

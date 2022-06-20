@@ -34,6 +34,7 @@ module.exports = {
         campCnt: { displayName: '캠프인원', headerStyle: styles.headerDark, cellStyle: {}, width: 250 },
         schdlSe: { displayName: '일정', headerStyle: styles.headerDark, cellStyle: {}, width: 50 },
         bankNm: { displayName: '은행', headerStyle: styles.headerDark, cellStyle: {}, width: 160 },
+        pyrNm: { displayName: '입금자명', headerStyle: styles.headerDark, cellStyle: {}, width: 160 },
         phone: { displayName: '연락처', headerStyle: styles.headerDark, cellStyle: {}, width: 100 },
         email: { displayName: '이메일', headerStyle: styles.headerDark, cellStyle: {}, width: 200 },
         joinHisSe: { displayName: '참석여부', headerStyle: styles.headerDark, cellStyle: {}, width: 200 },

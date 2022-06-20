@@ -5,7 +5,7 @@
             <v-card class="d-flex justify-space-between mx-auto" flat tile color="#f5f5f5">
                     {{menu[selectedMenu].menuTitle}}
             </v-card>
-                    <connect-users v-bind:users="users"></connect-users>
+                <messenger></messenger>
                 <v-chip label link>
                     관리자 {{userInfo.nick}} 님
                 </v-chip>
@@ -37,15 +37,14 @@
     </div>
 </template>
 <script>
-import ConnectUsers from "./ConnectUsers.vue"; 
+import Messenger from "./AdminMessenger.vue";
 
 export default {
     name:'Header',
-    components:{ ConnectUsers },
+    components:{ Messenger },
     data(){
         return {
             userInfo:{}
-            ,users:[]
             ,isLogin: false
             ,drawer: null
             ,selectedMenu:0
@@ -56,44 +55,27 @@ export default {
                 {menuTitle:'달력', router:'/calendar'},
                 {menuTitle:'통계', router:'/statistic'},
                 {menuTitle:'사용자목록', router:'/userList'},
-            ]
+            ],
+            socketId:{}
         };
     },
     created() {
         this.cookiesCtr();
         
-        this.$socket.on("connect", () => {
-            if(this.$socket.connected){
-                this.$socket.emit('set userInfo', this.userInfo, (res)=>{
-                    console.log(res);
-                });
-            }    
-        });
-
-        this.$socket.on('connect user info', (res)=>{
-            console.log('connect user info',res);
-            this.users = res;
-        });
 
         this.$eventBus.$on('login',(data)=>{
             this.isLogin = data.isLogin;
             this.userInfo = data.userInfo;
         })
-
-        this.$socket.on('message', function (message) {
-        console.log('msg::::::',message);
+        var _this = this;
+        this.$socket.on('message', function (user) {
+            user.dialog = true;
+            _this.$eventBus.$emit('openDialog',user);
         });
         this.$socket.connect();
 
-        this.getUsers();
     },
     methods: {
-        getUsers: function(){
-            this.$socket.emit('connect users',{},(res)=>{
-                console.log('connect users::::',res);
-                this.users = res;
-            })
-        },
         cookiesCtr: function(){
             var userInfo = this.$cookies.get("userInfo");
             if(userInfo){

@@ -206,8 +206,8 @@ module.exports = (app, mongoose, winston) => {
                                 await User.updateOne({id: user.id}, {
                                     $set:{
                                         // connected_at    : resultUser.connected_at,
-                                        // properties      : resultUser.properties,
-                                        // kakao_account   : resultUser.kakao_account,
+                                        properties      : resultUser.properties,
+                                        kakao_account   : resultUser.kakao_account,
                                         uuid            : resultUser.uuid,
                                     }
                                 })
