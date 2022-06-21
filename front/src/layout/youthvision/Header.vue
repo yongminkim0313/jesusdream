@@ -9,7 +9,7 @@
             <v-spacer></v-spacer>
 
             <!-- 카카오로그인 -->
-            <v-btn @click="kakaoLogin();" v-if="!isLogin" class="mr-10 kakaoLogin kakaoText--text" small :loading="loading" :disabled="loading">
+            <v-btn @click="kakaoLogin();" v-if="!this.USERINFO.isLogin" class="mr-10 kakaoLogin kakaoText--text" small :loading="loading" :disabled="loading">
                 <strong>카카오로그인</strong>
                 <!-- <v-img  max-height="30" max-width="122" contain :src="require('/src/assets/kakaoLogin.png')"></v-img> -->
                 <template v-slot:loader>
@@ -18,47 +18,27 @@
             </v-btn>
             <!-- <v-img @click="naverLogin();" v-if="!isLogin" max-height="40" max-width="100" contain src="http://static.nid.naver.com/oauth/small_g_in.PNG"></v-img> -->
             
-            <v-chip
-                color="purple"
-                label
-                link
-                v-if="userInfo.auth == 'admin'"
-                class="white--text mr-5"
-            >
+            <v-chip color="purple" label link v-if="this.USERINFO.isLogin && this.USERINFO.auth == 'admin'" class="white--text mr-5" >
                 <v-icon large color="white" @click="goAdminPage()">
                     mdi-account-supervisor
                 </v-icon>
             </v-chip>
             
-            <v-chip
-                color="purple"
-                label
-                link
-                v-if="isLogin"
-                class="white--text mr-5"
-                @click="goMyAplyList()"
-            >
-            {{userInfo.nick}} 님
+            <v-chip color="purple" label link v-if="this.USERINFO.isLogin" class="white--text mr-5" @click="goMyAplyList()" >
+            {{this.USERINFO.name}} 님
             </v-chip>
 
-            <v-btn
-                fab
-                small
-                @click="logout();"
-                v-if="isLogin"
-            >
+            <v-btn fab small @click="logout();" v-if="this.USERINFO.isLogin" >
                 <v-icon small color="pink">
                     mdi-logout
                 </v-icon>
             </v-btn>
         </v-app-bar>
         <v-card class="d-flex justify-center" elevation="0">
-
             <v-breadcrumbs :items="items" class="pa-2">
             <template v-slot:divider></template>
             </v-breadcrumbs>
         </v-card>
-        
         
         <v-layout>
             <v-navigation-drawer v-model="drawer" temporary app>
@@ -86,7 +66,7 @@ export default {
     data(){
         return {
             loading: false
-            ,userInfo:{}
+            ,userInfo:{auth:'user',name:''}
             ,isLogin: false
             ,drawer: null
             ,items: [
@@ -99,23 +79,6 @@ export default {
         };
     },
     created() {
-        console.log('router',this.$router);
-        
-        this.$socket.on("connect", () => {
-            if(this.$socket.connected){
-                this.$socket.emit('set userInfo', this.userInfo, (res)=>{
-                    console.log(res);
-                });
-            }    
-        });
-
-        this.cookiesCtr();
-        
-        this.$socket.on('aply', (data)=>{
-            console.log(data);
-            _this.$awn.success('신청이 등록 되었습니다.');
-        });
-
         this.$eventBus.$on('login',(data)=>{
             this.isLogin = data.isLogin;
             this.userInfo = data.userInfo;
@@ -123,19 +86,7 @@ export default {
         
     },
     methods: {
-        cookiesCtr: function(){
-            var userInfo = this.$cookies.get("userInfo");
-            if(userInfo){
-                this.userInfo.nick = userInfo.name
-                this.userInfo.profileImage = userInfo.profileImage
-                this.userInfo.auth = userInfo.auth;
-                this.isLogin = true;
-                this.$socket.connect();
-            }else{
-                this.logout();
-            }
-        }
-        ,kakaoLogin: function() {
+        kakaoLogin: function() {
             location.href = 'https://kauth.kakao.com/oauth/authorize?'
                 +'client_id=be0d818c768f8e2198c97470fc7577c5&'
                 +'redirect_uri='+this.APP_URL+'/auth/kakao/callback&'
@@ -145,16 +96,7 @@ export default {
             setTimeout(() => (this.loading = false), 3000);
         },
         logout: function (){
-             this.axios.post('/auth/logout')
-             .then(()=>{
-                this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie));
-                this.isLogin = false; 
-                this.userInfo = {};
-            })
-             .catch((e)=>{console.log(e);})
-             .then(()=>{
-                this.$router.push('/').catch(()=>{});
-             });
+            location.href=this.APP_URL+"/auth/logout";
         },
         goAdminPage: function(){
             this.$router.push('/admin').catch(()=>{})

@@ -148,7 +148,7 @@ module.exports = (app, mongoose, winston) => {
         var item = req.body;
         var rs = await Aply.findOne({seq:item.seq});
         if(rs.aplyPrgrs != '접수'){
-            res.status(403).json({msg:'접수상태에서 수정이 가능합니다. 관리자에게 문의 바랍니다.'});
+            res.status(400).json({msg:'접수상태에서 수정이 가능합니다. 관리자에게 문의 바랍니다.'});
             return;
         }
         try{

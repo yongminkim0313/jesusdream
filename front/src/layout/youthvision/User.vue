@@ -693,7 +693,6 @@
        var user = this.$cookies.get('userInfo');
         console.log(user);
       if(user){
-        // this.aplyName = user.kakao_account.profile.nickname
          this.kakaoEmail = user.email
          this.isKakaoLogin = true;
       }

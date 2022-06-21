@@ -1,6 +1,5 @@
 const autoIncrement = require('mongoose-auto-increment');
 const axios = require('axios');
-const userService = require('../modules/userService');
 const moment = require('moment');
 const async = require('async');
 require('moment-timezone');
@@ -38,7 +37,8 @@ module.exports = (app, mongoose, winston) => {
                 },
             });
             const access_token = response.data.access_token;
-            winston.info('token::' + access_token);
+            const refresh_token = response.data.refresh_token;
+            console.log(response.data);
             const response2 = await axios({
                 method: "post",
                 url: "https://kapi.kakao.com/v2/user/me", // 서버
@@ -52,16 +52,52 @@ module.exports = (app, mongoose, winston) => {
                 },
             });
             
-            var userSession = userService.kakaoUserInfo(req.session, response2.data, `${access_token}`);
+            req.session.kakaoId         = response2.data.id
+            req.session.name            = response2.data.kakao_account.profile.nickname
+            req.session.email           = response2.data.kakao_account.email?response2.data.kakao_account.email:response2.data.id
+            req.session.profileImage    = response2.data.kakao_account.profile.profile_image_url
+            req.session.nickname        = response2.data.kakao_account.profile.nickname
+            req.session.accessToken     = `${access_token}`;
+            req.session.refreshToken    = `${refresh_token}`;
+            req.session.type            = 'kakao';
+            req.session.auth            = 'user';
+            
             var user = await User.findOne({id: response2.data.id});
-            if(user) userSession.auth = user.auth;
-            if(userSession.email=='kimyongmin1@kakao.com') userSession.auth = 'admin';
+            if(user) req.session.auth = user.auth;
+            if(req.session.email=='kimyongmin1@kakao.com') req.session.auth = 'admin';
             
-            userSession.save(function() {
-                res.redirect(`${process.env.MAIN_URL}`);
+            req.session.save(function() {
+                res.redirect(`${process.env.MAIN_URL}callback?access_token=${access_token}&refresh_token=${refresh_token}`);
             });
-            
 
+        } catch (err) {
+            winston.error("Error >>" + err);
+        }
+    });
+
+
+    app.post('/auth/token', async(req, res) => {
+        const refresh_token = req.session.refreshToken || req.body.refresh_token
+        try {
+            const response = await axios({
+                method: "post",
+                url: "https://kauth.kakao.com/oauth/token", // 서버
+                headers: { 'Content-type': 'application/x-www-form-urlencoded' }, // 요청 헤더 설정
+                params: {
+                    grant_type: 'refresh_token',
+                    client_id: `${process.env.client_id}`,
+                    refresh_token: `${refresh_token}`
+                },
+            });
+            //console.log('/auth/token::::',response);
+            const access_token = response.data.access_token;
+            // const refresh_token = response.data.refresh_token;
+            req.session.accessToken     = `${access_token}`;
+            // req.session.refreshToken    = `${refresh_token}`;
+            res.status(200).json({
+                access_token     : `${access_token}`,
+                // refreshToken    : `${refresh_token}`
+            })
         } catch (err) {
             winston.error("Error >>" + err);
         }

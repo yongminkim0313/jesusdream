@@ -6,11 +6,11 @@
                     {{menu[selectedMenu].menuTitle}}
             </v-card>
                 <messenger></messenger>
-                <v-chip label link>
-                    관리자 {{userInfo.nick}} 님
+                <v-chip label link v-if="this.USERINFO.isLogin">
+                    관리자 {{this.USERINFO.name}} 님
                 </v-chip>
                 
-                <v-btn fab small @click="logout();" v-if="isLogin" >
+                <v-btn fab small @click="logout();" v-if="this.USERINFO.isLogin" >
                     <v-icon small color="pink">
                         mdi-logout
                     </v-icon>
@@ -44,9 +44,7 @@ export default {
     components:{ Messenger },
     data(){
         return {
-            userInfo:{}
-            ,isLogin: false
-            ,drawer: null
+            drawer: null
             ,selectedMenu:0
             ,menu:[
                 {menuTitle:'신청등록내역', router:'/admin'},
@@ -60,40 +58,10 @@ export default {
         };
     },
     created() {
-        this.cookiesCtr();
-        
-
-        this.$eventBus.$on('login',(data)=>{
-            this.isLogin = data.isLogin;
-            this.userInfo = data.userInfo;
-        })
-        var _this = this;
-        this.$socket.on('message', function (user) {
-            user.dialog = true;
-            _this.$eventBus.$emit('openDialog',user);
-        });
-        this.$socket.connect();
-
     },
     methods: {
-        cookiesCtr: function(){
-            var userInfo = this.$cookies.get("userInfo");
-            if(userInfo){
-              this.userInfo.nick = userInfo.name
-              this.userInfo.profileImage = userInfo.profileImage
-              this.userInfo.auth = userInfo.auth;
-              this.isLogin = true;
-            }else{
-                this.logout();
-            }
-        },
         logout: function (){
-             this.axios.post('/auth/logout')
-             .then(()=>{})
-             .catch((e)=>{console.log(e);})
-             .then(()=>{
-                this.$router.push('/').catch(()=>{});
-             });
+             location.href=this.APP_URL+"/auth/logout";
         },
         goAdminPage: function(){
             this.$router.push('/admin').catch(()=>{})

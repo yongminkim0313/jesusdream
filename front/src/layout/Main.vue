@@ -33,7 +33,6 @@ export default {
   name: 'Main',
   components: { },
   data(){return {
-    isLogin: false,
     slides: [
       require('../assets/jd5.jpeg'),
       require('../assets/jd6.jpeg'),
@@ -42,8 +41,6 @@ export default {
     ],
   }},
   created() {
-    var userInfo = this.$cookies.get("userInfo");
-    if(userInfo) this.isLogin = true;
   },
   methods : {
     clickList(item) {
@@ -54,11 +51,6 @@ export default {
       });
     },
     clickReg(){
-      if(!this.isLogin){
-        this.$awn.options.labels.warning = '로그인 요청';
-        this.$awn.warning('카카오로그인이 필요합니다.');
-        return;
-      }
       this.$router.push({
         name: "User",
         query: {},

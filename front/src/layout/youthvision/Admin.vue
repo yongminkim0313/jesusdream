@@ -548,7 +548,7 @@ export default {
             setTimeout(() => (this.loading = false), 2000)
             this.$awn.info('저장되었습니다.');
         }).catch((err)=>{
-            this.$awn.alert('등록신청에 오류가 발생하였습니다.'+err);
+            console.log(err);
         })
         this.close()
       },

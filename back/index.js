@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 
 const app = express();
 const router = express.Router();
-// app.use(morgan('combined', { stream: winston.stream }));
+app.use(morgan('combined', { stream: winston.stream }));
 app.use(express.json());
 app.use(require('cors')({
     origin: true,
@@ -43,7 +43,7 @@ app.use(session({
         stringify: false,
     }),
     cookie: {
-        maxAge: 1000 * 60 * 60 * 6,
+        maxAge: 1000 * 60 * 60 * 6 - 1,
         httpOnly: false,
     }
 }));
@@ -51,7 +51,6 @@ app.use(session({
 app.use(function(req, res, next) {
     //인터셉터 역할 부여 
     winston.info('req.url::' + req.url +' req.method::' + req.method);
-
     if (req.url.indexOf('/auth/') > -1) {
         return next();
     }else if (req.url.indexOf('/auth/getAccessToken') > -1) {
@@ -59,10 +58,11 @@ app.use(function(req, res, next) {
     }else if (req.url.indexOf('/guest/') > -1) {
         return next();
     }else if (req.url.indexOf('/admin/') > -1){
+        console.log(req.session);
         if(!req.session.auth && !req.session.auth == 'admin')res.status(403).json({msg:'관리자 서비스입니다.'});
         return next();
     } else {
-        if (req.session && req.session.accessToken) {
+        if (req.session && req.headers.access_token) {
             return next();
         } else {
             console.log('세션 만료')
@@ -80,13 +80,9 @@ app.post('/auth/userInfo', (req, res) => {
     }
 });
 
-app.post('/auth/logout', async(req, res) => {
-    if(!req.session || !req.session.accessToken){
-        res.status(200).json({msg: 'logout!!'});
-        return;
-    }
-    res.status(200).json({msg:'success'});
+app.get('/auth/logout', async(req, res) => {
     const accessToken = req.session.accessToken;
+    console.log('accessToken::::::::',accessToken);
     try {
         const response2 = await axios({
             method: "post",
@@ -99,12 +95,12 @@ app.post('/auth/logout', async(req, res) => {
         });
     } catch (err) {
         winston.error("Error >>" + err);
-        res.status(400).json({msg:err});
     }
+    res.redirect(`${process.env.MAIN_URL}logout`);
 });
 
 require('./modules/socketConfig')(app, winston);
 require('./modules/campService')(app, mongoose, winston);
-require('./modules/kakaoLogin')(app,mongoose, winston);
+require('./modules/kakaoService')(app,mongoose, winston);
 require('./modules/naverLogin')(app, winston);
 require('./modules/aplyService')(app, mongoose, winston);
