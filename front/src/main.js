@@ -37,18 +37,13 @@ router.beforeEach(async(to, from, next) => {
 
     var cUserInfo = vueCookies.get('userInfo');
     Vue.prototype.USERINFO = Object.assign({isLogin:cUserInfo?true:false,auth:'guest'},cUserInfo);
-    if(!Vue.prototype.$socket && Vue.prototype.USERINFO){
+    if(!Vue.prototype.$socket && Vue.prototype.USERINFO.isLogin){
         Vue.prototype.$socket = io(process.env.VUE_APP_SOCKET_URL,{
             autoConnect: true,
             query: {
-                kakaoId: Vue.prototype.USERINFO.kakaoId,
-                name: Vue.prototype.USERINFO.name ,
-                // email: Vue.prototype.USERINFO.email,
-                profileImage:Vue.prototype.USERINFO.profileImage,
-                // nickname :Vue.prototype.USERINFO.nickname ,
-                // accessToken: Vue.prototype.USERINFO.accessToken ,
-                // refreshToken: Vue.prototype.USERINFO.refreshToken,
-                // type: Vue.prototype.USERINFO.type,
+                kakaoId         : Vue.prototype.USERINFO.kakaoId,
+                name            : Vue.prototype.USERINFO.name ,
+                profileImage    :Vue.prototype.USERINFO.profileImage,
             },
         });
     }
