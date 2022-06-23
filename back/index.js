@@ -43,7 +43,7 @@ app.use(session({
         stringify: false,
     }),
     cookie: {
-        maxAge: 1000 * 60 * 60 * 6 - 1,
+        maxAge: 1000 * 60 * 60 * 24,
         httpOnly: false,
     }
 }));
