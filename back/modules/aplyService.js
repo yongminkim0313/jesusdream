@@ -120,7 +120,7 @@ module.exports = (app, mongoose, winston) => {
     app.get('/user/aply', (req, res) => {
         console.log(req.session);
         try{
-            Aply.find({ kakaoEmail: req.session.email }).sort({ seq: 'desc' }).exec(function(err, orderList) {
+            Aply.find({ kakaoId: req.session.kakaoId }).sort({ seq: 'desc' }).exec(function(err, orderList) {
                 if (err) res.json({ result: -1 })
                 res.status(200).json(orderList);
             })
@@ -214,7 +214,6 @@ module.exports = (app, mongoose, winston) => {
             poster.aplyPrgrs = '접수'
             if(req.session && req.session.kakaoId){
                 poster.kakaoId = req.session.kakaoId;
-                poster.kakaoEmail = req.session.email;
             }
             poster.aplyDt = today.format('YYYY-MM-DD') //신청일시
             await poster.save();
@@ -227,7 +226,7 @@ module.exports = (app, mongoose, winston) => {
 
     app.get('/user/poster', (req, res) => {
         try{
-            Poster.find({ kakaoEmail: req.session.email }).sort({ seq: 'desc' }).exec(function(err, posterList) {
+            Poster.find({ kakaoId: req.session.kakaoId }).sort({ seq: 'desc' }).exec(function(err, posterList) {
                 if (err) res.json({ result: -1 })
                 res.status(200).json(posterList);
             })
