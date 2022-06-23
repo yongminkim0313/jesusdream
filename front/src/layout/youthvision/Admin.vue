@@ -237,7 +237,7 @@
             :items="aplyPrgrsList"
             dense
             solo
-            class="pt-5"
+            class="text-overline"
             @change="saveAply(item)"
           ></v-select>
         </template>
@@ -372,25 +372,25 @@ export default {
         // ],
          headers: [
           {text: '번호', value: 'seq', align: 'center',sortable: false },
-          {text: '상태', value: 'aplyPrgrs', width: 50}, //신청진행상황(접수, 접수완료, 신청취소)
-          {text: '신청일', value: 'aplyDt'}, //신청일시
-          {text: '은행', value: 'bankNm'},
-          {text: '입금자명', value: 'pyrNm'},
-          {text: '신청자|직분', value: 'aplyName'},
+          {text: '상태', value: 'aplyPrgrs', width: 150}, //신청진행상황(접수, 접수완료, 신청취소)
+          {text: '신청일', value: 'aplyDt' , width: 100}, //신청일시
+          {text: '은행', value: 'bankNm', width: 150},
+          {text: '입금자명', value: 'pyrNm', width: 110},
+          {text: '신청자|직분', value: 'aplyName', width: 100},
           // {text: '신청자직분', value: 'jikbunSe'},
-          {text: '교회명', value: 'church'},
-          {text: '교단', value: 'churchSe'},
-          {text: '목사님', value: 'churchAdtr'},
-          {text: '교회주소', value: 'churchAddr'},
-          {text: '교회상세주소', value: 'churchDtlAddr'},
-          {text: '일정', value: 'schdlSe'},
-          {text: '연락처', value: 'phone'},
-          {text: '이메일', value: 'email'},
+          {text: '교회명', value: 'church', width: 100},
+          {text: '교단', value: 'churchSe', width: 100},
+          {text: '목사님', value: 'churchAdtr', width: 100},
+          {text: '교회주소', value: 'churchAddr', width: 250},
+          {text: '교회상세주소', value: 'churchDtlAddr', width: 150},
+          {text: '일정', value: 'schdlSe', width: 100},
+          {text: '연락처', value: 'phone', width: 100},
+          {text: '이메일', value: 'email', width: 100},
           //{text: '동의', value: 'checkbox'},
-          {text: '우편물주소', value: 'fullAddress'},
-          {text: '우편물상세주소', value: 'detailAddress'},
-          {text: '참석여부', value: 'joinHisSe'},
-          {text: '참여경로', value: 'joinPathSe'},
+          {text: '우편물주소', value: 'fullAddress', width: 250},
+          {text: '우편물상세주소', value: 'detailAddress', width: 150},
+          {text: '참석여부', value: 'joinHisSe', width: 130},
+          {text: '참여경로', value: 'joinPathSe', width: 200},
           {text: '캠프인원', value: 'campCnt'},
           {text: '기타의견 및 메모사항', value: 'memo'},
           {text: '수정,삭제', value: 'actions', soçrtable: false },

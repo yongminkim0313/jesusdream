@@ -443,16 +443,6 @@
           >
             신청하기
           </v-btn>
-          <v-text-field
-            v-if="!isKakaoLogin"
-            v-model="kakaoEmail"
-            ref="kakaoEmail"
-            :error-messages="kakaoEmailErrors"
-            label="확인 E-mail ( kakao 아이디로 로그인시 더 편리합니다 )"
-            required
-            @input="$v.kakaoEmail.$touch()"
-            @blur="$v.kakaoEmail.$touch()"
-          ></v-text-field>
         </v-col>
       </v-row>
       <v-row><!--사진-->
@@ -503,7 +493,6 @@
           return val
         },
       },
-      kakaoEmail: { required, email },
       checkboxUseRoom: { required },
       bankNm: { required }
     },
@@ -554,7 +543,6 @@
         sayeogja: 0,
       },
       cnt50:[],
-      kakaoEmail:'',
       isKakaoLogin: false,
       pyrNm: '',
       checkboxUseRoom: '',
@@ -663,13 +651,6 @@
         }
         return selections
       },
-      kakaoEmailErrors () {
-        const errors = []
-        if (!this.$v.kakaoEmail.$dirty) return errors
-        !this.$v.kakaoEmail.email && errors.push('올바른 이메일 주소를 입력해주세요')
-        !this.$v.kakaoEmail.required && errors.push('E-mail을 입력해주세요')
-        return errors
-      },
       pyrNmErrors () {
         const errors = []
         if (!this.$v.pyrNm.$dirty) return errors
@@ -693,7 +674,6 @@
        var user = this.$cookies.get('userInfo');
         console.log(user);
       if(user){
-         this.kakaoEmail = user.email
          this.isKakaoLogin = true;
       }
       
