@@ -52,7 +52,7 @@ module.exports = (app, mongoose, winston) => {
                 },
             });
             
-            req.session.kakaoId         = 2273713175//response2.data.id
+            req.session.kakaoId         = response2.data.id
             req.session.name            = response2.data.kakao_account.profile.nickname
             req.session.email           = response2.data.kakao_account.email?response2.data.kakao_account.email:response2.data.id
             req.session.profileImage    = response2.data.kakao_account.profile.profile_image_url
