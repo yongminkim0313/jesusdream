@@ -5,7 +5,7 @@
 </template>
 <script>
 
-import FileUpload from './FileUpload.vue'
+import FileUpload from './Upload.vue'
 export default{
     components:{
         FileUpload
