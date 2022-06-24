@@ -16,6 +16,7 @@
  import UserList from "./layout/youthvision/UserList.vue";
  import Newscast from "./layout/youthvision/Newscast.vue";
  import CampLiveEdit from "./layout/youthvision/CampLiveEdit.vue"
+ import Board from "./layout/youthvision/Board.vue"
 
  Vue.use(VueRouter);
  const route = [
@@ -142,6 +143,16 @@
         },
         meta:{auth:'admin'}
     },
+    {
+       path: "/board",
+       name: 'Board',
+       components: {
+           header: Header,
+           default: Board,
+           footer: Footer
+       },
+       meta: { unauthorized: true }
+   },
  ];
  const router = new VueRouter({ mode: 'history', routes: route });
  export default router;

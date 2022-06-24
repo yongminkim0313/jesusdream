@@ -27,6 +27,8 @@ module.exports = (app, winston) => {
             cb(userList);
         }
         
+        require('./fileService')(socket);
+
         socket.on('connect users',(args,callback)=>{
             console.log('connect users');
             currentUserList((userList)=>{
