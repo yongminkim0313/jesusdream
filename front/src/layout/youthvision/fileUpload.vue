@@ -42,7 +42,6 @@
 
 export default {
   name: "file-upload",
-  inheritAttrs: false,
   props: {},
   data() {
     return {

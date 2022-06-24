@@ -5,10 +5,10 @@
 </template>
 <script>
 
-import fileUpload from './fileUpload.vue'
+import FileUpload from './FileUpload.vue'
 export default{
     components:{
-        fileUpload
+        FileUpload
     }
 }
 </script>
