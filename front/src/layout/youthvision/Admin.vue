@@ -9,6 +9,25 @@
             </v-btn>
         </v-card-title>
       </v-card>
+      <v-dialog v-model="calDialog" max-width="600px">
+        <v-calendar :now="today" :value="today" color="primary" :events="events" :event-height="20" :event-more="false" @click:event="showEvent">
+        </v-calendar>
+        <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x >
+          <v-card color="grey lighten-4" min-width="350px" flat >
+            <v-toolbar :color="selectedEvent.color" dark >
+              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+            </v-toolbar>
+            <v-card-text>
+              <span v-html="selectedEvent.details"></span>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn text color="secondary" @click="selectedOpen = false" >
+                닫기
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
+      </v-dialog>
         <v-data-table fixed-header dense :headers="headers" :items="aplyList" item-key="seq" :search="search" hide-default-footer
             :disable-items-per-page="true" :footer-props="{ 'items-per-page-options': [50, -1] }" :loading = "loading" loading-text="로딩중 기다려주세요~" disable-sort >
         <template v-slot:top>
@@ -386,7 +405,6 @@ export default {
           {text: '일정', value: 'schdlSe', width: 100},
           {text: '연락처', value: 'phone', width: 100},
           {text: '이메일', value: 'email', width: 100},
-          //{text: '동의', value: 'checkbox'},
           {text: '우편물주소', value: 'fullAddress', width: 250},
           {text: '우편물상세주소', value: 'detailAddress', width: 150},
           {text: '참석여부', value: 'joinHisSe', width: 130},
@@ -394,12 +412,6 @@ export default {
           {text: '캠프인원', value: 'campCnt'},
           {text: '기타의견 및 메모사항', value: 'memo'},
           {text: '수정,삭제', value: 'actions', soçrtable: false },
-          //{text: '등록자', value: 'rgtrNm'},
-          //{text: '등록일시', value: 'rgtrDt'},
-          //{text: '수정자', value: 'updtNm'},
-          //{text: '수정일시', value: 'updtDt'},
-          //{text: '카카오아이디', value: 'kakaoEmail'},
-          //{text: '총금액', value: 'aplyTotAmt'}, //신청총금액
         ],
         aplyPrgrsList:['접수','가등록','등록완료','등록취소'],
         loading: true,
@@ -421,6 +433,12 @@ export default {
           ,'새마을 9002-1937-0057-1'
           ,'우체국 104570-01-002038'
         ],
+        events: [],
+        today:'',
+        calDialog:true,
+        selectedEvent: {},
+        selectedElement: null,
+        selectedOpen: false,
       }
     },
   created() {
@@ -434,8 +452,15 @@ export default {
         _this.$awn.success('신청이 등록 되었습니다.');
         _this.getAplyAll();
       });
+
+      this.today = this.$moment().format('YYYY-MM-DD');
   },
   computed:{
+    eventsMap () {
+      const map = {}
+      this.events.forEach(e => (map[e.date] = map[e.date] || []).push(e))
+      return map
+    }
   },
   watch: {
     dialog (val) {
@@ -446,13 +471,42 @@ export default {
     },
   },
   methods : {
+    addEvent(type, title,details,date){
+      this.events.push({ type: type, title: title, details: details, date: date, open: false });
+    },
+    showEvent ({ nativeEvent, event }) {
+        const open = () => {
+          this.selectedEvent = event
+          this.selectedElement = nativeEvent.target
+          requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
+        }
+
+        if (this.selectedOpen) {
+          this.selectedOpen = false
+          requestAnimationFrame(() => requestAnimationFrame(() => open()))
+        } else {
+          open()
+        }
+
+        nativeEvent.stopPropagation()
+    },
     getAplyAll(){
       var _this = this;
-      this.axios.get('/admin/aply/all',{})
+      _this.loading = true;
+      this.axios.get('/admin/aply/all')
       .then((result)=>{
         _this.aplyList = result.data;
-        _this.loading = false;
-       })
+        for(var idx in result.data){
+          this.events.push({ 
+              start: result.data[idx].aplyDt , 
+              name: result.data[idx].church, 
+              color: 'orange',
+              date: result.data[idx].date,
+              timed: true 
+            });
+        }
+      })
+      _this.loading = false;
     },
     deleteAply(item){
       console.log(item);
@@ -467,9 +521,8 @@ export default {
        })
     },
     diffTime (time) { 
-      const moment = require('moment') 
-      const today = moment()
-      const diffValue = moment.duration(today.diff(time));
+      const today = this.$moment();
+      const diffValue = this.$moment.duration(today.diff(time));
       return diffValue.days(); 
     },
     parseContents(contents){
