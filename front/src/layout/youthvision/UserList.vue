@@ -1,15 +1,16 @@
 <template>
   <v-card>
-      <v-card elevation="0" width="300" class="mx-auto">
-        <v-card-title>업데이트한 시간:{{userUpdateDt}}</v-card-title>
+      <v-card elevation="0" width="500" class="mx-auto">
+        <v-card-title class="mx-auto">업데이트한 시간:{{userUpdateDt}}</v-card-title>
         <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
       </v-card>
+     
       <v-data-table fixed-header dense
             :headers="headers"
             :items="userList"
@@ -21,8 +22,13 @@
             :loading = "loading"
             loading-text="로딩중 기다려주세요~"
         >
+        <template v-slot:top>
+          <v-dialog v-model="imgDialog" max-width="640px" max-height="640px">
+            <v-img :src="imgSrc"></v-img>
+          </v-dialog>
+        </template>
         <template v-slot:[`item.profile_image`]="{ item }">
-            <v-avatar size="36px" >
+            <v-avatar size="36px" @click="imgDialogOpen(item)">
                 <img v-if="item.profile_image" alt="Avatar" :src="item.profile_image" >
             </v-avatar>
         </template>
@@ -96,6 +102,8 @@
           v => !!v || '권한은 필수 선택 사항입니다.'
         ],
         loading: true,
+        imgDialog: false,
+        imgSrc: '',
       }
     },
     methods:{
@@ -120,7 +128,8 @@
                         id: a.id,
                         nickname: a.properties['nickname'],
                         connected_at: a.connected_at,
-                        profile_image: a.properties['thumbnail_image'],
+                        thumbnail_image: a.properties['thumbnail_image_url'],
+                        profile_image: a.properties['profile_image'],
                         email: a.kakao_account['email'],
                         gender: a.kakao_account['gender'],
                         uuid : a.uuid,
@@ -159,6 +168,10 @@
         .then((result)=>{
           console.log(result);
         })
+      },
+      imgDialogOpen(item){
+        this.imgSrc = item.profile_image;
+        this.imgDialog = true;
       }
     }
 
