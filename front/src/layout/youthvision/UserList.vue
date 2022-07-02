@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card max-width="800" class="mx-auto my-5 pa-5">
       <v-card elevation="0" width="500" class="mx-auto">
         <v-card-title class="mx-auto">업데이트한 시간:{{userUpdateDt}}</v-card-title>
         <v-text-field
