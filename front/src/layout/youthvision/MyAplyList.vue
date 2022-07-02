@@ -127,7 +127,6 @@ export default {
       this.axios.get('/user/poster')
       .then((result)=>{
         this.myPosterList = result.data;
-        this.myPosterList=[];
         this.posterLoading = false;
       })
     },
