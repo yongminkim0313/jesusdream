@@ -1,9 +1,9 @@
 <template>
     <div>
-        <v-app-bar app elevation="4" flat src="https://modo-phinf.pstatic.net/20190417_140/15554692250648Rq2Y_JPEG/mosa4Ri4kd.jpeg" class="d-flex flex-column" >
+        <v-app-bar app elevation="4" flat :src="require('../../assets/header.jpeg')" class="d-flex flex-column" >
             <router-link to="/" class="mr-auto">
                 <v-avatar>
-                <img src="../../assets/jesusdream.png" alt="주님이꿈꾸신교회" >
+                <img :src="require('../../assets/jesusdream.png')" alt="주님이꿈꾸신교회" >
                 </v-avatar>
                 </router-link>
             <v-spacer></v-spacer>

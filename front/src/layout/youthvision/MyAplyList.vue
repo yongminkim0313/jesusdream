@@ -1,37 +1,101 @@
 <template>
     <v-card max-width="800" class="mx-auto my-5 pa-5">
-        <v-card-title>나의 캠프등록 신청내역</v-card-title>
-        <v-data-table fixed-header dense :headers="headers" :items="myAplyList" item-key="seq" class="elevation-7" @click:row="clickList"
-            disable-sort
-            hide-default-footer
-        >
-            <template v-slot:[`item.campCnt`]="{ item }">
-                <v-chip small v-if="item.campCnt.chodeung != 0">
-                {{ '초등:'+item.campCnt.chodeung}}
-            </v-chip>
-            <v-chip small v-if="item.campCnt.cheongsonyeon != 0">
-                {{ '청소년:'+item.campCnt.cheongsonyeon}}
-            </v-chip>
-            <v-chip small v-if="item.campCnt.cheongnyeon != 0">
-                {{ '청년:'+item.campCnt.cheongnyeon}}
-            </v-chip>
-            <v-chip small v-if="item.campCnt.jangnyeon != 0">
-                {{ '장년:'+item.campCnt.jangnyeon}}
-            </v-chip>
-            <v-chip small v-if="item.campCnt.sayeogja != 0">
-                {{ '사역자:'+item.campCnt.sayeogja}}
-            </v-chip>
-            </template>
-        </v-data-table>
-        <v-divider class="pa-2"></v-divider>
-        <v-card-title>나의 포스터 신청내역
-          <v-btn dense color="blue" small elevation="5" @click="aplyPoster();" class="mx-auto" outlined>포스터 신청하러가기</v-btn>
-        </v-card-title>
-        <v-data-table fixed-header dense :headers="posterHeaders" :items="myPosterList" item-key="seq" class="elevation-7"
-            disable-sort
-            hide-default-footer
-        >
-        </v-data-table>
+      
+      <v-divider class="pa-2"></v-divider>
+      <v-container>
+        <v-row>
+          <v-col cols="12" md="6" sm="12" v-for="item in myAplyList" :key="item.seq">
+            <v-card :loading="campLoading" class="mx-auto" max-width="374">
+              <template slot="progress">
+                <v-progress-linear color="deep-purple" height="10" indeterminate ></v-progress-linear>
+              </template>
+                <v-img height="200" :src="require('../../assets/jd4.jpeg')" >
+                <v-card-title class="white--text mt-8">
+                  <v-avatar size="56">
+                    <img
+                      alt="프로필이미지"
+                      :src="USERINFO.profileImage"
+                    >
+                  </v-avatar>
+                  <p class="ml-3">
+                    {{USERINFO.name}}
+                  </p>
+                </v-card-title>
+                </v-img>
+              <v-card-title>캠프등록 신청내역 ({{item.aplyPrgrs}})</v-card-title>
+              <v-card-subtitle>
+                <v-icon small color="green darken-2" >
+                  mdi-church
+                </v-icon>
+                {{item.church}}
+              </v-card-subtitle>
+              <v-card-text>
+                <div class="text-overline mb-4">
+                  신청일: {{item.aplyDt}} 신청자명: {{item.aplyName}} 
+                </div>
+                <div class="my-4 text-subtitle-1">{{item.churchAdtr}}</div>
+              </v-card-text>
+              <v-divider class="mx-4"></v-divider>
+              <v-card-title>
+                <v-icon large color="green darken-2" > mdi-counter </v-icon>
+                {{item.schdlSe}} 참여인원
+              </v-card-title>
+              <v-card-text>
+                <v-chip-group active-class="deep-purple accent-4 white--text" column >
+                  <v-chip small v-if="item.campCnt.chodeung">
+                      {{ '초등:'+item.campCnt.chodeung}}
+                  </v-chip>
+                  <v-chip small v-if="item.campCnt.cheongsonyeon">
+                      {{ '청소년:'+item.campCnt.cheongsonyeon}}
+                  </v-chip>
+                  <v-chip small v-if="item.campCnt.cheongnyeon">
+                      {{ '청년:'+item.campCnt.cheongnyeon}}
+                  </v-chip>
+                  <v-chip small v-if="item.campCnt.jangnyeon">
+                      {{ '장년:'+item.campCnt.jangnyeon}}
+                  </v-chip>
+                  <v-chip small v-if="item.campCnt.sayeogja">
+                      {{ '사역자:'+item.campCnt.sayeogja}}
+                  </v-chip>
+                </v-chip-group>
+              </v-card-text>
+              <v-divider class="mx-4"></v-divider>
+              <v-card-actions>
+                <div class="text-subtitle-1">접수상태에서 수정이 가능합니다.</div>
+                <v-btn color="blue" elevation="5" @click="clickList(item);" class="mx-auto" outlined>수정</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="6" sm="12" v-for="item in myPosterList" :key="item.seq">
+            <v-card :loading="posterLoading" class="mx-auto" max-width="374">
+              <v-img contain :src="require('../../assets/brochure2.jpg')" class="white--text align-end" max-height="249px">
+                <v-card-title class="text-no-wrap secondary">브로셔 수량:{{item.brochureCnt}}개</v-card-title>
+              </v-img>
+              <v-divider class="pa-2"></v-divider>
+              <v-img contain :src="require('../../assets/포스터.jpeg')" class="white--text align-end" max-height="249px">
+                <v-card-title class="text-no-wrap secondary">포스터 수량:{{item.posterCnt}}개</v-card-title>
+              </v-img>
+              <v-card-text>
+                접수상태: {{item.aplyPrgrs}} 우편물주소:{{item.addr}} {{item.dtlAddr}}
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="6" sm="12" v-if="myPosterList.length == 0">
+            <v-card :loading="posterLoading" class="mx-auto" max-width="374">
+              <v-img contain :src="require('../../assets/brochure2.jpg')" class="white--text align-end" max-height="252px">
+                <v-card-title class="text-no-wrap secondary">브로셔</v-card-title>
+              </v-img>
+              <v-divider class="pa-2"></v-divider>
+              <v-img contain :src="require('../../assets/포스터.jpeg')" class="white--text align-end" max-height="252px">
+                <v-card-title class="text-no-wrap secondary">포스터</v-card-title>
+              </v-img>
+              <v-card-actions>
+                <v-btn color="blue" elevation="5" @click="aplyPoster();" class="mx-auto" outlined>포스터 신청하러가기</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-card>
     
 </template>
@@ -42,46 +106,10 @@ export default {
   name: 'MyAplyList',
   components: { },
   data(){return {
+    campLoading: true,
+    posterLoading: true,
     myAplyList: [],
-    headers: [
-          //{text: '번호', value: 'seq', align: 'center',sortable: false },
-          {text: '상태', value: 'aplyPrgrs'}, //신청진행상황(접수, 접수완료, 신청취소)
-          {text: '신청일', value: 'aplyDt'}, //신청일시
-          {text: '신청자명', value: 'aplyName'},
-          {text: '신청자직분', value: 'jikbunSe'},
-          {text: '교회명', value: 'church'},
-          {text: '교단', value: 'churchSe'},
-          //{text: '목사님', value: 'churchAdtr'},
-          //{text: '교회주소', value: 'churchAddr'},
-          //{text: '교회상세주소', value: 'churchDtlAddr'},
-          {text: '일정', value: 'schdlSe'},
-          //{text: '연락처', value: 'phone'},
-          //{text: '이메일', value: 'email'},
-          //{text: '동의', value: 'checkbox'},
-          //{text: '우편물주소', value: 'fullAddress'},
-          //{text: '우편물상세주소', value: 'detailAddress'},
-          //{text: '참석여부', value: 'joinHisSe'},
-          //{text: '참여경로', value: 'joinPathSe'},
-          {text: '캠프인원', value: 'campCnt'},
-          //{text: '등록자', value: 'rgtrNm'},
-          //{text: '등록일시', value: 'rgtrDt'},
-          //{text: '수정자', value: 'updtNm'},
-          //{text: '수정일시', value: 'updtDt'},
-          //{text: '카카오아이디', value: 'kakaoEmail'},
-          //{text: '총금액', value: 'aplyTotAmt'}, //신청총금액
-        ],
     myPosterList: [],
-    posterHeaders: [
-      {text: '상태', value: 'aplyPrgrs'}, //신청진행상황(접수, 접수완료, 신청취소)
-      {text: '신청일', value: 'aplyDt'}, //신청일시
-      {text: '신청자명', value: 'aplyName'},
-      {text: '교회명', value: 'church'},
-      {text: '브로셔', value: 'brochureCnt'},
-      {text: '포스터', value: 'posterCnt'},
-      {text: '우편물주소', value: 'addr'},
-      {text: '우편물상세주소', value: 'dtlAddr'},
-      //{text: '카카오아이디', value: 'kakaoEmail'},
-    ],
   }},
   created() {
     this.getUserAply();
@@ -92,12 +120,15 @@ export default {
       this.axios.get('/user/aply')
       .then((result)=>{
         this.myAplyList = result.data;
+        this.campLoading = false;
       })
     },
     getPosterAply(){
       this.axios.get('/user/poster')
       .then((result)=>{
         this.myPosterList = result.data;
+        this.myPosterList=[];
+        this.posterLoading = false;
       })
     },
     clickList(item) {
