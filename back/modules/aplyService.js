@@ -186,8 +186,19 @@ module.exports = (app, mongoose, winston) => {
         } 
     });
 
-    app.delete('/user/aply', (req, res) => {
-        res.json({ result: 'success' });
+    app.delete('/admin/aply/one', async(req, res) => {
+        var item = req.body;
+        if(item.aplyPrgrs != '등록취소'){
+            res.status(400).json({ msg: '등록취소 상태에서 삭제가 가능합니다.' });
+            return;
+        }
+        try{
+            var result = await Aply.deleteOne({ seq: item.seq });
+            res.json({ result: 'success' });
+        }catch(err){
+            winston.error(err);
+            res.status(400).json({msg:'삭제 실패'})
+        } 
     });
 
     app.put('/admin/aply/one', async(req, res) => {
@@ -254,12 +265,29 @@ module.exports = (app, mongoose, winston) => {
             await Poster.updateOne({ seq: item.seq }, {
             $set: {
                 aplyPrgrs: item.aplyPrgrs,
+                brochureCnt: item.brochureCnt,
+                posterCnt: item.posterCnt,
             },
             })
             res.json({ result: 'success' });
         }catch(err){
             winston.error(err);
             res.status(400).json({msg:'포스터 업데이트 실패'})
+        } 
+    });
+
+    app.delete('/user/poster/one', async(req, res) => {
+        var item = req.body;
+        if(item.aplyPrgrs != '발송취소'){
+            res.status(400).json({ msg: '발송취소상태에서 삭제할수 있습니다.' });
+            return;
+        }
+        try{
+            await Poster.deleteOne({ seq: item.seq })
+            res.json({ result: 'success' });
+        }catch(err){
+            winston.error(err);
+            res.status(400).json({msg:'포스터 삭제 실패'})
         } 
     });
 

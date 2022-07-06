@@ -9,24 +9,38 @@
             </v-btn>
         </v-card-title>
       </v-card>
-      <v-dialog v-model="calDialog" max-width="600px">
-        <v-calendar :now="today" :value="today" color="primary" :events="events" :event-height="20" :event-more="false" @click:event="showEvent">
-        </v-calendar>
-        <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x >
-          <v-card color="grey lighten-4" min-width="350px" flat >
-            <v-toolbar :color="selectedEvent.color" dark >
-              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-            </v-toolbar>
-            <v-card-text>
-              <span v-html="selectedEvent.details"></span>
-            </v-card-text>
+      <v-dialog v-model="calDialog" max-width="650px">
+          <v-card>
             <v-card-actions>
-              <v-btn text color="secondary" @click="selectedOpen = false" >
-                닫기
-              </v-btn>
+
+              <v-btn icon class="ma-2" @click="prev()" >
+            <v-icon>mdi-chevron-left</v-icon>
+          </v-btn>
+          {{yyyymm}}
+          <v-btn icon class="ma-2" @click="next()" >
+            <v-icon>mdi-chevron-right</v-icon>
+          </v-btn>
             </v-card-actions>
-          </v-card>
-        </v-menu>
+        </v-card>
+        <v-layout wrap>
+          <v-calendar ref="calendar" v-model="today" :end="today" color="primary" :events="events" :event-height="20" :event-more="false" @click:event="showEvent">
+          </v-calendar>
+          <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x >
+            <v-card color="grey lighten-4" min-width="350px" flat >
+              <v-toolbar :color="selectedEvent.color" dark >
+                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+              </v-toolbar>
+              <v-card-text>
+                <span v-html="selectedEvent.details"></span>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn text color="secondary" @click="selectedOpen = false" >
+                  닫기
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-menu>
+        </v-layout>
       </v-dialog>
         <v-data-table fixed-header dense :headers="headers" :items="aplyList" item-key="seq" :search="search" hide-default-footer
             :disable-items-per-page="true" :footer-props="{ 'items-per-page-options': [50, -1] }" :loading = "loading" loading-text="로딩중 기다려주세요~" disable-sort >
@@ -36,7 +50,6 @@
             <form>
               <v-container>
                 <v-row><!--신청자이름, 직분 -->
-                  <v-divider class="ma-5"></v-divider>
                   <v-col cols="12" md="12" class="d-flex flex-row">
                     <v-icon large color="green darken-2" >
                       mdi-human
@@ -51,7 +64,6 @@
                   </v-col>
                 </v-row>
                 <v-row><!--교회명,교단,목사님성함 -->
-                  <v-divider class="ma-5"></v-divider>
                   <v-col cols="12" md="12" class="d-flex flex-row">
                     <v-icon large color="green darken-2" >
                       mdi-church
@@ -242,6 +254,9 @@
                     <v-btn class="mr-4" @click="submit" color="primary" elevation="14" >
                       저장
                     </v-btn>
+                    <v-btn class="mr-4" @click="close()" color="primary" elevation="14" >
+                      닫기
+                    </v-btn>
                   </v-col>
                 </v-row>
               </v-container>
@@ -251,14 +266,25 @@
           </v-dialog>
         </template>
         <template v-slot:[`item.aplyPrgrs`]="{ item }">
-          <v-select
-            v-model="item.aplyPrgrs"
-            :items="aplyPrgrsList"
-            dense
-            solo
-            class="text-overline"
-            @change="saveAply(item)"
-          ></v-select>
+          <v-row class="pa-2">
+            <v-col cols="10" class="pa-0">
+              <v-select
+                v-model="item.aplyPrgrs"
+                :items="aplyPrgrsList"
+                dense
+                solo
+                success
+                hide-details
+                class="text-overline"
+                @change="saveAply(item)"
+              ></v-select>
+            </v-col>
+            <v-col cols="2" class="pa-0" v-if="item.aplyPrgrs == '등록취소'">
+              <v-icon small @click="deleteAply(item)">
+                  mdi-delete
+              </v-icon>
+            </v-col>
+          </v-row>
         </template>
         <template v-slot:[`item.aplyDt`]="{ item }">
           <v-row>{{item.aplyDt }}</v-row>
@@ -460,6 +486,9 @@ export default {
       const map = {}
       this.events.forEach(e => (map[e.date] = map[e.date] || []).push(e))
       return map
+    },
+    yyyymm(){
+      return this.today.substring(0,7);
     }
   },
   watch: {
@@ -508,18 +537,6 @@ export default {
       })
       _this.loading = false;
     },
-    deleteAply(item){
-      console.log(item);
-      var _this = this;
-      this.axios.delete('/user/aply',item)
-      .then((data)=>{
-        console.log(data);
-        var idx = _this.aplyList.findIndex((data)=>{
-          return data.seq === item.seq;
-        });
-        if(idx > -1)_this.aplyList.splice(idx,1);
-       })
-    },
     diffTime (time) { 
       const today = this.$moment();
       const diffValue = this.$moment.duration(today.diff(time));
@@ -536,6 +553,14 @@ export default {
       this.axios.put('/admin/aply/one',item)
       .then((data)=>{
         console.log(data);
+       })
+    },
+    deleteAply(item){
+      var _this = this;
+      this.axios.delete('/admin/aply/one',{ data: item})
+      .then((data)=>{
+        console.log(data);
+        _this.getAplyAll();
        })
     },
     excelDown(){
@@ -610,6 +635,14 @@ export default {
         if(addrSe) element_wrap = document.getElementById('churchAddrDiv');
         element_wrap.style.display = 'none';
       },
+      next(){
+        console.log(this.$refs.calendar)
+        this.$refs.calendar.next();
+      },
+      prev(){
+        console.log(this.$refs)
+        this.$refs.calendar.prev();
+      }
 
     
   }
