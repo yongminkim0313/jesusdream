@@ -1,14 +1,30 @@
 <template>
   <v-card max-width="800" class="mx-auto my-5 pa-5">
-      <v-card elevation="0" width="500" class="mx-auto">
+      <v-card elevation="0" class="mx-auto">
         <v-card-title class="mx-auto">업데이트한 시간:{{userUpdateDt}}</v-card-title>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
+        <v-card-text>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+        <v-btn color="primary" elevation="2" @click="getUserList(false);">
+          저장된 친구목록 가져오기
+        </v-btn>
+        <v-btn color="warning" elevation="2" @click="getUserList(true);">
+          카카오 서버에서 친구목록 새로고침
+        </v-btn>
+        <v-btn color="success" elevation="2" @click="goTemplateMaker();">
+          카카오 메세지 템플릿 만들기
+        </v-btn>
+        <v-btn color="success" elevation="2" @click="unlinkUser();">
+          탈퇴테스트
+        </v-btn>
+        </v-card-actions>
       </v-card>
      
       <v-data-table fixed-header dense
@@ -60,18 +76,7 @@
           ></v-select>
         </template>
     </v-data-table>
-        <v-btn color="primary" elevation="2" @click="getUserList(false);" class="ma-10">
-          저장된 친구목록 가져오기
-        </v-btn>
-        <v-btn color="warning" elevation="2" @click="getUserList(true);" class="ma-10">
-          카카오 서버에서 친구목록 새로고침
-        </v-btn>
-        <v-btn color="success" elevation="2" @click="goTemplateMaker();" class="ma-10">
-          카카오 메세지 템플릿 만들기
-        </v-btn>
-        <v-btn color="success" elevation="2" @click="unlinkUser();" class="ma-10">
-          탈퇴테스트
-        </v-btn>
+        
         
   </v-card>
 </template>
