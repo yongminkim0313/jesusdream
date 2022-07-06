@@ -1,13 +1,17 @@
 <template>
   <v-layout wrap>
-    <v-flex md12 sm12 xs12 class="d-flex justify-center">
-      <v-btn @click="$refs.calendar.prev()" icon class="d-flex justify-center">
-        <v-icon right dark dense> mdi-chevron-left </v-icon>
-      </v-btn>
-      <v-card-title>7월</v-card-title>
-      <v-btn @click="$refs.calendar.next()" icon class="d-flex justify-center">
-        <v-icon right dark dense> mdi-chevron-right </v-icon>
-      </v-btn>
+    <v-flex md12 sm12 xs12 >
+      <v-card>
+        <v-card-actions class="d-flex justify-center">
+          <v-btn @click="$refs.calendar.prev()" icon class="d-flex justify-center">
+            <v-icon right dark dense> mdi-chevron-left </v-icon>
+          </v-btn>
+          <v-card-title>{{yyyymm}}</v-card-title>
+          <v-btn @click="$refs.calendar.next()" icon class="d-flex justify-center">
+            <v-icon right dark dense> mdi-chevron-right </v-icon>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
     </v-flex>
     <v-flex md12 sm12 xs12 class="text-xs-center" >
       <v-sheet height="700" width="99%">
@@ -38,6 +42,9 @@
         const map = {}
         this.events.forEach(e => (map[e.date] = map[e.date] || []).push(e))
         return map
+      },
+      yyyymm(){
+        return this.start.substring(0,7);
       }
     },
     methods: {
@@ -65,7 +72,7 @@
               name: result.data[idx].church+' ['+result.data[idx].aplyPrgrs+']',
               start: result.data[idx].aplyDt,
               end: result.data[idx].aplyDt,
-              color: 'grey',
+              color: 'blue',
               timed: true,
             })
           }

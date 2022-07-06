@@ -11,8 +11,7 @@
       </v-card>
       <v-dialog v-model="calDialog" max-width="650px">
           <v-card>
-            <v-card-actions>
-
+            <v-card-actions class="d-flex justify-center">
               <v-btn icon class="ma-2" @click="prev()" >
             <v-icon>mdi-chevron-left</v-icon>
           </v-btn>
