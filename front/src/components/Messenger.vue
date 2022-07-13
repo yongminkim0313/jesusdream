@@ -22,39 +22,26 @@
       @onType="handleOnType"
       @edit="editMessage"
       @remove="removeMessage"
-      
+      style="z-index:99999"
      >
+     <template v-slot:header style="height:40px">
+        {{participants.map(m=>m.name).join(' & ')}}
+    </template>
+     <template v-slot:text-message-body="{ message }">
+      {{message.data.text}}
+    </template>
     </beautiful-chat>
+    
 </template>
 <script>
-// import chatParticipants from './chatProfiles'
-// import messageHistory from './messageHistory'
-// import availableColors from './colors'
-
 export default {
   name: 'messenger',
-  components: {
-    // chatParticipants, messageHistory, availableColors
-  },
+  components: {},
   data() {
     return {
-        participants: [
-          // {
-          //   id: 'seon',
-          //   name: '선영',
-          //   imageUrl: 'https://avatars3.githubusercontent.com/u/1915989?s=230&v=4'
-          // },
-          // {
-          //   id: 'yong',
-          //   name: '용민',
-          //   imageUrl: 'https://avatars3.githubusercontent.com/u/37018832?s=200&v=4'
-          // }
-        ],
+        participants: [ ],
         titleImageUrl: '',//require('../assets/jang.png'),
-        messageList: [
-            // { type: 'text', author: `me`, id: 0, data: { text: `메신저 테스트입니다.` } },
-            // { type: 'text', author: `mattmezza`, id: 1, data: { text: `What do you need salsa for?` } },
-        ],
+        messageList: [ ],
         newMessagesCount: 0,
         isChatOpen: false,
         showTypingIndicator: '',
@@ -171,5 +158,9 @@ export default {
   
   };
 </script>
-
+<style>
+.sc-chat-window{
+      z-index: 99999;
+}
+</style>
 
