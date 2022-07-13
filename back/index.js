@@ -101,6 +101,7 @@ app.get('/auth/logout', async(req, res) => {
 
 require('./modules/socketConfig')(app, winston);
 require('./modules/campService')(app, mongoose, winston);
+require('./modules/msgService')(app, mongoose, winston);
 require('./modules/kakaoService')(app,mongoose, winston);
 require('./modules/naverLogin')(app, winston);
 require('./modules/aplyService')(app, mongoose, winston);

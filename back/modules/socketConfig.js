@@ -11,16 +11,20 @@ module.exports = (app, winston) => {
     server.listen(4000);
 
     io.on('connection', socket => {
-        
+        socket.join('room1')
+        const room1 = socket.to("room1");
+
         var currentUserList = function(cb){
             var userList = [];
             var ns = io.of("/");
             if (ns) {
                 ns.sockets.forEach((value, key, map) => {
                     userList.push({
-                        id      :   key,
-                        name    :   value.handshake.query.name,
-                        profileImage : value.handshake.query.profileImage,
+                        id              :   key,
+                        kakaoId         :   value.handshake.query.kakaoId,
+                        socketId        :   key,
+                        name            :   value.handshake.query.name,
+                        profileImage    :   value.handshake.query.profileImage,
                     })
                 });
             }
@@ -52,11 +56,13 @@ module.exports = (app, winston) => {
             console.log('aply', data);
             socket.broadcast.emit('aply', data);
         });
-        socket.on('sendMsg',(chat,callback)=>{
-            console.log(chat);
-            io.to(chat.t).send(chat);// on('message') 로 받는다.
-            callback(chat)
+        socket.on('messenger',(message,callback)=>{
+            //io.to(message.t).send(message);// on('message') 로 받는다.
+            socket.broadcast.to('room1').emit('message',message);
+            console.log(message);
+            callback(message)
         })
+        
         winston.info(`socket.io connected`);
     });
     return io;

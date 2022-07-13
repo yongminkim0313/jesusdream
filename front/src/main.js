@@ -8,6 +8,7 @@ import VueAxios from "vue-axios";
 import VueAWN from "vue-awesome-notifications";
 import VueMoment from "vue-moment";
 import VueCookies from 'vue-cookies';
+import Chat from 'vue-beautiful-chat'
 
 Vue.config.productionTip = false
 
@@ -19,6 +20,7 @@ Vue.use(VueAxios, Axios);
 Vue.use(VueAWN, {});
 Vue.use(VueMoment);
 Vue.use(VueCookies);
+Vue.use(Chat);
 
 var eventBus = new Vue();
 Vue.prototype.$eventBus = eventBus;

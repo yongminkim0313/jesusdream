@@ -3,9 +3,10 @@
         <v-app-bar app elevation="4" flat>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-card class="d-flex justify-space-between mx-auto" flat tile color="#f5f5f5">
-                    {{menu[selectedMenu].menuTitle}}
+                {{menu[selectedMenu].menuTitle}}
             </v-card>
                 <messenger></messenger>
+                
                 <v-chip label link v-if="this.USERINFO.isLogin">
                     관리자 {{this.USERINFO.name}} 님
                 </v-chip>
@@ -38,6 +39,8 @@
 </template>
 <script>
 import Messenger from "./AdminMessenger.vue";
+
+
 
 export default {
     name:'Header',

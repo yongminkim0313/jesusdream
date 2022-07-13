@@ -17,6 +17,7 @@
  import Newscast from "./layout/youthvision/Newscast.vue";
  import CampLiveEdit from "./layout/youthvision/CampLiveEdit.vue"
  import Board from "./layout/youthvision/Board.vue"
+ import Messenger from "./components/Messenger.vue";
 
  Vue.use(VueRouter);
  const route = [
@@ -65,6 +66,7 @@
          components: {
              header: AdminHeader,
              default: Admin,
+             messenger: Messenger
          },
          meta:{auth:'admin'}
      },
@@ -84,6 +86,7 @@
          components: {
              header: AdminHeader,
              default: AdminPoster,
+             messenger: Messenger
             },
          meta:{auth:'admin'}
      },
@@ -103,6 +106,7 @@
          components: {
              header: AdminHeader,
              default: Calendar,
+             messenger: Messenger
          },
          meta:{auth:'admin'}
      },
@@ -112,6 +116,7 @@
          components: {
              header: AdminHeader,
              default: Statistic,
+             messenger: Messenger
          },
          meta:{auth:'admin'}
      },
@@ -121,6 +126,7 @@
          components: {
              header: AdminHeader,
              default: UserList,
+             messenger: Messenger
          },
          meta:{auth:'admin'}
      },
@@ -140,6 +146,7 @@
         components: {
             header: AdminHeader,
             default: CampLiveEdit,
+            messenger: Messenger
         },
         meta:{auth:'admin'}
     },
