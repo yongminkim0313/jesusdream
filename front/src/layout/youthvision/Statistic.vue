@@ -25,12 +25,38 @@
               </v-list-item-group>
             </v-list>
           </v-col>
+          <v-col cols="12" md="12" sm="12">
+            <v-sparkline
+              :labels="labels"
+              :value="value"
+              :gradient="gradient"
+              :smooth="radius || false"
+              :padding="padding"
+              :line-width="width"
+              :stroke-linecap="lineCap"
+              :gradient-direction="gradientDirection"
+              :fill="fill"
+              :type="type"
+              :auto-line-width="autoLineWidth"
+              :label-size="6"
+              auto-draw
+            >
+            </v-sparkline>
+          </v-col>
         </v-row>
       </v-container>
   </v-card>
 </template>
 <script>
 import DoughnutChart from '../../assets/Chart';
+const gradients = [
+    ['#222'],
+    ['#42b3f4'],
+    ['red', 'orange', 'yellow'],
+    ['purple', 'violet'],
+    ['#00c6ff', '#F0F', '#FF0'],
+    ['#f72047', '#ffd200', '#1feaea'],
+  ]
   export default {
     components: {
       DoughnutChart
@@ -42,10 +68,23 @@ import DoughnutChart from '../../assets/Chart';
         resultData:{},
         selectedItem: 5,
         items: [ ],
+        width: 20,
+        radius: 2,
+        padding: 8,
+        lineCap: 'round',
+        gradient: gradients[5],
+        value: [],
+        gradientDirection: 'top',
+        gradients,
+        fill: false,
+        type: 'bar',
+        autoLineWidth: false,
+        labels:[]
       }
     },
     mounted () {
       this.makeChart();
+      this.joinPath();
     },
     methods:{
       makeChart(){
@@ -75,6 +114,23 @@ import DoughnutChart from '../../assets/Chart';
           this.campCnt = Object.assign({}, this.campCnt);
         })
       },
+      joinPath(){
+        this.axios.get('/admin/aply/all')
+        .then((result)=>{
+        var aplyList = result.data;
+        var joinPathObj = {};
+
+        for(var idx in aplyList){
+          for(var pathSe of aplyList[idx].joinPathSe){
+            joinPathObj[pathSe] = joinPathObj[pathSe] ? joinPathObj[pathSe]+1 : 1;
+          }
+        }
+
+        this.labels = Object.keys(joinPathObj);
+        this.value = Object.values(joinPathObj);
+      })
+
+      }
     }
   }
 </script>
