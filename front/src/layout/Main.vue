@@ -1,6 +1,8 @@
 <template>
     <v-card width="800" class="mx-auto" elevation="5">
-
+    <div id="area">
+        <iframe id="video" width="100%" height="100%" src="https://www.youtube.com/embed/oOWd6gms5nc?version-2&autoplay=1" title="유스비전홍보1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
       <v-container class="pa-0 mt-2" >
         <!-- <v-card class="d-flex flex-center" elevation="0">
           <v-btn @click="clickReg()" class="mx-auto my-2">캠프등록 하러가기</v-btn>
@@ -66,3 +68,15 @@ export default {
 
 }
 </script>
+<style>
+#area {
+  position: relative; /* absolute는 부모가 relative일 때 부모를 따라간다. */
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 비율 */
+}
+#video {
+  position: absolute;
+  width: 100%; /* 부모에 맞게 꽉 채운다. */
+  height: 100%;
+}
+</style>

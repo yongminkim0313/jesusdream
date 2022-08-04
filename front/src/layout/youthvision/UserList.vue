@@ -13,13 +13,13 @@
         </v-card-text>
         <v-card-actions>
         <v-btn color="primary" elevation="2" @click="getUserList(false);">
-          저장된 친구목록 가져오기
+          친구목록
         </v-btn>
         <v-btn color="warning" elevation="2" @click="getUserList(true);">
-          카카오 서버에서 친구목록 새로고침
+          업뎃
         </v-btn>
         <v-btn color="success" elevation="2" @click="goTemplateMaker();">
-          카카오 메세지 템플릿 만들기
+          템플릿 만들기
         </v-btn>
         <v-btn color="success" elevation="2" @click="unlinkUser();">
           탈퇴테스트
