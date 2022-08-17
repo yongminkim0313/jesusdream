@@ -1,2 +1,3 @@
 back/logs/jesusdream.log
 front/.env
+.DS_Store
